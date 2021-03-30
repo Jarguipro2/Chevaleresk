@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CHEVALERESKDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CHEVALERESKDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Items">
           <Key>
             <PropertyRef Name="IdObject" />
@@ -40,6 +40,14 @@
           </Key>
           <Property Name="IdType" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Logs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPlayer" Type="int" Nullable="false" />
+          <Property Name="LoginDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Player_Inventory">
           <Key>
@@ -154,11 +162,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserId">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Logs" Type="Self.Logs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="IdPlayer" />
+            </Principal>
+            <Dependent Role="Logs">
+              <PropertyRef Name="IdPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CHEVALERESKDBModelStoreContainer">
           <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Items_Properties" EntityType="Self.Items_Properties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Items_Reviews" EntityType="Self.Items_Reviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Items_Type" EntityType="Self.Items_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player_Inventory" EntityType="Self.Player_Inventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Properties" EntityType="Self.Properties" Schema="dbo" store:Type="Tables" />
@@ -190,9 +211,12 @@
             <End Role="Players" EntitySet="Players" />
             <End Role="Player_Inventory" EntitySet="Player_Inventory" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserId" Association="Self.FK_UserId">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Logs" EntitySet="Logs" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CHEVALERESKDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -255,6 +279,7 @@
           <Property Name="Admin" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Items_Reviews" Relationship="Self.FK_Objects_Reviews_Players" FromRole="Players" ToRole="Items_Reviews" />
           <NavigationProperty Name="Player_Inventory" Relationship="Self.FK_Player_Inventory_Players" FromRole="Players" ToRole="Player_Inventory" />
+          <NavigationProperty Name="Logs" Relationship="CHEVALERESKDBModel.FK_UserId" FromRole="Players" ToRole="Logs" />
         </EntityType>
         <EntityType Name="Properties">
           <Key>
@@ -360,7 +385,33 @@
             <End Role="Items" EntitySet="Items" />
             <End Role="Properties" EntitySet="Properties" />
           </AssociationSet>
+          <EntitySet Name="Logs" EntityType="CHEVALERESKDBModel.Logs" />
+          <AssociationSet Name="FK_UserId" Association="CHEVALERESKDBModel.FK_UserId">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Logs" EntitySet="Logs" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Logs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPlayer" Type="Int32" Nullable="false" />
+          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Players" Relationship="CHEVALERESKDBModel.FK_UserId" FromRole="Logs" ToRole="Players" />
+        </EntityType>
+        <Association Name="FK_UserId">
+          <End Type="CHEVALERESKDBModel.Players" Role="Players" Multiplicity="1" />
+          <End Type="CHEVALERESKDBModel.Logs" Role="Logs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="IdPlayer" />
+            </Principal>
+            <Dependent Role="Logs">
+              <PropertyRef Name="IdPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -437,6 +488,15 @@
               <ScalarProperty Name="IdProperty" ColumnName="IdProperty" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="CHEVALERESKDBModel.Logs">
+              <MappingFragment StoreEntitySet="Logs">
+                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
+                <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

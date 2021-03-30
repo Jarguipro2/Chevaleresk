@@ -6,17 +6,19 @@
     <edmx:Diagrams>
       <Diagram DiagramId="c4dda5629f0646f7bceb653901d4d151" Name="Diagram1">
         <EntityTypeShape EntityType="CHEVALERESKDBModel.Items" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHEVALERESKDBModel.Items_Reviews" Width="1.5" PointX="5.625" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CHEVALERESKDBModel.Items_Reviews" Width="1.5" PointX="4" PointY="6.875" IsExpanded="true" />
         <EntityTypeShape EntityType="CHEVALERESKDBModel.Items_Type" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHEVALERESKDBModel.Player_Inventory" Width="2.375" PointX="8.5" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHEVALERESKDBModel.Players" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHEVALERESKDBModel.Properties" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="CHEVALERESKDBModel.Player_Inventory" Width="2.375" PointX="6.375" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CHEVALERESKDBModel.Players" Width="1.5" PointX="1.5" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CHEVALERESKDBModel.Properties" Width="1.5" PointX="6.5" PointY="3.125" IsExpanded="true" />
         <AssociationConnector Association="CHEVALERESKDBModel.FK_Objects_Objects_Type" ManuallyRouted="false" />
         <AssociationConnector Association="CHEVALERESKDBModel.FK_Objects_Reviews_Objects" ManuallyRouted="false" />
         <AssociationConnector Association="CHEVALERESKDBModel.FK_Player_Inventory_Objects" ManuallyRouted="false" />
         <AssociationConnector Association="CHEVALERESKDBModel.FK_Objects_Reviews_Players" ManuallyRouted="false" />
         <AssociationConnector Association="CHEVALERESKDBModel.FK_Player_Inventory_Players" ManuallyRouted="false" />
         <AssociationConnector Association="CHEVALERESKDBModel.Items_Properties" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CHEVALERESKDBModel.Logs" Width="1.5" PointX="4" PointY="10.375" />
+        <AssociationConnector Association="CHEVALERESKDBModel.FK_UserId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
