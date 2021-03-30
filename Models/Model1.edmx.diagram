@@ -17,6 +17,8 @@
         <AssociationConnector Association="CHEVALERESKDBModel.FK_Objects_Reviews_Players" ManuallyRouted="false" />
         <AssociationConnector Association="CHEVALERESKDBModel.FK_Player_Inventory_Players" ManuallyRouted="false" />
         <AssociationConnector Association="CHEVALERESKDBModel.Items_Properties" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CHEVALERESKDBModel.Logs" Width="1.5" PointX="4" PointY="10.375" />
+        <AssociationConnector Association="CHEVALERESKDBModel.FK_UserId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

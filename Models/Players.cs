@@ -19,6 +19,7 @@ namespace Chevaleresk.Models
         {
             this.Items_Reviews = new HashSet<Items_Reviews>();
             this.Player_Inventory = new HashSet<Player_Inventory>();
+            this.Logs = new HashSet<Logs>();
         }
     
         public int IdPlayer { get; set; }
@@ -33,5 +34,7 @@ namespace Chevaleresk.Models
         public virtual ICollection<Items_Reviews> Items_Reviews { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Player_Inventory> Player_Inventory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Logs> Logs { get; set; }
     }
 }

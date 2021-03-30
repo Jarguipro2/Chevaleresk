@@ -31,5 +31,6 @@ namespace Chevaleresk.Models
         public virtual DbSet<Player_Inventory> Player_Inventory { get; set; }
         public virtual DbSet<Players> Players { get; set; }
         public virtual DbSet<Properties> Properties { get; set; }
+        public virtual DbSet<Logs> Logs { get; set; }
     }
 }
