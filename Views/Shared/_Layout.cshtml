@@ -1,10 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    Chevaleresk.Models.Players onlinePlayer = Chevaleresk.Models.OnlinePlayers.GetSessionPlayer();
+}
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mon application ASP.NET</title>
+    <title>@ViewBag.Title - Chevaleresk</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -18,11 +21,15 @@
 
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-link">@Html.ActionLink("Marché d'objet", "Index", "Items")</li>
-                <li class="nav-link">@Html.ActionLink("Inscription", "Subscribe", "Players")</li>
+                <li class="nav-link">@Html.ActionLink("Marché d'objet", "Index", "Home")</li>
+                <li class="nav-link">@Html.ActionLink("Inscription", "Register", "Home")</li>
                 <li class="nav-link">@Html.ActionLink("Contact", "Contact", "Home")</li>
+                @if (onlinePlayer != null)
+                {
+                    <li>@onlinePlayer.FullName</li>
+                    <li>@Html.ActionLink("Déconnection","Logout","Players")</li>
+                }
             </ul>
-            <div class="nav-link">@Html.ActionLink("Cart", "MyOrder", "AddToCart")</div>
         </div>
     </nav>
     <div class="container body-content">

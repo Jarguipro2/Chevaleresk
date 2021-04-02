@@ -41,6 +41,7 @@ namespace Chevaleresk.Controllers
                 playerView.Money = 0;
                 playerView.Admin = false;
                 DB.AddPlayer(playerView);
+                return RedirectToAction("Login");
             }
             return View(playerView);
         }
