@@ -169,6 +169,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AddToCartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -384,6 +385,11 @@
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Players\Subscribe.cshtml" />
+    <Content Include="Views\AddToCart\Delete.cshtml" />
+    <Content Include="Views\AddToCart\Details.cshtml" />
+    <Content Include="Views\AddToCart\Edit.cshtml" />
+    <Content Include="Views\AddToCart\Index.cshtml" />
+    <Content Include="Views\AddToCart\Myorder.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
