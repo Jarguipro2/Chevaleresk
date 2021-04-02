@@ -179,6 +179,7 @@
     <Compile Include="Models\Items.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ItemsView.cs" />
     <Compile Include="Models\Items_Reviews.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
