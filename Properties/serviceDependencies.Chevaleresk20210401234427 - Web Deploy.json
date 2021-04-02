@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/chevalereskprojetdirige/databases/Chevaleresk_db",
+      "type": "mssql.azure",
+      "connectionId": "ChevalereskDBEntities2",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}
