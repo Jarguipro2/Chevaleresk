@@ -48,6 +48,7 @@ namespace Chevaleresk.Models
                 Username = this.Username,
                 FullName = this.FullName,
                 Password = this.Password,
+                Email = this.Email,
                 Admin = this.Admin
 
             };
@@ -92,6 +93,51 @@ namespace Chevaleresk.Models
             DB.Players.Remove(playerToDelete);
             DB.SaveChanges();
             return true;
+        }
+        public static Players FindByUserName(this ChevalereskDBEntities2 DB,string username)
+        {
+            Players player = DB.Players.Where(u => u.Username == username).FirstOrDefault();
+            return player;
+        }
+    }
+    public static class OnlinePlayers
+    {
+        public static List<Players> Players
+        {
+            get
+            {
+                if (HttpRuntime.Cache["OnlinePlayers"] == null)
+                    HttpRuntime.Cache["OnlinePlayers"] = new List<Players>();
+                return (List <Players>) HttpRuntime.Cache["OnlinePlayers"];
+            }
+        }
+
+        public static DateTime LastUpdate { get; private set; }
+
+        public static void RemoveSessionPlayer()
+        {
+            if(HttpRuntime.Cache["OnlinePlayers"] != null)
+            {
+                ((List<Players>)HttpRuntime.Cache["OnlinePlayers"]).Remove(GetSessionPlayer());
+            }
+        }
+        public static Players GetSessionPlayer()
+        {
+            try
+            {
+                return (Players)HttpContext.Current.Session["Player"];
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public static void AddSessionPlayer(Players player)
+        {
+            Players.Add(player);
+            LastUpdate = DateTime.Now;
+            HttpContext.Current.Session["Player"] = player;
+            HttpContext.Current.Session.Timeout = 30;
         }
     }
 }
