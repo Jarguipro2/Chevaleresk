@@ -1,0 +1,43 @@
+﻿@model Chevaleresk.Models.Player_Inventory
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Player_Inventory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Items.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Items.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Players.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Players.Username)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
