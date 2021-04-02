@@ -2,13 +2,11 @@
 
 @{
     ViewBag.Title = "Myorder";
+    double sum = 0;
 }
 
-<h2>Myorder</h2>
+<h2>Cart</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -22,24 +20,33 @@
         </th>
         <th></th>
     </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            sum += item.Price;
 
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Items_Type.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.IdObject }) |
-                @Html.ActionLink("Details", "Details", new { id=item.IdObject }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.IdObject })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Items_Type.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdObject }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdObject }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdObject })
+                </td>
+            </tr>
+        }
     }
-
+    <tr>
+        <td>
+           Total:  @sum
+        </td>
+    </tr>
 </table>
