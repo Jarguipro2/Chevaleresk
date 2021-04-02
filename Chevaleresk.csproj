@@ -216,6 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\ChevalereskDB.mdf" />
+    <Content Include="App_Data\ChevalereskDB_log.ldf">
+      <DependentUpon>ChevalereskDB.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
