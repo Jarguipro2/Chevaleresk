@@ -22,7 +22,7 @@
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-link">@Html.ActionLink("Marché d'objet", "Index", "Home")</li>
-                <li class="nav-link">@Html.ActionLink("Inscription", "Register", "Home")</li>
+                <li class="nav-link">@Html.ActionLink("Inscription", "Subscribe", "Players")</li>
                 <li class="nav-link">@Html.ActionLink("Contact", "Contact", "Home")</li>
                 @if (onlinePlayer != null)
                 {
@@ -36,7 +36,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mon application ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Chevaleresk ASP.NET</p>
         </footer>
     </div>
 
