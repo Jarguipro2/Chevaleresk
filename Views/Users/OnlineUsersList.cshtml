@@ -1,0 +1,16 @@
+﻿@model IEnumerable<EFA_DEMO.Models.UserView>
+
+@if (Model.Count() > 1)
+{
+    foreach (var item in Model)
+    {
+        if (OnlineUsers.CurrentUser.Id != item.Id)
+        {
+            @Helper.AvatarUser(item)
+        }
+    }
+}
+else
+{
+    <span>Aucun usager autre que vous est en ligne</span>
+}

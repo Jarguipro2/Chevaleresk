@@ -1,0 +1,26 @@
+﻿@model IEnumerable<EFA_DEMO.Models.Log>
+<h3>Journal de connexions</h3>
+<hr />
+<table>
+    @{ DateTime currentDate = new DateTime(0);
+        foreach (var item in Model)
+        {
+            if (currentDate != item.LoginDate.Date)
+            {
+                currentDate = item.LoginDate.Date;
+                <tr>
+                    <td>@item.LoginDate.ToShortDateString()</td>
+                    <td></td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td>
+                    @item.LoginDate.ToShortTimeString()
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+

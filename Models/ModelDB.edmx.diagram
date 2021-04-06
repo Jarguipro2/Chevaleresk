@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c03adaf367a5478bbb9a29cccd572241" Name="Diagram1">
+        <EntityTypeShape EntityType="DBModel.Item" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Items_Reviews" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Items_Type" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Log" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Property" Width="1.5" PointX="5.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.User_Inventory" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.User" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <AssociationConnector Association="DBModel.FK_Objects_Objects_Type" ManuallyRouted="false" />
+        <AssociationConnector Association="DBModel.FK_Objects_Reviews_Objects" ManuallyRouted="false" />
+        <AssociationConnector Association="DBModel.FK_Player_Inventory_Objects" ManuallyRouted="false" />
+        <AssociationConnector Association="DBModel.FK_Objects_Reviews_Players" ManuallyRouted="false" />
+        <AssociationConnector Association="DBModel.FK_PlayerLogin" ManuallyRouted="false" />
+        <AssociationConnector Association="DBModel.FK_Player_Inventory_Players" ManuallyRouted="false" />
+        <AssociationConnector Association="DBModel.Items_Properties" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

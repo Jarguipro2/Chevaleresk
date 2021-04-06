@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<br />
+<h3>Usagers en ligne</h3>
+<hr />
+
+<div id="usersListContainer"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/partialRefresh")
+
+    <script>
+        $(() => { PartialRefresh("@Url.Action("OnlineUsersList")", "usersListContainer", 1); });
+    </script>
+}

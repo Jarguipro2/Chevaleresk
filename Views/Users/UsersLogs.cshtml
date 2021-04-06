@@ -1,0 +1,29 @@
+﻿@model IEnumerable<EFA_DEMO.Models.Log>
+
+<table>
+    @{ DateTime currentDate = new DateTime(0);
+        foreach (var item in Model)
+        {
+            if (currentDate != item.LoginDate.Date)
+            {
+                currentDate = item.LoginDate.Date;
+                <tr>
+                    <td>@item.LoginDate.ToShortDateString()</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+            <tr>
+                <td><div style="width:100px"></div></td>
+                <td>
+                    <div style="height:40px; width:100px; vertical-align:central;">
+                        @item.LoginDate.ToShortTimeString()
+                    </div>
+                </td>
+                <td>
+                    @Helper.AvatarUser(item.User.ToUserView())
+                </td>
+            </tr>
+        }
+    }
+</table>

@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<br />
+<h3>Journal de connexions</h3>
+<hr />
+
+<div id="logsListContainer">
+    @{ Html.RenderAction("UsersLogs"); /* ne retourne pas de HtmlText, necéssite d'être invoqué dans un bloc @{...} */}
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/partialRefresh")
+
+    <script>
+        $(() => { PartialRefresh("@Url.Action("UsersLogs")", "logsListContainer", 1); });
+    </script>
+}
+
