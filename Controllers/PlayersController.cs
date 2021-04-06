@@ -22,13 +22,13 @@ namespace Chevaleresk.Controllers
             return View();
         }
 
-        public ActionResult Subscribe()
+        public ActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Subscribe(PlayerView playerView)
+        public ActionResult Register(PlayerView playerView)
         {
             if (ModelState.IsValid)
             {
