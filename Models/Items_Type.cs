@@ -11,19 +11,32 @@ namespace EFA_DEMO.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    public enum Items_typeEnum { Arme, Armure, Potion, Ressource}
     
     public partial class Items_Type
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Items_Type()
+        public Items_Type(Items_typeEnum @enum)
         {
             this.Items = new HashSet<Item>();
+            IdType = (int)@enum;
+            Name = @enum.ToString();
         }
-    
+        protected Items_Type() { } //For EF
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int IdType { get; set; }
+        [Required]
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items { get; set; }
+
+        public static implicit operator Items_Type(Items_typeEnum @enum) => new Items_Type(@enum);
+        public static implicit operator Items_typeEnum(Items_Type itemsType) => (Items_typeEnum)itemsType.IdType;
     }
+
+    
 }

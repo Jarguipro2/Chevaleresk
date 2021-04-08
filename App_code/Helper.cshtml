@@ -34,3 +34,22 @@
     </div>
     <br />
 }
+@helper EnumToRadioButtonGroup(string name, object enumObj, bool create = false)
+{
+    int index = 0;
+    foreach (var enumItem in Enum.GetValues(enumObj.GetType()))
+    {
+        string id = name + "_" + index.ToString();
+        if (!create && index == (int)enumObj)
+        {
+            <input type="radio" name="@name" class="@name" id="@id" value="@index" checked />
+        }
+        else
+        {
+            <input type="radio" name="@name" class="@name" id="@id" value="@index" />
+        }
+        <label for="@id" class="control-label">@enumItem.ToString()</label>
+        index++;
+    }
+    <br />
+}

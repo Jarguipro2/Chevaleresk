@@ -13,7 +13,7 @@ namespace EFA_DEMO.Models
         public int StockQuantity { get; set; }
         public double Price { get; set; }
         public string PictureGUID { get; set; }
-        public int IdType { get; set; }
+        public int? IdType { get; set; }
         public virtual Items_Type Items_Type { get; set; }
 
         public int StringToId(string type)

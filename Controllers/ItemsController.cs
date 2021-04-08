@@ -39,7 +39,10 @@ namespace EFA_DEMO.Controllers
         // GET: Items/Create
         public ActionResult Create()
         {
-            return View();
+            Item item = new Item();
+            //var dictionnary = db.Items_Type.GroupBy(it => it.IdType).ToDictionary(g => g.Key, g => g.ToList());
+            //item.Items_Type = dictionnary;
+            return View(item);
         }
 
         // POST: Items/Create
@@ -47,15 +50,15 @@ namespace EFA_DEMO.Controllers
         // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdObject,Name,StockQuantity,Price,PictureGUID,IdType")] ItemView itemView)
+        public ActionResult Create([Bind(Include = "IdObject,Name,StockQuantity,Price,PictureGUID,Items_Type, IdType")] Item item)
         {
             if (ModelState.IsValid)
             {
-                db.AddItem(itemView);
+                db.AddItem(item.ToItemView());
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(itemView);
+            return View(item);
         }
 
         // GET: Items/Edit/5
