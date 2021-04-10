@@ -53,3 +53,20 @@
     }
     <br />
 }
+@helper GlyphiconAction(string Action, string glyphiconClass, string TooltipMessage, string ToolTipPlacement = "bottom")
+{
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    <a href="@Url.Action(Action)">
+        <span class="glyphicon glyphiconStyle @glyphiconClass"
+              title="@TooltipMessage"
+              data-placement="@ToolTipPlacement">
+        </span>
+    </a>
+}
+@helper Glyphicon(string glyphiconClass, string TooltipMessage, string ToolTipPlacement = "bottom")
+{
+    <span class="glyphicon glyphiconStyle @glyphiconClass"
+            title="@TooltipMessage"
+            data-placement="@ToolTipPlacement">
+    </span>
+}

@@ -47,3 +47,13 @@ textarea {
 .UploadedImage {
     max-width: 100%;
 }
+.applicationName {
+    color: lightgray !important;
+    font-weight: bold;
+}
+.glyphiconStyle {
+    font-size: 22px !important;
+    margin-right: 4px !important;
+    margin-left: 4px !important;
+    color: lightgray;
+}
