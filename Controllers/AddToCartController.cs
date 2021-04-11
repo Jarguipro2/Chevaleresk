@@ -46,6 +46,7 @@ namespace EFA_DEMO.Controllers
             Item item = db.Items.Find(id);
 
             List<Item> li = (List<Item>)Session["cart"];
+
             li.RemoveAll(x => x.IdObject == item.IdObject);
             Session["cart"] = li;
             Session["count"] = Convert.ToInt32(Session["count"]) - 1;
@@ -54,6 +55,19 @@ namespace EFA_DEMO.Controllers
 
         public ActionResult Myorder()
         {
+            // --- Version si le user essaie de force l'entré ALPHA 0.01 ---
+            //var currentPlayer = null;
+
+            //if (OnlineUsers.CurrentUser != null)
+            //{
+            //    currentPlayer = db.Users.Find(OnlineUsers.CurrentUser.Id);
+            //}
+            // ------------------------------------------------------------
+
+            var currentPlayer = db.Users.Find(OnlineUsers.CurrentUser.Id);
+
+            ViewBag.currentMoneyPlayer = currentPlayer.Money;
+
             int nombreItemsSession = 0;
 
             if ((List<Item>)Session["cart"] != null)
@@ -65,6 +79,37 @@ namespace EFA_DEMO.Controllers
             ViewBag.cart = nombreItemsSession;
 
             return View((List<Item>)Session["cart"]);
+        }
+
+        public ActionResult BuyCart()
+        {
+            double sommeTotal = 0;
+            
+            var capitalJoueur = db.Users.Find(OnlineUsers.CurrentUser.Id);
+
+            List<Item> li = (List<Item>)Session["cart"];
+
+            foreach (var items in li)
+            {
+                sommeTotal += items.Price;
+            }
+
+            if (sommeTotal <= capitalJoueur.Money)
+            {
+                capitalJoueur.Money = (int)(capitalJoueur.Money - sommeTotal);
+
+                db.Entry(capitalJoueur).State = EntityState.Modified;
+
+                foreach (var items in li)
+                {
+                    
+                }
+
+                
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Items");
         }
 
 
