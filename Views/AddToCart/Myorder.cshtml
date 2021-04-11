@@ -1,7 +1,190 @@
-﻿
+﻿@model IEnumerable<Item>
+
 @{
     ViewBag.Title = "Myorder";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    double sum = 0;
+    string nomItem = "autre";
+    int nombreItem = 0;
+    
+    if (Model != null)
+    {
+        nombreItem = Model.Count();
+    }
 }
 
-<h2>Myorder</h2>
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-lg-12 col-md-12 col-12">
+                <h3 class="display-5 mb-2 text-center">Shopping Cart</h3>
+                <p class="mb-5 text-center">
+                    <i class="text-info font-weight-bold">@ViewBag.cart</i> items in your cart
+                </p>
+                <table id="shoppingCart" class="table table-condensed table-responsive">
+                    <thead>
+                        <tr>
+                            <th style="width:60%">Product</th>
+                            <th style="width:12%">Price</th>
+                            <th style="width:10%">Quantity</th>
+                            <th style="width:16%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                if (item.IdType == 0)
+                                {
+                                    nomItem = "Arme";
+                                }
+                                else if (item.IdType == 1)
+                                {
+                                    nomItem = "Amure";
+                                }
+                                else if (item.IdType == 2)
+                                {
+                                    nomItem = "Potion";
+                                }
+                                else if (item.IdType == 3)
+                                {
+                                    nomItem = "Ressource";
+                                }
+
+                                <tr>
+                                    <td data-th="Product">
+                                        <div class="row">
+                                            <div class="col-md-3 text-left">
+                                                <img style="height: 120px; width: 120px" src="@item.PictureGUID" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                            </div>
+                                            <div class="col-md-9 text-left mt-sm-2">
+                                                <h4>Nom Item: @item.Name</h4>
+                                                <p class="font-weight-light">
+                                                    @nomItem
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-th="Price">@item.Price</td>
+                                    <td data-th="Quantity">
+                                        <input type="number" class="form-control form-control-lg text-center" value="1">
+                                    </td>
+                                    <td class="actions" data-th="">
+                                        <div class="text-right">
+                                            <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                                <i class="fas fa-sync"></i>
+                                            </button>
+                                            <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                sum += item.Price;
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="float-right text-right">
+                    <h4>Subtotal:</h4>
+                    <h1>@sum$</h1>
+                </div>
+            </div>
+        </div>
+        @if (Model != null)
+        {
+            <div class="row mt-4 d-flex align-items-center">
+                <div class="col-sm-6 order-md-2 text-right">
+                    <a href="catalog.html" class="btn btn-primary mb-4 btn-lg pl-5 pr-5">Checkout</a>
+                </div>
+                <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+                    <a href="Items/Index.cshtml">
+                        <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row mt-4 d-flex align-items-center">
+                <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+                    <a href="Items/Index.cshtml">
+                        <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        }
+
+    </div>
+</section>
+
+
+@*<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            Quantité
+        </th>
+        <th>
+            Image
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th></th>
+    </tr>
+
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            //if (Model.Contains())
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @ViewBag.cart
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PictureGUID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td></td>
+                <td>
+                    @Html.ActionLink("Delete", "../AddToCart/Remove", new { id = item.IdObject })
+                </td>
+            </tr>
+
+            sum += item.Price;
+        }
+
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                Total des achats : @sum
+            </td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                Votre panier est vide!
+            </td>
+        </tr>
+    }
+
+</table>*@
 

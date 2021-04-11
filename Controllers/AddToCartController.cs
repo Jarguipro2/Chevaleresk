@@ -14,8 +14,10 @@ namespace EFA_DEMO.Controllers
     {
         private DBEntities2 db = new DBEntities2();
 
-        public ActionResult Add(Item item)
+        public ActionResult Add(int? id)
         {
+            Item item = db.Items.Find(id);
+
             if (Session["cart"] == null)
             {
                 List<Item> li = new List<Item>();
@@ -29,17 +31,39 @@ namespace EFA_DEMO.Controllers
             else
             {
                 List<Item> li = (List<Item>)Session["cart"];
+              
                 li.Add(item);
                 Session["cart"] = li;
                 ViewBag.cart = li.Count();
 
                 Session["count"] = Convert.ToInt32(Session["count"]) + 1;
-
+                
             }
-            return RedirectToAction("Index", "Items");
+            return RedirectToAction("Myorder", "AddToCart");
         }
+        public ActionResult Remove(int? id)
+        {
+            Item item = db.Items.Find(id);
+
+            List<Item> li = (List<Item>)Session["cart"];
+            li.RemoveAll(x => x.IdObject == item.IdObject);
+            Session["cart"] = li;
+            Session["count"] = Convert.ToInt32(Session["count"]) - 1;
+            return RedirectToAction("Myorder", "AddToCart");
+        }
+
         public ActionResult Myorder()
         {
+            int nombreItemsSession = 0;
+
+            if ((List<Item>)Session["cart"] != null)
+            {
+                foreach (var item in (List<Item>)Session["cart"])
+                    nombreItemsSession++;
+            }
+
+            ViewBag.cart = nombreItemsSession;
+
             return View((List<Item>)Session["cart"]);
         }
 
