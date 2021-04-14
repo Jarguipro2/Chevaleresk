@@ -18,26 +18,38 @@ namespace EFA_DEMO.Controllers
         {
             Item item = db.Items.Find(id);
 
+            IDictionary<Item, int> DicItem = new Dictionary<Item, int>();
+
             if (Session["cart"] == null)
             {
-                List<Item> li = new List<Item>();
+                //List<Item> li = new List<Item>();
 
-                li.Add(item);
-                Session["cart"] = li;
-                ViewBag.cart = li.Count();
+                DicItem.Add(item, 1);
+
+                //li.Add(item);
+                Session["cart"] = DicItem;
+                ViewBag.cart = DicItem.Count();
                 
                 Session["count"] = 1;
             }
             else
             {
-                List<Item> li = (List<Item>)Session["cart"];
-              
-                li.Add(item);
-                Session["cart"] = li;
-                ViewBag.cart = li.Count();
+                //List<Item> li = (List<Item>)Session["cart"];
 
+                DicItem = (Dictionary<Item, int>)Session["cart"];
+
+                if (DicItem.Keys.Contains(item))
+                {
+                    DicItem[item] += 1;
+                }
+                else
+                {
+                    DicItem.Add(item, 1);
+                }
+               
+                Session["cart"] = DicItem;
+                ViewBag.cart = DicItem.Count();
                 Session["count"] = Convert.ToInt32(Session["count"]) + 1;
-                
             }
             return RedirectToAction("Myorder", "AddToCart");
         }
@@ -46,11 +58,21 @@ namespace EFA_DEMO.Controllers
             Item item = db.Items.Find(id);
 
             List<Item> li = (List<Item>)Session["cart"];
-
-            li.RemoveAll(x => x.IdObject == item.IdObject);
+            RemoveFirst(li, item);
+            //li.RemoveAll(x => x.IdObject == item.IdObject);
             Session["cart"] = li;
             Session["count"] = Convert.ToInt32(Session["count"]) - 1;
             return RedirectToAction("Myorder", "AddToCart");
+        }
+
+        void RemoveFirst(List<Item> list, Item item)
+        {
+            var indexOfItem = list.IndexOf(item);
+
+            if (indexOfItem != -1)
+            {
+                list.RemoveAt(indexOfItem);
+            }
         }
 
         public ActionResult Myorder()
@@ -64,21 +86,34 @@ namespace EFA_DEMO.Controllers
             //}
             // ------------------------------------------------------------
 
+            //Dictionary<Item, int> openWith =
+            //    new Dictionary<Item, int>();
+
             var currentPlayer = db.Users.Find(OnlineUsers.CurrentUser.Id);
 
             ViewBag.currentMoneyPlayer = currentPlayer.Money;
 
             int nombreItemsSession = 0;
+            double soldeTotal = 0;
 
-            if ((List<Item>)Session["cart"] != null)
+            if ((Dictionary<Item, int>)Session["cart"] != null)
             {
-                foreach (var item in (List<Item>)Session["cart"])
+                var query = (Dictionary<Item, int>)Session["cart"];
+
+                foreach (var item in query)
+                {
                     nombreItemsSession++;
+                    soldeTotal += item.Value;
+                }
+            }
+            if (soldeTotal >= currentPlayer.Money)
+            {
+                ViewBag.NotEnoughMoney = "Vous n'avez pas assez d'argent, pour compléter la transaction";
             }
 
             ViewBag.cart = nombreItemsSession;
 
-            return View((List<Item>)Session["cart"]);
+            return View((Dictionary<Item, int>)Session["cart"]);
         }
 
         public ActionResult BuyCart()
@@ -104,12 +139,11 @@ namespace EFA_DEMO.Controllers
                 {
                     
                 }
-
                 
                 db.SaveChanges();
             }
 
-            return RedirectToAction("Index", "Items");
+            return RedirectToAction("MyOrder", "AddToCart");
         }
 
 

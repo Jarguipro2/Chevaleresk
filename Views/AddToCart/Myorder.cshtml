@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Item>
+﻿@model Dictionary<Item, int>
 
 @{
     ViewBag.Title = "Myorder";
@@ -21,6 +21,9 @@
                     <p class="mb-5 text-center">
                         Votre solde:<i class="text-info font-weight-bold">@ViewBag.currentMoneyPlayer</i>
                     </p>
+                    <p class="mb-5 text-center" style="color: red">
+                        @ViewBag.NotEnoughMoney
+                    </p>
 
                     <table id="shoppingCart" class="table table-condensed table-responsive">
                         <thead>
@@ -38,49 +41,52 @@
                                 {
                                     compteurCartItemId++;
 
-                                    if (item.IdType == 0)
-                                    {
-                                        nomItem = "Arme";
-                                    }
-                                    else if (item.IdType == 1)
-                                    {
-                                        nomItem = "Amure";
-                                    }
-                                    else if (item.IdType == 2)
-                                    {
-                                        nomItem = "Potion";
-                                    }
-                                    else if (item.IdType == 3)
-                                    {
-                                        nomItem = "Ressource";
-                                    }
+                                    //if (item.IdType == 0)
+                                    //{
+                                    //    nomItem = "Arme";
+                                    //}
+                                    //else if (item.IdType == 1)
+                                    //{
+                                    //    nomItem = "Amure";
+                                    //}
+                                    //else if (item.IdType == 2)
+                                    //{
+                                    //    nomItem = "Potion";
+                                    //}
+                                    //else if (item.IdType == 3)
+                                    //{
+                                    //    nomItem = "Ressource";
+                                    //}
 
                                     <tr>
                                         <td data-th="Product">
                                             <div class="row">
                                                 <div class="col-md-3 text-left">
-                                                    <img style="height: 120px; width: 120px" src="@item.PictureGUID" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                                    <img style="height: 120px; width: 120px" src="@item.Key.PictureGUID" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                 </div>
                                                 <div class="col-md-9 text-left mt-sm-2">
-                                                    <h4>Nom Item: @item.Name</h4>
+                                                    <h4>Nom Item: @item.Key.Name</h4>
                                                     <p class="font-weight-light">
                                                         @nomItem
+                                                    </p>
+                                                    <p class="font-weight-light">
+                                                        <input type="text" name="@("Model[" + item.Value + "]")" value="@item" />
                                                     </p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td data-th="Price">@item.Price</td>
+                                        <td data-th="Price">@item.Key.Price</td>
                                         <td data-th="Quantity">
                                             1
                                         </td>
                                         <td class="actions" data-th="">
                                             <div class="text-right">
-                                                | @Html.ActionLink("Supprimer", "../AddToCart/Remove", new { id = item.IdObject })
+                                                | @Html.ActionLink("Supprimer", "../AddToCart/Remove", new { id = item.Key.IdObject })
                                             </div>
                                         </td>
                                     </tr>
 
-                                    sum += item.Price;
+                                    sum += item.Key.Price;
                                 }
                             }
                         </tbody>
