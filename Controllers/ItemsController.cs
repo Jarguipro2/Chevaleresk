@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using EFA_DEMO.Models;
@@ -15,10 +16,31 @@ namespace EFA_DEMO.Controllers
         private DBEntities2 db = new DBEntities2();
 
         // GET: Items
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
+
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
+            ViewBag.PriceSortParm = sortOrder == "price" ? "price_asc" : "price";
+            var TempItems = from i in db.Items
+                            select i;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    TempItems = TempItems.OrderByDescending(s => s.Name);
+                    break;
+                case "price_asc":
+                    TempItems = TempItems.OrderBy(s => s.Price);
+                    break;
+                case "price":
+                    TempItems = TempItems.OrderBy(s => s.Price);
+                    break;
+                default:
+                    TempItems = TempItems.OrderBy(s => s.Name);
+                    break;
+            }
+
             List<Item> items = db.Items.ToList();
-            return View(items);
+            return View(TempItems.ToList());
         }
 
         // GET: Items/Details/5
