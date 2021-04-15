@@ -12,6 +12,28 @@ namespace EFA_DEMO.Models
         public int? IdType { get; set; }
         public virtual Items_Type Items_Type { get; set; }
 
+        static public string FoundType(int id)
+        {
+            string valeur = default;
+            if (id == 0)
+            {
+                valeur = "arme";
+            }
+            else if (id == 1)
+            {
+                valeur = "armure";
+            }
+            else if (id == 2)
+            {
+                valeur = "potion";
+            }
+            else if (id == 3)
+            {
+                valeur = "ressource";
+            }
+            return valeur;
+        }
+
         public int StringToId(string type)
         {
             int valeur = default;

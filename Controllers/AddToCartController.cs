@@ -122,15 +122,17 @@ namespace EFA_DEMO.Controllers
                         //db.UpdateUser(currentPlayer.ToUserView());
                         db.Entry(itemDB).State = EntityState.Modified;
 
-                        User_Inventory inventaire = new User_Inventory();
-
-                        if (db.User_Inventory.Find(currentPlayer.IdPlayer) != null && db.User_Inventory.Find(itemsReceive.Key.IdObject) != null)
+                        var invIdStatus = db.User_Inventory.SingleOrDefault(m => m.IdPlayer == currentPlayer.IdPlayer);
+                        var idPlayerStatus = db.User_Inventory.SingleOrDefault(m => m.IdPlayer == currentPlayer.IdPlayer);
+                        
+                        if (idPlayerStatus != null && invIdStatus != null)
                         {
-                            var inventaireExistant = db.User_Inventory.Find(currentPlayer.IdPlayer);
-                            inventaireExistant.Quantity = +itemsReceive.Value;
+                            idPlayerStatus.Quantity += itemsReceive.Value;
                         }
                         else
                         {
+                            User_Inventory inventaire = new User_Inventory();
+
                             inventaire.IdPlayer = currentPlayer.IdPlayer;
                             inventaire.IdObject = itemsReceive.Key.IdObject;
                             inventaire.Quantity = itemsReceive.Value;

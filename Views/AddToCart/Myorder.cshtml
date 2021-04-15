@@ -43,25 +43,10 @@
                             {
                                 foreach (var item in Model)
                                 {
+                                    nomType = ItemView.FoundType((int)item.Key.IdType);
+
                                     compteurCartItemId = item.Value * item.Key.Price;
-
-                                    if (item.Key.IdType == 0)
-                                    {
-                                        nomType = "Arme";
-                                    }
-                                    else if (item.Key.IdType == 1)
-                                    {
-                                        nomType = "Amure";
-                                    }
-                                    else if (item.Key.IdType == 2)
-                                    {
-                                        nomType = "Potion";
-                                    }
-                                    else if (item.Key.IdType == 3)
-                                    {
-                                        nomType = "Ressource";
-                                    }
-
+                                   
                                     <tr>
                                         <td data-th="Product">
                                             <div class="row">
