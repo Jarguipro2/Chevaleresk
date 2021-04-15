@@ -12,11 +12,11 @@ namespace EFA_DEMO.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Requis")]
-        [Display(Name = "Nom d'usager")]
+        [Display(Name = "Nom d'utilisateur")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Requis")]
-        [Display(Name = "Nom")]
+        [Display(Name = "Nom complet")]
         public string FullName { get; set; }
 
         [Display(Name = "Mot de passe")]
