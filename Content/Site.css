@@ -57,3 +57,7 @@ textarea {
     margin-left: 4px !important;
     color: lightgray;
 }
+.lightgreen {
+    color: lightgreen;
+    font-size: 75px !important;
+}

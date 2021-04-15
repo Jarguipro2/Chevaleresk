@@ -4,7 +4,7 @@
     ViewBag.Title = "Myorder";
     double sumAchat = 0;
     string nomType = "autre";
-    double compteurCartItemId = 0;
+    double price = 0;
     int compteurItems = 0;
 
 }
@@ -46,8 +46,8 @@
                                 {
                                     nomType = ItemView.FoundType((int)item.Key.IdType);
 
-                                    compteurCartItemId = item.Value * item.Key.Price;
-                                   
+                                    price = item.Value * item.Key.Price;
+
                                     <tr>
                                         <td data-th="Product">
                                             <div class="row">
@@ -62,7 +62,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td data-th="Price">@compteurCartItemId</td>
+                                        <td data-th="Price">@price </td>
                                         <td data-th="Quantity">
                                             @item.Value
                                         </td>
@@ -73,7 +73,7 @@
                                         </td>
                                     </tr>
 
-                                    sumAchat += compteurCartItemId;
+                                    sumAchat += price;
                                 }
                             }
                         </tbody>
@@ -87,7 +87,7 @@
             @if (Model != null && Model.Count() > 0)
             {
                 <div class="row mt-4 d-flex align-items-center">
-                    @Helper.GlyphiconAction("../AddToCart/BuyCart", "glyphicon glyphicon-ok", "Acheter")
+                    @Helper.GlyphiconAction("../AddToCart/BuyCart", "glyphicon glyphicon-ok lightgreen", "Acheter")
 
                     <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
                         <h3>@Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left", "Continuer vos achats") Retour au marché</h3>
