@@ -66,6 +66,10 @@
                         <li>@Helper.GlyphiconAction("../Users/Logout", "glyphicon-log-out glyphiconStyle", "Déconnexion")</li>
                         <li>@Helper.GlyphiconAction("../Users/About", "glyphicon-info-sign glyphiconStyle", "À propos")</li>
                     }
+                    else
+                    {
+                        <li>@Helper.GlyphiconAction("../Users/Login", "glyphicon-user glyphiconStyle", "Se connecter")</li>
+                    }
                 </ul>
             </div>
         </div>
@@ -74,7 +78,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mon application ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Chevaleresk</p>
         </footer>
     </div>
 
