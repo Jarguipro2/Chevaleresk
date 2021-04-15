@@ -25,10 +25,20 @@ namespace EFA_DEMO.Models
         }
     
         public int IdObject { get; set; }
+        [Display(Name = "Nom")]
+        [Required]
         public string Name { get; set; }
+        [Display(Name = "Quantité en stock")]
+        [Required]
         public int StockQuantity { get; set; }
+        [Display(Name = "Prix")]
+        [Required]
         public double Price { get; set; }
+        [Display(Name = "Image")]
+        [Required]
         public string PictureGUID { get; set; }
+        [Display(Name = "Type")]
+        [Required]
         public int? IdType { get; set; }
     
         public virtual Items_Type Items_Type { get; set; }
