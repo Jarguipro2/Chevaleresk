@@ -19,6 +19,7 @@ namespace EFA_DEMO.Controllers
             int compteurItems = 0;
 
             Item item = db.Items.Find(id);
+            var itemStock = db.Items.Find(id);
 
             IDictionary<Item, int> DicItem = new Dictionary<Item, int>(new CartDictComparer());
 
@@ -34,7 +35,6 @@ namespace EFA_DEMO.Controllers
             else
             {
                 DicItem = (Dictionary<Item, int>)Session["cart"];
-                
                 if (DicItem.ContainsKey(item))
                 {
                     if(DicItem[item] > item.StockQuantity)
@@ -133,9 +133,9 @@ namespace EFA_DEMO.Controllers
                         itemDB.StockQuantity -= itemsReceive.Value;
                         currentPlayer.Money -= (int)soldeTotal;
 
-                        var invIdStatus = db.User_Inventory.SingleOrDefault(m => m.IdPlayer == currentPlayer.IdPlayer);
+                        var invIdStatus = db.User_Inventory.SingleOrDefault(m => m.IdObject == itemsReceive.Key.IdObject);
                         var idPlayerStatus = db.User_Inventory.SingleOrDefault(m => m.IdPlayer == currentPlayer.IdPlayer);
-                        
+
                         if (idPlayerStatus != null && invIdStatus != null)
                         {
                             idPlayerStatus.Quantity += itemsReceive.Value;
@@ -150,7 +150,7 @@ namespace EFA_DEMO.Controllers
 
                             db.User_Inventory.Add(inventaire);
                         }
-                       
+
                         db.SaveChanges();
                     }
                 }
