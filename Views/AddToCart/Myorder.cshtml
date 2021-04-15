@@ -2,11 +2,15 @@
 
 @{
     ViewBag.Title = "Myorder";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
-    double sum = 0;
-    string nomItem = "autre";
-    int compteurCartItemId = 0;
+    double sumAchat = 0;
+    string nomType = "autre";
+    double compteurCartItemId = 0;
+    int compteurItems = 0;
 
+    //foreach (var item in Model)
+    //{
+    //    compteurItems = +item.Value;
+    //}
 }
 @if (OnlineUsers.CurrentUser != null)
 {
@@ -39,24 +43,24 @@
                             {
                                 foreach (var item in Model)
                                 {
-                                    compteurCartItemId++;
+                                    compteurCartItemId = item.Value * item.Key.Price;
 
-                                    //if (item.IdType == 0)
-                                    //{
-                                    //    nomItem = "Arme";
-                                    //}
-                                    //else if (item.IdType == 1)
-                                    //{
-                                    //    nomItem = "Amure";
-                                    //}
-                                    //else if (item.IdType == 2)
-                                    //{
-                                    //    nomItem = "Potion";
-                                    //}
-                                    //else if (item.IdType == 3)
-                                    //{
-                                    //    nomItem = "Ressource";
-                                    //}
+                                    if (item.Key.IdType == 0)
+                                    {
+                                        nomType = "Arme";
+                                    }
+                                    else if (item.Key.IdType == 1)
+                                    {
+                                        nomType = "Amure";
+                                    }
+                                    else if (item.Key.IdType == 2)
+                                    {
+                                        nomType = "Potion";
+                                    }
+                                    else if (item.Key.IdType == 3)
+                                    {
+                                        nomType = "Ressource";
+                                    }
 
                                     <tr>
                                         <td data-th="Product">
@@ -67,17 +71,14 @@
                                                 <div class="col-md-9 text-left mt-sm-2">
                                                     <h4>Nom Item: @item.Key.Name</h4>
                                                     <p class="font-weight-light">
-                                                        @nomItem
-                                                    </p>
-                                                    <p class="font-weight-light">
-                                                        <input type="text" name="@("Model[" + item.Value + "]")" value="@item" />
+                                                        @nomType
                                                     </p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td data-th="Price">@item.Key.Price</td>
+                                        <td data-th="Price">@compteurCartItemId</td>
                                         <td data-th="Quantity">
-                                            1
+                                            @item.Value
                                         </td>
                                         <td class="actions" data-th="">
                                             <div class="text-right">
@@ -86,14 +87,14 @@
                                         </td>
                                     </tr>
 
-                                    sum += item.Key.Price;
+                                    sumAchat += compteurCartItemId;
                                 }
                             }
                         </tbody>
                     </table>
                     <div class="float-right text-right">
                         <h4>Total des achats:</h4>
-                        <h1>@sum$</h1>
+                        <h1>@sumAchat$</h1>
                     </div>
                 </div>
             </div>

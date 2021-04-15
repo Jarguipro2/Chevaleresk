@@ -16,17 +16,16 @@ namespace EFA_DEMO.Controllers
 
         public ActionResult Add(int? id)
         {
+            int compteurItems = 0;
+
             Item item = db.Items.Find(id);
 
-            IDictionary<Item, int> DicItem = new Dictionary<Item, int>();
+            IDictionary<Item, int> DicItem = new Dictionary<Item, int>(new CartDictComparer());
 
             if (Session["cart"] == null)
             {
-                //List<Item> li = new List<Item>();
-
                 DicItem.Add(item, 1);
 
-                //li.Add(item);
                 Session["cart"] = DicItem;
                 ViewBag.cart = DicItem.Count();
                 
@@ -34,21 +33,19 @@ namespace EFA_DEMO.Controllers
             }
             else
             {
-                //List<Item> li = (List<Item>)Session["cart"];
-
                 DicItem = (Dictionary<Item, int>)Session["cart"];
-
-                if (DicItem.Keys.Contains(item))
-                {
+                if (DicItem.ContainsKey(item))
                     DicItem[item] += 1;
-                }
                 else
-                {
                     DicItem.Add(item, 1);
+
+                foreach (var valueItem in DicItem)
+                {
+                    compteurItems += DicItem[valueItem.Key];
                 }
-               
+
                 Session["cart"] = DicItem;
-                ViewBag.cart = DicItem.Count();
+                ViewBag.cart = compteurItems;
                 Session["count"] = Convert.ToInt32(Session["count"]) + 1;
             }
             return RedirectToAction("Myorder", "AddToCart");
@@ -57,22 +54,12 @@ namespace EFA_DEMO.Controllers
         {
             Item item = db.Items.Find(id);
 
-            List<Item> li = (List<Item>)Session["cart"];
-            RemoveFirst(li, item);
-            //li.RemoveAll(x => x.IdObject == item.IdObject);
-            Session["cart"] = li;
+            var DicItem = (Dictionary<Item, int>)Session["cart"];
+
+            DicItem.Remove(item);
+            Session["cart"] = DicItem;
             Session["count"] = Convert.ToInt32(Session["count"]) - 1;
             return RedirectToAction("Myorder", "AddToCart");
-        }
-
-        void RemoveFirst(List<Item> list, Item item)
-        {
-            var indexOfItem = list.IndexOf(item);
-
-            if (indexOfItem != -1)
-            {
-                list.RemoveAt(indexOfItem);
-            }
         }
 
         public ActionResult Myorder()
@@ -100,47 +87,62 @@ namespace EFA_DEMO.Controllers
             {
                 var query = (Dictionary<Item, int>)Session["cart"];
 
-                foreach (var item in query)
-                {
-                    nombreItemsSession++;
-                    soldeTotal += item.Value;
-                }
+              
             }
             if (soldeTotal >= currentPlayer.Money)
             {
                 ViewBag.NotEnoughMoney = "Vous n'avez pas assez d'argent, pour compléter la transaction";
             }
 
-            ViewBag.cart = nombreItemsSession;
-
             return View((Dictionary<Item, int>)Session["cart"]);
         }
 
         public ActionResult BuyCart()
         {
-            double sommeTotal = 0;
+            double soldeTotal = 0;
             
-            var capitalJoueur = db.Users.Find(OnlineUsers.CurrentUser.Id);
+            var currentPlayer = db.Users.Find(OnlineUsers.CurrentUser.Id);
 
-            List<Item> li = (List<Item>)Session["cart"];
-
-            foreach (var items in li)
+            if ((Dictionary<Item, int>)Session["cart"] != null)
             {
-                sommeTotal += items.Price;
-            }
+                var query = (Dictionary<Item, int>)Session["cart"];
 
-            if (sommeTotal <= capitalJoueur.Money)
-            {
-                capitalJoueur.Money = (int)(capitalJoueur.Money - sommeTotal);
+                foreach (var itemCost in query)
+                    soldeTotal += itemCost.Value * itemCost.Key.Price;
 
-                db.Entry(capitalJoueur).State = EntityState.Modified;
-
-                foreach (var items in li)
+                foreach (var itemsReceive in query)
                 {
-                    
+                    var itemDB = db.Items.Find(itemsReceive.Key.IdObject);
+
+                    if (itemDB.StockQuantity >= itemsReceive.Value && currentPlayer.Money - (int)soldeTotal >= 0)
+                    {
+                        itemDB.StockQuantity -= itemsReceive.Value;
+                        currentPlayer.Money -= (int)soldeTotal;
+
+                        //db.UpdateUser(currentPlayer.ToUserView());
+                        db.Entry(itemDB).State = EntityState.Modified;
+
+                        User_Inventory inventaire = new User_Inventory();
+
+                        if (db.User_Inventory.Find(currentPlayer.IdPlayer) != null && db.User_Inventory.Find(itemsReceive.Key.IdObject) != null)
+                        {
+                            var inventaireExistant = db.User_Inventory.Find(currentPlayer.IdPlayer);
+                            inventaireExistant.Quantity = +itemsReceive.Value;
+                        }
+                        else
+                        {
+                            inventaire.IdPlayer = currentPlayer.IdPlayer;
+                            inventaire.IdObject = itemsReceive.Key.IdObject;
+                            inventaire.Quantity = itemsReceive.Value;
+
+                            db.User_Inventory.Add(inventaire);
+                        }
+                       
+                        db.SaveChanges();
+                    }
                 }
-                
-                db.SaveChanges();
+
+                query.Clear();
             }
 
             return RedirectToAction("MyOrder", "AddToCart");
