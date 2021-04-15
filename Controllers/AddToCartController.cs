@@ -54,8 +54,6 @@ namespace EFA_DEMO.Controllers
                     else
                         DicItem.Add(item, 1);
                 }
-                    
-
                 
                 //foreach (var valueItem in DicItem)
                 //{
