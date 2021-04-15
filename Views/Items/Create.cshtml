@@ -7,10 +7,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Item</h4>
         <hr />
@@ -46,6 +46,15 @@
                 @Html.ValidationMessageFor(model => model.PictureGUID, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PictureGUID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div style="width:200px">
+                    @Helper.ImageUploader(Model.IdObject, Model.GetAvatarURL(), "AvatarImageData", "~/Images/Loading_icon.gif", "Cliquez pour choisir votre avatar")
+                    @Html.ValidationMessage("AvatarImageData", "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.IdType, "IdType", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -69,4 +78,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/imageUploader")
 }
