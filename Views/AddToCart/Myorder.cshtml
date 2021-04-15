@@ -21,34 +21,33 @@
                     <p class="mb-5 text-center">
                         Votre solde:<i class="text-info font-weight-bold">@ViewBag.currentMoneyPlayer</i>
                     </p>
-                    <p class="mb-5 text-center" style="color: red">
-                        @ViewBag.NotEnoughMoney
 
-                        @if (ViewBag.ObjetNonValide != null)
-                        {
-                            <h4 style="color: red; text-align: center">Voici la liste des objets qui ne pourrons être acheter : @ViewBag.ObjetNonValide</h4>
-                        }
-                    </p>
-
-                    <table id="shoppingCart" class="table table-condensed table-responsive">
-                        <thead>
-                            <tr>
-                                <th style="width:60%">Item</th>
-                                <th style="width:12%">Prix</th>
-                                <th style="width:10%">Quantité</th>
-                                <th style="width:16%"></th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model != null)
+                    @if (Model != null)
+                    {
+                        <p class="mb-5 text-center" style="color: red">
+                            @ViewBag.NotEnoughMoney
+                            @if (ViewBag.ObjetNonValide != null)
                             {
-                                foreach (var item in Model)
+
+                                <h4 style="color: red; text-align: center">Voici la liste des objets qui ne pourrons être acheter : @ViewBag.ObjetNonValide</h4>
+                            }
+                        </p>
+                        <table id="shoppingCart" class="table table-condensed table-responsive">
+                            <thead>
+                                <tr>
+                                    <th style="width:60%">Item</th>
+                                    <th style="width:12%">Prix</th>
+                                    <th style="width:10%">Quantité</th>
+                                    <th style="width:16%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
                                 {
                                     nomType = ItemView.FoundType((int)item.Key.IdType);
 
                                     compteurCartItemId = item.Value * item.Key.Price;
-                                   
+
                                     <tr>
                                         <td data-th="Product">
                                             <div class="row">
@@ -73,16 +72,15 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                     sumAchat += compteurCartItemId;
                                 }
-                            }
-                        </tbody>
-                    </table>
-                    <div class="float-right text-right">
-                        <h4>Total des achats:</h4>
-                        <h1>@sumAchat$</h1>
-                    </div>
+                            </tbody>
+                        </table>
+                        <div class="float-right text-right">
+                            <h4>Total des achats:</h4>
+                            <h1>@sumAchat$</h1>
+                        </div>
+                     }
                 </div>
             </div>
             <div style="justify-content: space-between; display: flex; flex-flow: row; ">
