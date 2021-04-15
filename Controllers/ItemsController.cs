@@ -72,11 +72,11 @@ namespace EFA_DEMO.Controllers
         // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdObject,Name,StockQuantity,Price,PictureGUID,Items_Type, IdType")] Item item)
+        public ActionResult Create([Bind(Include = "IdObject,Name,StockQuantity,Price,AvatarImageData,Items_Type, IdType")] Item item)
         {
             if (ModelState.IsValid)
             {
-                db.AddItem(item.ToItemView());
+                db.AddItem(item);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

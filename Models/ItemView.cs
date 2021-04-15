@@ -84,26 +84,5 @@ namespace EFA_DEMO.Models
                 Items_Type = item.Items_Type                
             };
         }
-        public static ItemView AddItem(this DBEntities2 DB, ItemView itemView)
-        {
-            Item item = itemView.ToItem();
-            item = DB.Items.Add(item);
-            DB.SaveChanges();
-            return item.ToItemView();
-        }
-        public static bool UpdateItem(this DBEntities2 DB, ItemView itemView)
-        {
-            Item itemToUpdate = itemView.ToItem();
-            DB.Entry(itemToUpdate).State = EntityState.Modified;
-            DB.SaveChanges();
-            return true;
-        }
-        public static bool RemoveItem(this DBEntities2 DB, ItemView itemView)
-        {
-            Item itemToDelete = itemView.ToItem();
-            DB.Items.Remove(itemToDelete);
-            DB.SaveChanges();
-            return true;
-        }
     }
 }
