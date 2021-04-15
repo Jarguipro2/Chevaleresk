@@ -65,4 +65,11 @@ public static class DBEntitiesExtensionsMethods
         DB.SaveChanges();
         return log;
     }
+    public static Item AddItem(this DBEntities2 DB, Item item)
+    {
+        item.SaveAvatar();
+        item = DB.Items.Add(item);
+        DB.SaveChanges();
+        return item;
+    }
 }

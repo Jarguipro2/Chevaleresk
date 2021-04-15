@@ -11,7 +11,8 @@ namespace EFA_DEMO.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Item
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,6 +21,7 @@ namespace EFA_DEMO.Models
             this.Items_Reviews = new HashSet<Items_Reviews>();
             this.User_Inventory = new HashSet<User_Inventory>();
             this.Properties = new HashSet<Property>();
+            InitAvatarManagement();
         }
     
         public int IdObject { get; set; }
@@ -30,6 +32,29 @@ namespace EFA_DEMO.Models
         public int? IdType { get; set; }
     
         public virtual Items_Type Items_Type { get; set; }
+
+        [Display(Name = "Avatar")]
+        public string AvatarImageData { get; set; }
+        private ImageGUIDReference AvatarReference { get; set; }
+
+        public void InitAvatarManagement()
+        {
+            AvatarReference = new ImageGUIDReference(@"/Images/", @"no_image.png");
+            AvatarReference.MaxSize = 512;
+            AvatarReference.HasThumbnail = false;
+        }
+        public String GetAvatarURL()
+        {
+            return AvatarReference.GetURL(PictureGUID, false);
+        }
+        public void SaveAvatar()
+        {
+            PictureGUID = AvatarReference.SaveImage(AvatarImageData, PictureGUID);
+        }
+        public void RemoveAvatar()
+        {
+            AvatarReference.Remove(PictureGUID);
+        }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Items_Reviews> Items_Reviews { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

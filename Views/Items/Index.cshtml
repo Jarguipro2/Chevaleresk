@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<EFA_DEMO.Models.Item>
 
-@{
-    ViewBag.Title = "Index";
-}
+@{ ViewBag.Title = "Index"; }
 
 <h2>Index</h2>
 
@@ -10,6 +8,18 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Tri par nom", "Index", new { sortOrder = ViewBag.NameSortParm })
+        </th>
+        <th>
+            Nom
+        </th>
+        <th>
+            @Html.ActionLink("tri par prix", "Index", new { sortOrder = ViewBag.PriceSortParm })
+        </th>
+        <th></th>
+    </tr>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -29,32 +39,33 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StockQuantity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PictureGUID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Items_Type.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.IdObject }) |
-            @Html.ActionLink("Details", "Details", new { id = item.IdObject }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.IdObject }) |
-            @Html.ActionLink("Add", "../AddToCart/Add", new { id = item.IdObject })
-            @*@Helper.GlyphiconAction("../AddToCart/Myorder", "glyphicon-plus glyphiconStyle", "Ajouter au panier d'achat")*@
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.StockQuantity)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Price)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.PictureGUID)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Items_Type.Name)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.IdObject }) |
+        @Html.ActionLink("Details", "Details", new { id = item.IdObject }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.IdObject }) |
+        @Html.ActionLink("Add", "../AddToCart/Add", new { id = item.IdObject })
+        @*@Helper.GlyphiconAction("../AddToCart/Myorder", "glyphicon-plus glyphiconStyle", "Ajouter au panier d'achat")*@
 
-        </td>
-    </tr>
+    </td>
+</tr>
 }
 
 </table>
