@@ -27,6 +27,7 @@
                 @if (onlinePlayer != null)
                 {
                     <li>@onlinePlayer.FullName</li>
+                    <li>@Html.ActionLink("Objets à vendre","Index","Items")</li>
                     <li>@Html.ActionLink("Déconnection","Logout","Players")</li>
                 }
             </ul>

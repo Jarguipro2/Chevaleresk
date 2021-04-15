@@ -48,12 +48,13 @@ namespace Chevaleresk.Controllers
         // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdObject,Name,StockQuantity,Price,PictureGUID,IdType")] Items items)
+        public ActionResult Create(Items items)
         {
             if (ModelState.IsValid)
             {
-                db.Items.Add(items);
-                db.SaveChanges();
+                Items itemsAdd = new Items();
+                itemsAdd = items;
+                db.AddItem(items);
                 return RedirectToAction("Index");
             }
 

@@ -99,6 +99,11 @@ namespace Chevaleresk.Models
             Players player = DB.Players.Where(u => u.Username == username).FirstOrDefault();
             return player;
         }
+        public static void AddItem(this ChevalereskDBEntities2 DB, Items item)
+        {
+            DB.Items.Add(item);
+            DB.SaveChanges();
+        }
     }
     public static class OnlinePlayers
     {

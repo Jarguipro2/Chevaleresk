@@ -385,7 +385,7 @@
     <Content Include="Views\Items\Details.cshtml" />
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
-    <Content Include="Views\Players\Subscribe.cshtml" />
+    <Content Include="Views\Players\Register.cshtml" />
     <Content Include="Views\Players\Login.cshtml" />
     <Content Include="Views\Players\Index.cshtml" />
   </ItemGroup>
