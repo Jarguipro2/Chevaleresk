@@ -86,12 +86,10 @@
             </div>
             @if (Model != null && Model.Count() > 0)
             {
-                <div class="row mt-4 d-flex align-items-center">
-                    @Helper.GlyphiconAction("../AddToCart/BuyCart", "glyphicon glyphicon-ok", "Acheter")
+                <div style="justify-content: space-between; display: flex; flex-flow: row-reverse; ">
+                    @Helper.GlyphiconAction("../AddToCart/BuyCart", "glyphicon glyphicon-ok lightgreen", "Acheter")
 
-                    <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
-                        <h3>@Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left", "Continuer vos achats") Retour au marché</h3>
-                    </div>
+                        @Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left lightgreen", "Continuer vos achats")
                 </div>
             }
             else

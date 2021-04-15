@@ -79,7 +79,7 @@ namespace EFA_DEMO.Controllers
             Session["count"] = Convert.ToInt32(Session["count"]) - 1;
             return RedirectToAction("Myorder", "AddToCart");
         }
-
+        [UserAccess]
         public ActionResult Myorder()
         {
             var currentPlayer = db.Users.Find(OnlineUsers.CurrentUser.Id);
