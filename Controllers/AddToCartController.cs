@@ -19,7 +19,6 @@ namespace EFA_DEMO.Controllers
             int compteurItems = 0;
 
             Item item = db.Items.Find(id);
-            var itemStock = db.Items.Find(id);
 
             IDictionary<Item, int> DicItem = new Dictionary<Item, int>(new CartDictComparer());
 
@@ -35,16 +34,33 @@ namespace EFA_DEMO.Controllers
             else
             {
                 DicItem = (Dictionary<Item, int>)Session["cart"];
-
+                
                 if (DicItem.ContainsKey(item))
-                    DicItem[item] += 1;
-                else
-                    DicItem.Add(item, 1);
-
-                foreach (var valueItem in DicItem)
                 {
-                    compteurItems += DicItem[valueItem.Key];
+                    if(DicItem[item] > item.StockQuantity)
+                    {
+                        DicItem[item] = item.StockQuantity;
+                        ViewBag.ObjetNonValide = " Votre Panier à été mis à jour vers notre stock le plus récent";
+                    }
+                    else
+                    {
+                        DicItem[item] += 1;
+                    }
                 }
+                else
+                {
+                    if(item.StockQuantity <= 0)
+                        ViewBag.ObjetNonValide = "L'item n'est plus en stock.";
+                    else
+                        DicItem.Add(item, 1);
+                }
+                    
+
+                
+                //foreach (var valueItem in DicItem)
+                //{
+                //    compteurItems += DicItem[valueItem.Key];
+                //}
 
                 Session["cart"] = DicItem;
                 ViewBag.cart = compteurItems;
@@ -78,11 +94,11 @@ namespace EFA_DEMO.Controllers
             {
                 foreach (var items in query)
                 {
-                    var stockObjet = db.Items.Find(items.Key.IdObject);
+                    var idObject = db.Items.Find(items.Key.IdObject);
 
                     soldeTotal += items.Key.Price * items.Value;
 
-                    if (stockObjet.StockQuantity < items.Value)
+                    if (idObject.StockQuantity < items.Value)
                         ViewBag.ObjetNonValide += " " + items.Key.Name + " ";
                 }
             }
@@ -117,9 +133,9 @@ namespace EFA_DEMO.Controllers
                         itemDB.StockQuantity -= itemsReceive.Value;
                         currentPlayer.Money -= (int)soldeTotal;
 
-                        var invIdStatus = db.User_Inventory.SingleOrDefault(m => m.IdObject == itemsReceive.Key.IdObject);
+                        var invIdStatus = db.User_Inventory.SingleOrDefault(m => m.IdPlayer == currentPlayer.IdPlayer);
                         var idPlayerStatus = db.User_Inventory.SingleOrDefault(m => m.IdPlayer == currentPlayer.IdPlayer);
-
+                        
                         if (idPlayerStatus != null && invIdStatus != null)
                         {
                             idPlayerStatus.Quantity += itemsReceive.Value;
@@ -134,7 +150,7 @@ namespace EFA_DEMO.Controllers
 
                             db.User_Inventory.Add(inventaire);
                         }
-
+                       
                         db.SaveChanges();
                     }
                 }
