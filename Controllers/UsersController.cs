@@ -115,7 +115,7 @@ namespace EFA_DEMO.Controllers
         [UserAccess]
         public ActionResult Profil()
         {
-            UserView userView = OnlineUsers.CurrentUser;
+            UserView userView = DB.Users.Find(OnlineUsers.CurrentUser.Id).ToUserView();
             ViewBag.PasswordChangeToken = Guid.NewGuid().ToString().Substring(0,8);
             return View(userView);
         }
@@ -138,24 +138,44 @@ namespace EFA_DEMO.Controllers
         [HttpPost, UserAccess]
         public ActionResult Profil(UserView userview)
         {
+            string id = "";
             if (ModelState.IsValid)
             {
                 string PasswordChangeToken = (string)Request["PasswordChangeToken"];
+                User user = DB.Users.Find(userview.Id);
+                if(user == null)
+                {
+                    Response.StatusCode = 404;
+                    return null;
+                }
+                 if(!OnlineUsers.CurrentUserIsAdmin() && user.IdPlayer != OnlineUsers.CurrentUser.Id)
+                {
+                    Response.StatusCode = 403;
+                    return null;
+                }
                 if (userview.NewPassword.Equals(PasswordChangeToken))
                 {
-                    User user = DB.Users.Find(userview.Id);
                     userview.Password = user.Password;
                 }
                 else
                 {
                     userview.Password = userview.NewPassword;
                 }
+
+                if (!OnlineUsers.CurrentUserIsAdmin())
+                {
+                    userview.Money = user.Money;
+                    userview.Admin = user.Admin;
+                }
+                else
+                    id = userview.Id.ToString();
                 DB.UpdateUser(userview);
 
                 //userview.CopyToUserView(OnlineUsers.CurrentUser);
                 //OnlineUsers.LastUpdate = DateTime.Now;
             }
-            return RedirectToAction("Profil/" + userview.Id);
+            
+            return  RedirectToAction("Profil/" + id);
         }
 
         [UserAccess]

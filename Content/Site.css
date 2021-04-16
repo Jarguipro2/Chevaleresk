@@ -67,3 +67,7 @@ textarea {
     width: 20%;
 
 }
+.pad-top-7{
+    padding-top: 7px !important;
+    margin-bottom: 0 !important;
+}
