@@ -39,9 +39,13 @@ namespace EFA_DEMO.Models
 
         [Display(Name = "Avatar")]
         public string AvatarImageData { get; set; }
+        [Required]
         [EmailAddress]
         [Display(Name = "Adresse Courriel")]
         public string Email { get; set; }
+        [Required]
+        [Display(Name = "Argent")]
+        public int Money { get; set; }
 
         public void InitAvatarManagement()
         {
@@ -80,7 +84,8 @@ namespace EFA_DEMO.Models
                 FullName = this.FullName,
                 Password = this.Password,
                 Email = this.Email,
-                Admin = this.Admin
+                Admin = this.Admin,
+                Money = this.Money
             };
         }
         public void CopyToUser(User user)
@@ -92,6 +97,7 @@ namespace EFA_DEMO.Models
             user.Password = Password;
             user.Email = Email;
             user.Admin = Admin;
+            user.Money = Money;
         }
         public void CopyToUserView(UserView user)
         { // Utilisez cette fonction pour copier un UserView dans un autre UserView
@@ -102,6 +108,7 @@ namespace EFA_DEMO.Models
             user.Email = Email;
             user.Password = Password;
             user.Admin = Admin;
+            user.Money = Money;
         }
     }
 

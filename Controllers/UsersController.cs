@@ -119,7 +119,23 @@ namespace EFA_DEMO.Controllers
             ViewBag.PasswordChangeToken = Guid.NewGuid().ToString().Substring(0,8);
             return View(userView);
         }
-        [HttpPost]
+        [HttpGet, AdminAccess, RequireRouteValues(new[] { "id" })]
+        public ActionResult Profil(int? id)
+        {
+            User user = DB.Users.Find(id);
+            UserView userView;
+            if (user != null)
+                userView = user.ToUserView();
+            else
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+
+            ViewBag.PasswordChangeToken = Guid.NewGuid().ToString().Substring(0, 8);
+            return View(userView);
+        }
+        [HttpPost, UserAccess]
         public ActionResult Profil(UserView userview)
         {
             if (ModelState.IsValid)
@@ -135,10 +151,11 @@ namespace EFA_DEMO.Controllers
                     userview.Password = userview.NewPassword;
                 }
                 DB.UpdateUser(userview);
-                userview.CopyToUserView(OnlineUsers.CurrentUser);
-                OnlineUsers.LastUpdate = DateTime.Now;
+
+                //userview.CopyToUserView(OnlineUsers.CurrentUser);
+                //OnlineUsers.LastUpdate = DateTime.Now;
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Profil/" + userview.Id);
         }
 
         [UserAccess]

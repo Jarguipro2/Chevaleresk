@@ -16,6 +16,8 @@ public static class DBEntitiesExtensionsMethods
             AvatarId = user.AvatarId,
             Username = user.Username,
             FullName = user.FullName,
+            Email = user.Email,
+            Money = user.Money,
             Password = user.Password,
             Admin = user.Admin
         };
