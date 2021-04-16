@@ -11,11 +11,11 @@
              title="@TooltipMessage"> </div>
     </fieldset>
 }
-@helper ImageDisplay(int id, string imageSrc, string controlId = "ImageControl", string waitingImage = "", string TooltipMessage = "", string ToolTipPlacement = "bottom")
+@helper ImageDisplay(int imgId, string imageSrc, string cssClass, string controlId = "ImageControl", string waitingImage = "", string TooltipMessage = "", string ToolTipPlacement = "bottom")
 {
     var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
     imageSrc = Url.Content(imageSrc);
-        <img class='imageUploader' id='@id' imageSrc='@imageSrc'/>
+        <img class='@cssClass' id='@imgId' src='@imageSrc'/>
 }
 
 @helper AvatarProfilLink(EFA_DEMO.Models.UserView user)

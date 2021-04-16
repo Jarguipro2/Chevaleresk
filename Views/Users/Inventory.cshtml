@@ -1,0 +1,33 @@
+﻿@model EFA_DEMO.Models.User_Inventory
+
+@{
+    ViewBag.Title = "Inventory";
+}
+<br />
+    <h2 class="text-center" style="margin-top: 0 !important">Inventaire de @Model.User.FullName</h2>
+    @Helper.ImageDisplay(Model.User.IdPlayer, Model.User.ToUserView().GetAvatarURL(), "inventoryAvatar center-block")
+
+
+<table class="table">
+    <tr>
+        <th>
+            Quantité
+        </th>
+        <th>
+            Item
+        </th>
+    </tr>
+
+    @foreach (Item items in Model.Items)
+    {
+        <tr>
+            <td>
+                @items.StockQuantity
+            </td>
+            <td>
+                @items.Name
+            </td>
+        </tr>
+    }
+
+</table>

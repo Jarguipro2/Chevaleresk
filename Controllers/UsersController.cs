@@ -168,5 +168,30 @@ namespace EFA_DEMO.Controllers
             }
             return null;
         }
+        [HttpGet, ActionName("Inventory"), UserAccess]
+        public ActionResult Inventory(int? id)
+        {
+            if(OnlineUsers.CurrentUser.Id != id && !OnlineUsers.CurrentUserIsAdmin())
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            if (id == null)
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            User user = DB.Users.Find(id);
+            if(user == null)
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            User_Inventory user_Inventory = new User_Inventory();
+            user_Inventory.Items = DB.UserItems(user);
+            user_Inventory.User = user;
+            
+            return View(user_Inventory);
+        }
     }
 }
