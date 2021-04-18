@@ -34,7 +34,11 @@
                 <ul class="nav navbar-nav">
                     @if (onlineUser != null)
                     {
-                        <li>@Helper.GlyphiconAction("../Items/Create", "glyphicon-plus glyphiconStyle", "Ajout d'item")</li>
+                        //if (onlineUser.Admin)
+                        //{
+                            <li>@Helper.GlyphiconAction("../Items/Create", "glyphicon-plus glyphiconStyle", "Ajout d'item")</li>
+                        //}
+
                         <li style="font-weight: bold;">
                             @Helper.AvatarProfilLink(onlineUser)
                         </li>
