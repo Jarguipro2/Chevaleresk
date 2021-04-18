@@ -182,3 +182,7 @@ textarea {
 .form-group textarea.form-input {
     height: 150px;
 }
+.itemImage{
+    height: 80%;
+    width: 10%;
+}

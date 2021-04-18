@@ -263,6 +263,7 @@
     <Content Include="Views\Items\Create.cshtml" />
     <Content Include="Views\AddToCart\Myorder.cshtml" />
     <Content Include="Views\Users\Inventory.cshtml" />
+    <Content Include="Views\Users\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\RequiredRouteValues\" />

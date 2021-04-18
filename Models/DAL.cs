@@ -102,5 +102,5 @@ public static class DBEntitiesExtensionsMethods
         if (user == null || item == null)
             return false;
         return DB.User_Inventory.Any(ui => ui.IdObject == item.IdObject && ui.IdPlayer == user.IdPlayer);
-    }
+    } 
 }

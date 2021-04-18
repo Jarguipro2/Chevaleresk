@@ -35,7 +35,6 @@ namespace EFA_DEMO.Models
         [Required]
         public double Price { get; set; }
         [Display(Name = "Image")]
-        [Required]
         public string PictureGUID { get; set; }
         [Display(Name = "Type")]
         [Required]
