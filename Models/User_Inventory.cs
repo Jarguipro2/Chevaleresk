@@ -19,8 +19,8 @@ namespace EFA_DEMO.Models
         public int Quantity { get; set; }
 
         public IEnumerable<Item> Items { get; set; }
-
         public virtual Item Item { get; set; }
+        public IEnumerable<Item> Users { get; set; }
         public User User { get; set; }
     }
 }

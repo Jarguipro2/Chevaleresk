@@ -75,7 +75,7 @@ public static class DBEntitiesExtensionsMethods
         return item;
     }
     /// <summary>
-    /// Take an user and return a list of items owned by that user.
+    /// Return a list of items owned by the specified user.
     /// </summary>
     /// <param name="DB"></param>
     /// <param name="user"></param>
@@ -89,5 +89,18 @@ public static class DBEntitiesExtensionsMethods
             items.Add(uInv.Item);
         }
         return items;
+    }
+    /// <summary>
+    /// Check if the user has the specified item in his inventory-
+    /// </summary>
+    /// <param name="DB"></param>
+    /// <param name="user"></param>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static bool UserHasItem(this DBEntities2 DB, User user, Item item)
+    {
+        if (user == null || item == null)
+            return false;
+        return DB.User_Inventory.Any(ui => ui.IdObject == item.IdObject && ui.IdPlayer == user.IdPlayer);
     }
 }
