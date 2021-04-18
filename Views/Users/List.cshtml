@@ -1,16 +1,23 @@
 ﻿@model IEnumerable<EFA_DEMO.Models.User>
-
+@{
+    ViewBag.Title = "Inventory";
+}
 <h2>Listes des joueurs inscrit</h2>
 
-@if (Model.Count() > 1)
-{
-    foreach (var item in Model)
+<br />
+<table class="table">
+
+    @foreach (var item in Model)
     {
-        @Helper.AvatarProfilLink(item.ToUserView())
-        @Html.ActionLink("Inventory", "Inventory", new { id = item.IdPlayer })
+    <tr>
+        <td>
+            @Helper.AvatarProfilLink(item.ToUserView())
+        </td>
+        <td>
+            @Html.ActionLink("Inventory", "Inventory", new { id = item.IdPlayer })
+        </td>
+    </tr>
+        
     }
-}
-else
-{
-    <span>Aucun usagers n'est inscrit</span>
-}
+</table>
+
