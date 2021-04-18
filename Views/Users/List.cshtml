@@ -1,17 +1,16 @@
-﻿@{
-    Layout = null;
+﻿@model IEnumerable<EFA_DEMO.Models.User>
+
+<h2>Listes des joueurs inscrit</h2>
+
+@if (Model.Count() > 1)
+{
+    foreach (var item in Model)
+    {
+        @Helper.AvatarProfilLink(item.ToUserView())
+        @Html.ActionLink("Inventory", "Inventory", new { id = item.IdPlayer })
+    }
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
-    </div>
-</body>
-</html>
+else
+{
+    <span>Aucun usagers n'est inscrit</span>
+}
