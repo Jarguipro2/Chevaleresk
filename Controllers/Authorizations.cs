@@ -31,7 +31,7 @@ namespace EFA_DEMO.Controllers
             else
             {
                 OnlineUsers.RemoveSessionUser();
-                httpContext.Response.Redirect("/Users/Login");
+                httpContext.Response.Redirect("/Items/index");
             }
             return base.AuthorizeCore(httpContext);
         }
