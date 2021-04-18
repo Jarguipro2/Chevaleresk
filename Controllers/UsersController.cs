@@ -70,7 +70,10 @@ namespace EFA_DEMO.Controllers
             }
             return View(userView);
         }
-
+        public ActionResult List()
+        {
+            return View(DB.Users.ToList());
+        }
         public ActionResult Login()
         {
             return View();
