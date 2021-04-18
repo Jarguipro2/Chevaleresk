@@ -1,8 +1,8 @@
 ﻿@model EFA_DEMO.Models.Item
 
-@{
-    ViewBag.Title = "Details";
-}
+@{ ViewBag.Title = "Details"; }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/Content/fontawesome-stars.css" rel="stylesheet">
 
 <h2>Details</h2>
 
@@ -51,8 +51,80 @@
         </dd>
 
     </dl>
+
+    <div class="container">
+        <div class="be-comment-block">
+            <h1 class="comments-title">Commentaire (@Model.Items_Reviews.Count)</h1>
+            @foreach (var review in Model.Items_Reviews)
+            {
+<div class="be-comment">
+    <div class="be-img-comment">
+        <a href="blog-detail-2.html">
+            <img src="@review.User.ToUserView().GetAvatarURL().Substring(1)" alt="" class="be-ava-comment">
+        </a>
+    </div>
+    <div class="be-comment-content">
+
+        <span class="be-comment-name">
+            <a href="blog-detail-2.html">@review.User.FullName</a>
+            <select class="ratingBar" data-current-rating="@review.Star">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </span>
+
+        <p class="be-comment-text">
+            @review.Review
+        </p>
+    </div>
+</div>}
+
+            @if (ViewBag.currentUserOwnThisItem != null && ViewBag.currentUserOwnThisItem)
+            {
+                using(Html.BeginForm())
+                {
+                @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <h1 class="comments-title">Votre évaluation: </h1>
+                                    <select name="Star"class="ratingBar">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <textarea name="Review" class="form-input" required="" placeholder="Votre commentaire" style="max-width: 100% !important;"></textarea>
+                                </div>
+                            </div>
+                            <input class="btn btn-primary pull-right" type="submit" value="Publier">
+                        </div>
+                }
+            }
+
+        </div>
+
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.IdObject }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.barrating.min.js"></script>
+    <script type="text/javascript">
+
+        $('.ratingBar').each(function (index, rating) {
+            var $rating = $(rating);
+            $rating.barrating({
+                theme: 'fontawesome-stars',
+                initialRating: $rating.attr('data-current-rating')
+            });
+        });
+    </script>
+}

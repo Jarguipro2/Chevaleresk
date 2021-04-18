@@ -55,9 +55,27 @@ namespace EFA_DEMO.Controllers
             {
                 return HttpNotFound();
             }
+            if (OnlineUsers.CurrentUser != null)
+                ViewBag.currentUserOwnThisItem = db.UserHasItem(OnlineUsers.CurrentUser.ToUser(), item);
+            else
+                ViewBag.currentUserOwnThisItem = false;
+            TempData["item"] = item;
             return View(item);
         }
+        [UserAccess, HttpPost]
+        public ActionResult Details([Bind(Include ="Star, Review")] Items_Reviews items_Review)
+        {
+            Item item = TempData["item"] as Item;
+            items_Review.IdObject = item.IdObject;
+            items_Review.IdPlayer = OnlineUsers.CurrentUser.Id;
+            if (ModelState.IsValid)
+            {
+                db.Items_Reviews.Add(items_Review);
+                db.SaveChanges();
+            }
 
+            return RedirectToAction("Details", "Items", item.IdObject);
+        }
         // GET: Items/Create
         public ActionResult Create()
         {
