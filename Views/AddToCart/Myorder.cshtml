@@ -16,7 +16,7 @@
                 <div class="col-lg-12 col-md-12 col-12">
                     <h3 class="display-5 mb-2 text-center">Shopping Cart</h3>
                     <p class="mb-5 text-center">
-                        <i class="text-info font-weight-bold">@ViewBag.cart</i> items in your cart
+                        <i class="text-info font-weight-bold">@ViewBag.itemsSession</i> items in your cart
                     </p>
                     <p class="mb-5 text-center">
                         Votre solde:<i class="text-info font-weight-bold">@ViewBag.currentMoneyPlayer</i>
@@ -54,7 +54,7 @@
                                                     <img style="height: 120px; width: 120px" src="@item.Key.GetAvatarURL().Substring(1)" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
                                                 </div>
                                                 <div class="col-md-9 text-left mt-sm-2">
-                                                    <h4>Nom Item: @item.Key.Name</h4>
+                                                    <h4 style="font-weight: bold">@item.Key.Name</h4>
                                                     <p class="font-weight-light">
                                                         @nomType
                                                     </p>

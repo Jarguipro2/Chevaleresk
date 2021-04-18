@@ -83,6 +83,7 @@ namespace EFA_DEMO.Controllers
             var currentPlayer = db.Users.Find(OnlineUsers.CurrentUser.Id);
 
             ViewBag.currentMoneyPlayer = currentPlayer.Money;
+            ViewBag.itemsSession = 0;
 
             double soldeTotal = 0;
           
@@ -98,6 +99,8 @@ namespace EFA_DEMO.Controllers
 
                     if (idObject.StockQuantity < items.Value)
                         ViewBag.ObjetNonValide += " " + items.Key.Name + " ";
+
+                    ViewBag.itemsSession += items.Value;
                 }
             }
 
@@ -130,13 +133,11 @@ namespace EFA_DEMO.Controllers
                     {
                         itemDB.StockQuantity -= itemsReceive.Value;
                         currentPlayer.Money -= (int)soldeTotal;
-
-                        var invIdStatus = db.User_Inventory.SingleOrDefault(m => m.IdObject == itemsReceive.Key.IdObject);
-                        var idPlayerStatus = db.User_Inventory.SingleOrDefault(m => m.IdPlayer == currentPlayer.IdPlayer);
-
-                        if (idPlayerStatus != null && invIdStatus != null)
+                       
+                        if (db.UserHasItem(currentPlayer, itemsReceive.Key))
                         {
-                            idPlayerStatus.Quantity += itemsReceive.Value;
+                            var invIdStatus = db.User_Inventory.FirstOrDefault(m => m.IdObject == itemsReceive.Key.IdObject && m.IdPlayer == currentPlayer.IdPlayer);
+                            invIdStatus.Quantity += itemsReceive.Value;
                         }
                         else
                         {
