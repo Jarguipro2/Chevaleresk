@@ -115,30 +115,67 @@ namespace EFA_DEMO.Controllers
         [UserAccess]
         public ActionResult Profil()
         {
-            UserView userView = OnlineUsers.CurrentUser;
+            UserView userView = DB.Users.Find(OnlineUsers.CurrentUser.Id).ToUserView();
             ViewBag.PasswordChangeToken = Guid.NewGuid().ToString().Substring(0,8);
             return View(userView);
         }
-        [HttpPost]
+        [HttpGet, AdminAccess, RequireRouteValues(new[] { "id" })]
+        public ActionResult Profil(int? id)
+        {
+            User user = DB.Users.Find(id);
+            UserView userView;
+            if (user != null)
+                userView = user.ToUserView();
+            else
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+
+            ViewBag.PasswordChangeToken = Guid.NewGuid().ToString().Substring(0, 8);
+            return View(userView);
+        }
+        [HttpPost, UserAccess]
         public ActionResult Profil(UserView userview)
         {
+            string id = "";
             if (ModelState.IsValid)
             {
                 string PasswordChangeToken = (string)Request["PasswordChangeToken"];
+                User user = DB.Users.Find(userview.Id);
+                if(user == null)
+                {
+                    Response.StatusCode = 404;
+                    return null;
+                }
+                 if(!OnlineUsers.CurrentUserIsAdmin() && user.IdPlayer != OnlineUsers.CurrentUser.Id)
+                {
+                    Response.StatusCode = 403;
+                    return null;
+                }
                 if (userview.NewPassword.Equals(PasswordChangeToken))
                 {
-                    User user = DB.Users.Find(userview.Id);
                     userview.Password = user.Password;
                 }
                 else
                 {
                     userview.Password = userview.NewPassword;
                 }
+
+                if (!OnlineUsers.CurrentUserIsAdmin())
+                {
+                    userview.Money = user.Money;
+                    userview.Admin = user.Admin;
+                }
+                else
+                    id = userview.Id.ToString();
                 DB.UpdateUser(userview);
-                userview.CopyToUserView(OnlineUsers.CurrentUser);
-                OnlineUsers.LastUpdate = DateTime.Now;
+
+                //userview.CopyToUserView(OnlineUsers.CurrentUser);
+                //OnlineUsers.LastUpdate = DateTime.Now;
             }
-            return RedirectToAction("Index");
+            
+            return  RedirectToAction("Profil/" + id);
         }
 
         [UserAccess]
@@ -167,6 +204,31 @@ namespace EFA_DEMO.Controllers
                 return PartialView(logs);
             }
             return null;
+        }
+        [HttpGet, ActionName("Inventory"), UserAccess]
+        public ActionResult Inventory(int? id)
+        {
+            if(OnlineUsers.CurrentUser.Id != id && !OnlineUsers.CurrentUserIsAdmin())
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            if (id == null)
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            User user = DB.Users.Find(id);
+            if(user == null)
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            User_Inventory user_Inventory = new User_Inventory();
+            user_Inventory.Items = DB.UserItems(user);
+            user_Inventory.User = user;
+            
+            return View(user_Inventory);
         }
     }
 }

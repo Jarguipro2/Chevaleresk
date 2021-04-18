@@ -17,8 +17,10 @@ namespace EFA_DEMO.Models
         public int IdPlayer { get; set; }
         public int IdObject { get; set; }
         public int Quantity { get; set; }
-    
+
+        public IEnumerable<Item> Items { get; set; }
+
         public virtual Item Item { get; set; }
-        public virtual User User { get; set; }
+        public User User { get; set; }
     }
 }

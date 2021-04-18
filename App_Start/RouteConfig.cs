@@ -16,7 +16,7 @@ namespace EFA_DEMO
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Users", action = "Login", id = UrlParameter.Optional }
+                defaults: new { controller = "Items", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

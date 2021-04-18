@@ -26,6 +26,8 @@ namespace EFA_DEMO.Models
             {
                 try
                 {
+                        RefreshSessionFromDatabase();
+                    
                     return (UserView)HttpContext.Current.Session["User"];
                 }
                 catch (Exception)
@@ -37,7 +39,7 @@ namespace EFA_DEMO.Models
             {
                 if (value != null)
                 {
-                    HttpContext.Current.Session.Timeout = 2;
+                    HttpContext.Current.Session.Timeout = 6;
                     HttpContext.Current.Session["User"] = value;
                 }
                 else
@@ -63,7 +65,7 @@ namespace EFA_DEMO.Models
         public static void AddSessionUser(UserView user)
         {
             Users.Add(user);
-            using(DBEntities2 DB = new DBEntities2())
+            using (DBEntities2 DB = new DBEntities2())
             {
                 DB.AddUserLog(user);
             }
@@ -90,11 +92,12 @@ namespace EFA_DEMO.Models
         }
 
         public static bool NeedUpdate(DateTime date)
-        { 
+        {
             return DateTime.Compare(date, LastUpdate) < 0;
         }
         public static bool CurrentUserIsAdmin()
         {
+            RefreshSessionFromDatabase();
             UserView user = CurrentUser;
             if (user != null)
                 return user.Admin;
@@ -108,6 +111,27 @@ namespace EFA_DEMO.Models
                     return true;
             }
             return false;
+        }
+        public static void RefreshSessionFromDatabase()
+        {
+            int id;
+            try
+            {
+                if ((UserView)HttpContext.Current.Session["User"] != null)
+                {
+                    id = ((UserView)HttpContext.Current.Session["User"]).Id;
+                    using (DBEntities2 DB = new DBEntities2())
+                    {
+                        CurrentUser = DB.Users.Find(id).ToUserView();
+                    }
+                }
+            }
+            catch(Exception)
+            {
+                return;
+            }
+            
+
         }
     }
 }

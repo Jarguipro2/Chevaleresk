@@ -16,6 +16,8 @@ public static class DBEntitiesExtensionsMethods
             AvatarId = user.AvatarId,
             Username = user.Username,
             FullName = user.FullName,
+            Email = user.Email,
+            Money = user.Money,
             Password = user.Password,
             Admin = user.Admin
         };
@@ -71,5 +73,21 @@ public static class DBEntitiesExtensionsMethods
         item = DB.Items.Add(item);
         DB.SaveChanges();
         return item;
+    }
+    /// <summary>
+    /// Take an user and return a list of items owned by that user.
+    /// </summary>
+    /// <param name="DB"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public static List<Item> UserItems(this DBEntities2 DB, User user)
+    {
+        List<User_Inventory> userInventory = DB.User_Inventory.Where(item => item.IdPlayer == user.IdPlayer).ToList();
+        var items = new List<Item>();
+        foreach(User_Inventory uInv in userInventory)
+        {
+            items.Add(uInv.Item);
+        }
+        return items;
     }
 }
