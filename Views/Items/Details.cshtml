@@ -4,11 +4,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="~/Content/fontawesome-stars.css" rel="stylesheet">
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.Name)</h2>
 
 <div>
-    <h4>Item</h4>
     <hr />
+    <img src="@Model.GetAvatarURL().Substring(1)" class="itemImage" />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Name)
