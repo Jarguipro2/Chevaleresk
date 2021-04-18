@@ -6,8 +6,6 @@
 
 <h2>Ajouter un nouvel item</h2>
 
-@*@if (OnlineUsers.CurrentUserIsAdmin())
-{*@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -64,13 +62,6 @@
             </div>
         </div>
     }
-@*}
-else
-{
-    Response.Redirect("~/Items/Index");
-}*@
-
-
 
 <div>
     @Html.ActionLink("Back to List", "Index")
