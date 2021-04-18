@@ -100,11 +100,11 @@ namespace EFA_DEMO.Controllers
                         ViewBag.ObjetNonValide += " " + items.Key.Name + " ";
                 }
             }
-            
+
             if (soldeTotal >= currentPlayer.Money)
-            {
                 ViewBag.NotEnoughMoney = "Vous n'avez pas assez d'argent, pour compléter la transaction";
-            }
+            else
+                ViewBag.NotEnoughMoney = "";
 
             return View((Dictionary<Item, int>)Session["cart"]);
         }
