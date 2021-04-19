@@ -37,7 +37,7 @@ namespace EFA_DEMO.Controllers
                 DicItem = (Dictionary<Item, int>)Session["cart"];
                 if (DicItem.ContainsKey(item))
                 {
-                    if(DicItem[item] > item.StockQuantity)
+                    if(DicItem[item] + 1 > item.StockQuantity)
                     {
                         DicItem[item] = item.StockQuantity;
                         ViewBag.ObjetNonValide = " Votre Panier à été mis à jour vers notre stock le plus récent";
@@ -54,17 +54,12 @@ namespace EFA_DEMO.Controllers
                     else
                         DicItem.Add(item, 1);
                 }
-                
-                //foreach (var valueItem in DicItem)
-                //{
-                //    compteurItems += DicItem[valueItem.Key];
-                //}
 
                 Session["cart"] = DicItem;
                 ViewBag.cart = compteurItems;
                 Session["count"] = Convert.ToInt32(Session["count"]) + 1;
             }
-            return RedirectToAction("ShoppingCart", "ShoppingCart");
+            return RedirectToAction("Index", "Items");
         }
         public ActionResult Remove(int? id)
         {
@@ -154,7 +149,8 @@ namespace EFA_DEMO.Controllers
                     }
                 }
 
-                query.Clear();
+                if (currentPlayer.Money - (int)soldeTotal >= 0)
+                    query.Clear();
             }
 
             return RedirectToAction("ShoppingCart", "ShoppingCart");
