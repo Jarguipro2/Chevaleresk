@@ -37,7 +37,7 @@ namespace EFA_DEMO.Controllers
                 DicItem = (Dictionary<Item, int>)Session["cart"];
                 if (DicItem.ContainsKey(item))
                 {
-                    if(DicItem[item] > item.StockQuantity)
+                    if(DicItem[item] + 1 > item.StockQuantity)
                     {
                         DicItem[item] = item.StockQuantity;
                         ViewBag.ObjetNonValide = " Votre Panier à été mis à jour vers notre stock le plus récent";
