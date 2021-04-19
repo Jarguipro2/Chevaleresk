@@ -10,7 +10,7 @@ using EFA_DEMO.Models;
 
 namespace EFA_DEMO.Controllers
 {
-    public class AddToCartController : Controller
+    public class ShoppingCartController : Controller
     {
         private DBEntities2 db = new DBEntities2();
 
@@ -64,7 +64,7 @@ namespace EFA_DEMO.Controllers
                 ViewBag.cart = compteurItems;
                 Session["count"] = Convert.ToInt32(Session["count"]) + 1;
             }
-            return RedirectToAction("Myorder", "AddToCart");
+            return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
         public ActionResult Remove(int? id)
         {
@@ -75,10 +75,10 @@ namespace EFA_DEMO.Controllers
             DicItem.Remove(item);
             Session["cart"] = DicItem;
             Session["count"] = Convert.ToInt32(Session["count"]) - 1;
-            return RedirectToAction("Myorder", "AddToCart");
+            return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
         [UserAccess]
-        public ActionResult Myorder()
+        public ActionResult ShoppingCart()
         {
             var currentPlayer = db.Users.Find(OnlineUsers.CurrentUser.Id);
 
@@ -157,7 +157,7 @@ namespace EFA_DEMO.Controllers
                 query.Clear();
             }
 
-            return RedirectToAction("MyOrder", "AddToCart");
+            return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
 
         protected override void Dispose(bool disposing)

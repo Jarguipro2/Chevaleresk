@@ -67,7 +67,7 @@
                                         </td>
                                         <td class="actions" data-th="">
                                             <div class="text-right">
-                                                | @Html.ActionLink("Supprimer", "../AddToCart/Remove", new { id = item.Key.IdObject })
+                                                | @Html.ActionLink("Supprimer", "../ShoppingCart/Remove", new { id = item.Key.IdObject })
                                             </div>
                                         </td>
                                     </tr>
@@ -87,7 +87,7 @@
 
                 @if (Model != null)
                 {
-                    @Helper.GlyphiconAction("../AddToCart/BuyCart", "glyphicon glyphicon-ok lightgreen", "Acheter")
+                    @Helper.GlyphiconAction("../ShoppingCart/BuyCart", "glyphicon glyphicon-ok lightgreen", "Acheter")
                 }
             </div>
         </div>
