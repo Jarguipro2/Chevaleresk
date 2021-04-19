@@ -2,19 +2,26 @@
 @{
     ViewBag.Title = "Inventory";
 }
-<h2>Listes des joueurs inscrit</h2>
+<h2>Listes des joueurs inscrits</h2>
 
 <br />
 <table class="table">
 
-    @foreach (var item in Model)
+    @foreach (var user in Model)
     {
     <tr>
         <td>
-            @Helper.AvatarProfilLink(item.ToUserView())
+            <a href="Profil/@user.IdPlayer" data-toogle="tooltip" title="Modifier le profil">
+                <div class="mediumAvatar"
+                     style="
+                            background: url(@user.ToUserView().GetAvatarURL().Substring(1)) no-repeat center center; 
+                            background-size: cover;">
+                </div>
+                    <span class="listFullNameTitle">&nbsp;@user.FullName</span>
+            </a>
         </td>
         <td>
-            @Html.ActionLink("Inventory", "Inventory", new { id = item.IdPlayer })
+            @Html.ActionLink("Inventory", "Inventory", new { id = user.IdPlayer })
         </td>
     </tr>
         

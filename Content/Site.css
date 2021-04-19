@@ -35,13 +35,22 @@ textarea {
     border-radius: 16px;
     float: left;
 }
-
+.mediumAvatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    float: left;
+}
 .menuTitle {
     color: #9d9d9d;
 }
 
-.menuTitle:hover {
-    color: white;
+    .menuTitle:hover {
+        color: white;
+    }
+
+.listFullNameTitle {
+    color: #1d2124 !important;
 }
 
 .UploadedImage {

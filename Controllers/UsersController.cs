@@ -70,6 +70,7 @@ namespace EFA_DEMO.Controllers
             }
             return View(userView);
         }
+        [AdminAccess]
         public ActionResult List()
         {
             return View(DB.Users.ToList());
