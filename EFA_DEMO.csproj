@@ -131,7 +131,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AddToCartController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\RequiredRouteValuesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -261,7 +261,7 @@
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Items\Create.cshtml" />
-    <Content Include="Views\AddToCart\Myorder.cshtml" />
+    <Content Include="Views\ShoppingCart\ShoppingCart.cshtml" />
     <Content Include="Views\Users\Inventory.cshtml" />
     <Content Include="Views\Users\List.cshtml" />
   </ItemGroup>
