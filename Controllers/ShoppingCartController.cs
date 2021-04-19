@@ -156,15 +156,15 @@ namespace EFA_DEMO.Controllers
             return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
 
-        public ActionResult Update(int id, int quantity)
+        public ActionResult UpdateItemQuantity(int id, int quantity)
         {
-            var panier = (Dictionary<Item, int>)Session["cart"];
-            var item =  db.Items.Find(id);
+            var cart = Session["cart"] as Dictionary<Item, int>;
+            var item = cart.FirstOrDefault(itemCart => itemCart.Key.IdObject == id);
 
-            if (panier.ContainsKey(item) && panier[item] + quantity < item.StockQuantity)
-                panier[item] = quantity;
+            if (quantity <= item.Key.StockQuantity)
+                cart[item.Key] = quantity;
 
-            Session["cart"] = panier;
+            Session["cart"] = cart;
             return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
 
