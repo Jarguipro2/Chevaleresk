@@ -54,11 +54,6 @@ namespace EFA_DEMO.Controllers
                     else
                         DicItem.Add(item, 1);
                 }
-                
-                //foreach (var valueItem in DicItem)
-                //{
-                //    compteurItems += DicItem[valueItem.Key];
-                //}
 
                 Session["cart"] = DicItem;
                 ViewBag.cart = compteurItems;
