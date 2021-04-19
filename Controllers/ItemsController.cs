@@ -18,9 +18,9 @@ namespace EFA_DEMO.Controllers
         // GET: Items
         public ActionResult Index(string sortOrder)
         {
-
+            var tempView = db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null);
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
-            ViewBag.PriceSortParm = sortOrder == "price" ? "price_asc" : "price";
+            ViewBag.PriceSortParm = sortOrder == "price" ? "price" : "price";
             var TempItems = from i in db.Items
                             select i;
             switch (sortOrder)
@@ -28,15 +28,14 @@ namespace EFA_DEMO.Controllers
                 case "name_desc":
                     TempItems = TempItems.OrderByDescending(s => s.Name);
                     break;
-                case "price_asc":
-                    TempItems = TempItems.OrderBy(s => s.Price);
+                case "name_asc":
+                    TempItems = TempItems.OrderBy(s => s.Name);
                     break;
                 case "price":
                     TempItems = TempItems.OrderBy(s => s.Price);
                     break;
                 default:
-                    TempItems = TempItems.OrderBy(s => s.Name);
-                    break;
+                    return View(db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null).ToList());
             }
 
             List<Item> items = db.Items.ToList();

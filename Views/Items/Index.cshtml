@@ -3,7 +3,11 @@
 @{ ViewBag.Title = "Index"; }
 
 <h2>Index</h2>
-
+@using (Html.BeginForm("Index", "Items", FormMethod.Get))
+{
+    @Html.TextBox("sortOrder")
+    <input type="submit" value="Recherche" />
+}
 <table class="table">
     <tr>
         <th>
@@ -38,36 +42,36 @@
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.StockQuantity)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Price)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.PictureGUID)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Items_Type.Name)
-    </td>
-    <td>
-        @*@if (OnlineUsers.CurrentUserIsAdmin())
-        {*@
-            @Html.ActionLink("Edit", "Edit", new { id = item.IdObject })  @*@:<i>|</i>*@
-          |  @Html.ActionLink("Delete", "Delete", new { id = item.IdObject })
-        @*}*@
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PictureGUID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Items_Type.Name)
+            </td>
+            <td>
+                @*@if (OnlineUsers.CurrentUserIsAdmin())
+                    {*@
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdObject })  @*@:<i>|</i>*@
+                |  @Html.ActionLink("Delete", "Delete", new { id = item.IdObject })
+                @*}*@
 
-        | @Html.ActionLink("Details", "Details", new { id = item.IdObject })
+                | @Html.ActionLink("Details", "Details", new { id = item.IdObject })
 
-        | @Html.ActionLink("Add", "../AddToCart/Add", new { id = item.IdObject })
-        @*@Helper.GlyphiconAction("../AddToCart/Myorder", "glyphicon-plus glyphiconStyle", "Ajouter au panier d'achat")*@
+                | @Html.ActionLink("Add", "../AddToCart/Add", new { id = item.IdObject })
+                @*@Helper.GlyphiconAction("../AddToCart/Myorder", "glyphicon-plus glyphiconStyle", "Ajouter au panier d'achat")*@
 
-    </td>
-</tr>
-}
+            </td>
+        </tr>
+    }
 
 </table>
