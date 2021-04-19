@@ -18,14 +18,14 @@
         </th>
     </tr>
 
-    @foreach (Item items in Model.Items)
+    @foreach (var items in Model.ItemsQuantities)
     {
         <tr>
             <td>
-                @items.StockQuantity
+                @items.Item2
             </td>
             <td>
-                @items.Name
+                @items.Item1.Name
             </td>
         </tr>
     }

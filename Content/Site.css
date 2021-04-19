@@ -71,10 +71,11 @@ textarea {
     font-size: 75px !important;
 
 }
-.inventoryAvatar{
-    height: 45%;
-    width: 20%;
-
+.inventoryAvatar {
+    height: 13vw;
+    width: 13vw;
+    object-fit: scale-down;
+    border-radius: 50%;
 }
 .pad-top-7{
     padding-top: 7px !important;

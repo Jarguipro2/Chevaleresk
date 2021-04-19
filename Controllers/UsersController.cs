@@ -107,7 +107,7 @@ namespace EFA_DEMO.Controllers
                 DB.SaveChanges();
                 return null; */
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "items");
         }
 
         public ActionResult Logout()
@@ -229,7 +229,7 @@ namespace EFA_DEMO.Controllers
                 return null;
             }
             User_Inventory user_Inventory = new User_Inventory();
-            user_Inventory.Items = DB.UserItems(user);
+            user_Inventory.ItemsQuantities = DB.UserItemsQuantities(user);
             user_Inventory.User = user;
             
             return View(user_Inventory);

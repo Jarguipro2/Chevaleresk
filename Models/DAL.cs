@@ -80,13 +80,13 @@ public static class DBEntitiesExtensionsMethods
     /// <param name="DB"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public static List<Item> UserItems(this DBEntities2 DB, User user)
+    public static List<(Item, int)> UserItemsQuantities(this DBEntities2 DB, User user)
     {
         List<User_Inventory> userInventory = DB.User_Inventory.Where(item => item.IdPlayer == user.IdPlayer).ToList();
-        var items = new List<Item>();
+        var items = new List<(Item, int)>();
         foreach(User_Inventory uInv in userInventory)
         {
-            items.Add(uInv.Item);
+            items.Add((uInv.Item, uInv.Quantity));
         }
         return items;
     }
