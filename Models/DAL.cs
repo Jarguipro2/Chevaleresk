@@ -75,7 +75,7 @@ public static class DBEntitiesExtensionsMethods
         return item;
     }
     /// <summary>
-    /// Return a list of items owned by the specified user.
+    /// Return a list of items, quantity owned by the specified user.
     /// </summary>
     /// <param name="DB"></param>
     /// <param name="user"></param>
