@@ -156,6 +156,18 @@ namespace EFA_DEMO.Controllers
             return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
 
+        public ActionResult Update(int id, int quantity)
+        {
+            var panier = (Dictionary<Item, int>)Session["cart"];
+            var item =  db.Items.Find(id);
+
+            if (panier.ContainsKey(item) && panier[item] + quantity < item.StockQuantity)
+                panier[item] = quantity;
+
+            Session["cart"] = panier;
+            return RedirectToAction("ShoppingCart", "ShoppingCart");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
