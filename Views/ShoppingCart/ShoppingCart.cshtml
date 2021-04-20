@@ -3,120 +3,111 @@
 @{
     ViewBag.Title = "Myorder";
     double sumAchat = 0;
-    string nomType = "autre";
-    double compteurCartItemId = 0;
-    int compteurItems = 0;
+    string nomItemType = "autre";
+    double prixItem = 0;
 
 }
-@if (OnlineUsers.CurrentUser != null)
-{
-    <section class="pt-5 pb-5">
-        <div class="container">
-            <div class="row w-100">
-                <div class="col-lg-12 col-md-12 col-12">
-                    <h3 class="display-5 mb-2 text-center">Shopping Cart</h3>
-                    <p class="mb-5 text-center">
-                        <i class="text-info font-weight-bold">@ViewBag.itemsSession</i> items in your cart
-                    </p>
-                    <p class="mb-5 text-center">
-                        Votre solde:<i class="text-info font-weight-bold">@ViewBag.currentMoneyPlayer</i>
-                    </p>
-                    @if (Model != null)
-                    {
-                        <p class="mb-5 text-center" style="color: red">
-                            @ViewBag.NotEnoughMoney
-                            @if (ViewBag.ObjetNonValide != null)
-                            {
-
-                                <h4 style="color: red; text-align: center">Voici la liste des objets qui ne pourrons être acheter : @ViewBag.ObjetNonValide</h4>
-                            }
-                        </p>
-                        <table id="shoppingCart" class="table table-condensed table-responsive">
-                            <thead>
-                                <tr>
-                                    <th style="width:60%">Item</th>
-                                    <th style="width:12%">Prix</th>
-                                    <th style="width:10%">Quantité</th>
-                                    <th style="width:16%"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    nomType = ItemView.FoundType((int)item.Key.IdType);
-
-                                    compteurCartItemId = item.Value * item.Key.Price;
-
-                                    <tr>
-                                        <td data-th="Product">
-                                            <div class="row">
-                                                <div class="col-md-3 text-left">
-                                                    <img style="height: 120px; width: 120px" src="@item.Key.GetAvatarURL().Substring(1)" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
-                                                </div>
-                                                <div class="col-md-9 text-left mt-sm-2">
-                                                    <h4 style="font-weight: bold">@item.Key.Name</h4>
-                                                    <p class="font-weight-light">
-                                                        @nomType
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td data-th="Price" class="money">@compteurCartItemId</td>
-                                        <td data-th="Quantity" id="quantityContainer">
-                                            @if (item.Value >= 10)
-                                            {
-                                                <input class='selectQuantity form-control quantity-input' maxlength='3' id='@item.Key.IdObject' value="@item.Value" />
-                                            }
-                                            else
-                                            {
-                                                <select class="selectQuantity form-control quantity-input" id="@item.Key.IdObject" data-old-value="@item.Value">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                    <option value="9">9</option>
-                                                    <option value="10+">10+</option>
-                                                </select>
-                                            }
-
-
-                                        </td>
-                                        <td class="actions" data-th="">
-                                            <div class="text-right">
-                                                | @Html.ActionLink("Supprimer", "../ShoppingCart/Remove", new { id = item.Key.IdObject })
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    sumAchat += compteurCartItemId;
-                                }
-                            </tbody>
-                        </table>
-                        <div class="float-right text-right">
-                            <h4>Total des achats:</h4>
-                            <h1 class="money">@sumAchat</h1>
-                        </div>
-                    }
-                </div>
-            </div>
-            <div style="justify-content: space-between; display: flex; flex-flow: row; ">
-                @Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left lightgreen", "Continuer vos achats")
-
-                @if (Model != null)
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-lg-12 col-md-12 col-12">
+                <h3 class="display-5 mb-2 text-center">Shopping Cart</h3>
+                <p class="mb-5 text-center">
+                    <i class="text-info font-weight-bold">@ViewBag.itemsSession</i> items in your cart
+                </p>
+                <p class="mb-5 text-center">
+                    Votre solde:<i class="text-info font-weight-bold">@ViewBag.currentMoneyPlayer</i>
+                </p>
+                @if (Model != null && Model.Count > 0)
                 {
-                    @Helper.GlyphiconAction("../ShoppingCart/BuyCart", "glyphicon glyphicon-ok lightgreen", "Acheter")
+                    <p class="mb-5 text-center" style="color: red">
+                        @ViewBag.NotEnoughMoney
+                        @if (ViewBag.ObjetNonValide != null)
+                        {
+
+                            <h4 style="color: red; text-align: center">Voici la liste des objets qui ne pourrons être acheter : @ViewBag.ObjetNonValide</h4>
+                        }
+                    </p>
+                    <table id="shoppingCart" class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="width:60%">Item</th>
+                                <th style="width:12%">Prix</th>
+                                <th style="width:10%">Quantité</th>
+                                <th style="width:16%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                nomItemType = ItemView.FoundType((int)item.Key.IdType);
+
+                                prixItem = item.Value * item.Key.Price;
+
+                                <tr>
+                                    <td data-th="Product">
+                                        <div class="row">
+                                            <div class="col-md-3 text-left">
+                                                <img style="height: 120px; width: 120px" src="@item.Key.GetAvatarURL().Substring(1)" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                            </div>
+                                            <div class="col-md-9 text-left mt-sm-2">
+                                                <h4 style="font-weight: bold">@item.Key.Name</h4>
+                                                <p class="font-weight-light">
+                                                    @nomItemType
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-th="Price" class="money">@prixItem</td>
+                                    <td data-th="Quantity" id="quantityContainer">
+                                        @if (item.Value >= 10)
+                                        {
+                                            <input class='selectQuantity form-control quantity-input' maxlength='3' id='@item.Key.IdObject' value="@item.Value" />
+                                        }
+                                        else
+                                        {
+                                            <select class="selectQuantity form-control quantity-input" id="@item.Key.IdObject" data-old-value="@item.Value">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10+">10+</option>
+                                            </select>
+                                        }
+                                    </td>
+                                    <td class="actions" data-th="">
+                                        <div class="text-right">
+                                            @Helper.GlyphiconAction("../ShoppingCart/Remove/" + @item.Key.IdObject, "glyphicon-trash", "Supprimer")
+                                            @*| @Html.ActionLink("Supprimer", "../ShoppingCart/Remove", new { id = item.Key.IdObject })*@
+                                        </div>
+                                    </td>
+                                </tr>
+                                sumAchat += prixItem;
+                            }
+                        </tbody>
+                    </table>
+                    <div class="float-right text-right">
+                        <h4>Total des achats:</h4>
+                        <h1 class="money">@sumAchat</h1>
+                    </div>
                 }
             </div>
         </div>
-    </section>
-}
-else
-{
-    Response.Redirect("~/Users/Login");
-}
+        <div style="justify-content: space-between; display: flex; flex-flow: row; ">
+            @Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left lightgreen", "Continuer vos achats")
+
+            @if (Model != null && Model.Count > 0)
+            {
+                @Helper.GlyphiconAction("../ShoppingCart/BuyCart", "glyphicon glyphicon-ok lightgreen", "Acheter")
+            }
+        </div>
+    </div>
+</section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -181,61 +172,61 @@ else
         })
 
 
-            $(function ($) {
-                $.fn.simpleMoneyFormat = function () {
-                    this.each(function (index, el) {
-                        var elType = null; // input or other
-                        var value = null;
-                        // get value
-                        if ($(el).is('input') || $(el).is('textarea')) {
-                            value = $(el).val().replace(/,/g, '');
-                            elType = 'input';
-                        } else {
-                            value = $(el).text().replace(/,/g, '');
-                            elType = 'other';
-                        }
-                        // if value changes
-                        $(el).on('paste keyup', function () {
-                            value = $(el).val().replace(/,/g, '');
-                            formatElement(el, elType, value); // format element
-                        });
+        $(function ($) {
+            $.fn.simpleMoneyFormat = function () {
+                this.each(function (index, el) {
+                    var elType = null; // input or other
+                    var value = null;
+                    // get value
+                    if ($(el).is('input') || $(el).is('textarea')) {
+                        value = $(el).val().replace(/,/g, '');
+                        elType = 'input';
+                    } else {
+                        value = $(el).text().replace(/,/g, '');
+                        elType = 'other';
+                    }
+                    // if value changes
+                    $(el).on('paste keyup', function () {
+                        value = $(el).val().replace(/,/g, '');
                         formatElement(el, elType, value); // format element
                     });
-                    function formatElement(el, elType, value) {
-                        var result = '';
-                        var valueArray = value.split('');
-                        var resultArray = [];
-                        var counter = 0;
-                        var temp = '';
-                        for (var i = valueArray.length - 1; i >= 0; i--) {
-                            temp += valueArray[i];
-                            counter++
-                            if (counter == 3) {
-                                resultArray.push(temp);
-                                counter = 0;
-                                temp = '';
-                            }
-                        };
-                        if (counter > 0) {
+                    formatElement(el, elType, value); // format element
+                });
+                function formatElement(el, elType, value) {
+                    var result = '';
+                    var valueArray = value.split('');
+                    var resultArray = [];
+                    var counter = 0;
+                    var temp = '';
+                    for (var i = valueArray.length - 1; i >= 0; i--) {
+                        temp += valueArray[i];
+                        counter++
+                        if (counter == 3) {
                             resultArray.push(temp);
+                            counter = 0;
+                            temp = '';
                         }
-                        for (var i = resultArray.length - 1; i >= 0; i--) {
-                            var resTemp = resultArray[i].split('');
-                            for (var j = resTemp.length - 1; j >= 0; j--) {
-                                result += resTemp[j];
-                            };
-                            if (i > 0) {
-                                result += ','
-                            }
-                        };
-                        if (elType == 'input') {
-                            $(el).val(result);
-                        } else {
-                            $(el).empty().text(result + "$");
-                        }
+                    };
+                    if (counter > 0) {
+                        resultArray.push(temp);
                     }
-                };
-            }(jQuery));
+                    for (var i = resultArray.length - 1; i >= 0; i--) {
+                        var resTemp = resultArray[i].split('');
+                        for (var j = resTemp.length - 1; j >= 0; j--) {
+                            result += resTemp[j];
+                        };
+                        if (i > 0) {
+                            result += ','
+                        }
+                    };
+                    if (elType == 'input') {
+                        $(el).val(result);
+                    } else {
+                        $(el).empty().text(result + "$");
+                    }
+                }
+            };
+        }(jQuery));
     </script>
 }
 

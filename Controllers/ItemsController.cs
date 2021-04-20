@@ -77,7 +77,7 @@ namespace EFA_DEMO.Controllers
         }
         // GET: Items/Create
 
-        //[AdminAccess]
+        [AdminAccess]
         public ActionResult Create()
         {
             Item item = new Item();
@@ -89,7 +89,7 @@ namespace EFA_DEMO.Controllers
         // POST: Items/Create
         // Afin de déjouer les attaques par survalidation, activez les propriétés spécifiques auxquelles vous voulez établir une liaison. Pour 
         // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[AdminAccess]
+        [AdminAccess]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Item item)
@@ -106,7 +106,7 @@ namespace EFA_DEMO.Controllers
         }
 
         // GET: Items/Edit/5
-        //[AdminAccess]
+        [AdminAccess]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -126,7 +126,7 @@ namespace EFA_DEMO.Controllers
         // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[AdminAccess]
+        [AdminAccess]
         public ActionResult Edit([Bind(Include = "IdObject,Name,StockQuantity,Price,PictureGUID,IdType")] Item item)
         {
             if (ModelState.IsValid)
@@ -139,7 +139,7 @@ namespace EFA_DEMO.Controllers
         }
 
         // GET: Items/Delete/5
-        //[AdminAccess]
+        [AdminAccess]
         public ActionResult Delete(int? id)
         {
             if (id == null)

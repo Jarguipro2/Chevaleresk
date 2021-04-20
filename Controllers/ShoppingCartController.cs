@@ -14,23 +14,24 @@ namespace EFA_DEMO.Controllers
     {
         private DBEntities2 db = new DBEntities2();
 
+        [UserAccess]
         public ActionResult Add(int? id)
         {
-            int compteurItems = 0;
-
             Item item = db.Items.Find(id);
-            var itemStock = db.Items.Find(id);
 
             IDictionary<Item, int> DicItem = new Dictionary<Item, int>(new CartDictComparer());
 
             if (Session["cart"] == null)
             {
-                DicItem.Add(item, 1);
+                if (item.StockQuantity > 0)
+                {
+                    DicItem.Add(item, 1);
 
-                Session["cart"] = DicItem;
-                ViewBag.cart = DicItem.Count();
-                
-                Session["count"] = 1;
+                    Session["cart"] = DicItem;
+                    ViewBag.cart = DicItem.Count();
+
+                    Session["count"] = 1;
+                }
             }
             else
             {
@@ -56,11 +57,11 @@ namespace EFA_DEMO.Controllers
                 }
 
                 Session["cart"] = DicItem;
-                ViewBag.cart = compteurItems;
                 Session["count"] = Convert.ToInt32(Session["count"]) + 1;
             }
             return RedirectToAction("Index", "Items");
         }
+        [UserAccess]
         public ActionResult Remove(int? id)
         {
             Item item = db.Items.Find(id);
@@ -82,17 +83,17 @@ namespace EFA_DEMO.Controllers
 
             double soldeTotal = 0;
           
-            var query = (Dictionary<Item, int>)Session["cart"];
+            var panierJoueur = (Dictionary<Item, int>)Session["cart"];
 
-            if (query != null)
+            if (panierJoueur != null)
             {
-                foreach (var items in query)
+                foreach (var items in panierJoueur)
                 {
                     var idObject = db.Items.Find(items.Key.IdObject);
 
                     soldeTotal += items.Key.Price * items.Value;
 
-                    if (idObject.StockQuantity <= items.Value)
+                    if (idObject.StockQuantity < items.Value)
                         ViewBag.ObjetNonValide += " " + items.Key.Name + " ";
 
                     ViewBag.itemsSession += items.Value;
@@ -107,28 +108,34 @@ namespace EFA_DEMO.Controllers
             return View((Dictionary<Item, int>)Session["cart"]);
         }
 
+        [UserAccess]
         public ActionResult BuyCart()
         {
             double soldeTotal = 0;
+            bool panierValide = true;
             
             var currentPlayer = db.Users.Find(OnlineUsers.CurrentUser.Id);
 
             if ((Dictionary<Item, int>)Session["cart"] != null)
             {
-                var query = (Dictionary<Item, int>)Session["cart"];
+                var panierJoueur = (Dictionary<Item, int>)Session["cart"];
 
-                foreach (var itemCost in query)
-                    soldeTotal += itemCost.Value * itemCost.Key.Price;
-
-                foreach (var itemsReceive in query)
+                foreach (var item in panierJoueur)
                 {
-                    var itemDB = db.Items.Find(itemsReceive.Key.IdObject);
+                    if (db.Items.Find(item.Key.IdObject).StockQuantity < item.Value)
+                        panierValide = false;
 
-                    if (itemDB.StockQuantity >= itemsReceive.Value && currentPlayer.Money - (int)soldeTotal >= 0)
+                    soldeTotal += item.Value * item.Key.Price;
+                }
+
+                if (currentPlayer.Money - (int)soldeTotal >= 0 && panierValide)
+                {
+                    foreach (var itemsReceive in panierJoueur)
                     {
+                        var itemDB = db.Items.Find(itemsReceive.Key.IdObject);
+                
                         itemDB.StockQuantity -= itemsReceive.Value;
-                        currentPlayer.Money -= (int)soldeTotal;
-                       
+
                         if (db.UserHasItem(currentPlayer, itemsReceive.Key))
                         {
                             var invIdStatus = db.User_Inventory.FirstOrDefault(m => m.IdObject == itemsReceive.Key.IdObject && m.IdPlayer == currentPlayer.IdPlayer);
@@ -144,13 +151,13 @@ namespace EFA_DEMO.Controllers
 
                             db.User_Inventory.Add(inventaire);
                         }
-
-                        db.SaveChanges();
                     }
-                }
 
-                if (currentPlayer.Money - (int)soldeTotal >= 0)
-                    query.Clear();
+                    currentPlayer.Money -= (int)soldeTotal;
+                    panierJoueur.Clear();
+
+                    db.SaveChanges();
+                }
             }
 
             return RedirectToAction("ShoppingCart", "ShoppingCart");
@@ -161,7 +168,7 @@ namespace EFA_DEMO.Controllers
             var cart = Session["cart"] as Dictionary<Item, int>;
             var item = cart.FirstOrDefault(itemCart => itemCart.Key.IdObject == id);
 
-            if (quantity <= item.Key.StockQuantity)
+            if (quantity <= item.Key.StockQuantity && quantity > 0)
                 cart[item.Key] = quantity;
 
             Session["cart"] = cart;
