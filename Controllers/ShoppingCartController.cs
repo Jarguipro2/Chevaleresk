@@ -92,7 +92,7 @@ namespace EFA_DEMO.Controllers
 
                     soldeTotal += items.Key.Price * items.Value;
 
-                    if (idObject.StockQuantity < items.Value)
+                    if (idObject.StockQuantity <= items.Value)
                         ViewBag.ObjetNonValide += " " + items.Key.Name + " ";
 
                     ViewBag.itemsSession += items.Value;

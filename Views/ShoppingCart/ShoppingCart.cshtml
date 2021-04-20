@@ -61,9 +61,29 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td data-th="Price">@compteurCartItemId</td>
-                                        <td data-th="Quantity">
-                                            @item.Value
+                                        <td data-th="Price" class="money">@compteurCartItemId</td>
+                                        <td data-th="Quantity" id="quantityContainer">
+                                            @if (item.Value >= 10)
+                                            {
+                                                <input class='selectQuantity form-control quantity-input' maxlength='3' id='@item.Key.IdObject' value="@item.Value" />
+                                            }
+                                            else
+                                            {
+                                                <select class="selectQuantity form-control quantity-input" id="@item.Key.IdObject" data-old-value="@item.Value">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10+">10+</option>
+                                                </select>
+                                            }
+
+
                                         </td>
                                         <td class="actions" data-th="">
                                             <div class="text-right">
@@ -77,9 +97,9 @@
                         </table>
                         <div class="float-right text-right">
                             <h4>Total des achats:</h4>
-                            <h1>@sumAchat$</h1>
+                            <h1 class="money">@sumAchat</h1>
                         </div>
-                     }
+                    }
                 </div>
             </div>
             <div style="justify-content: space-between; display: flex; flex-flow: row; ">
@@ -98,5 +118,125 @@ else
     Response.Redirect("~/Users/Login");
 }
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function sendItemQuantityUpdate($elem) {
+            console.log($elem)
+            $.ajax({
+                type: "POST",
+                url: "/ShoppingCart/UpdateItemQuantity/",
+                data: { id: $elem.attr('id'), quantity: $elem.val() },
+                succes: location.reload()
+            })
+            $elem.attr("data-old-value", $elem.val())
+        }
+        $(() => {
+            $(".selectQuantity").each((_, elem) => {
+                $elem = $(elem)
+                console.log($elem)
+                $val = $elem.attr("data-old-value")//pour l'Initialisation
+                $firstTime = true
+                if ($firstTime) {
+                    $elem.children().each((index, option) => {
+                        $option = $(option)
+                        if ($option.val() == $val) {
+                            $option.attr("selected", "selected")
+                        }
+                    })
+                    $firstTime = false;
+                }
+                if ($elem.is("input")) {
+                    $elem.click((evt) => {
+                        $elem = $(evt.currentTarget)
+                        $elem.select()
+                    });
+                }
+
+                $($elem).change((evt) => {
+                    $elem = $(evt.currentTarget) //select
+                    $parent = $elem.parent() //container
+                    if ($elem.val() == "10+") {
+                        $elem.remove()
+                        $(`<input class='selectQuantity form-control quantity-input' maxlength='3' id='${$elem.attr('id')}' value='${$elem.attr("data-old-value")}'/>`)
+                            .appendTo($parent).select()
+                            .blur((evt) => {
+                                $elem = $(evt.currentTarget) // Input
+                                console.log($elem)
+                                sendItemQuantityUpdate($elem)
+                            }).click((evt) => {
+                                $elem = $(evt.currentTarget)
+                                $elem.select()
+                            });
+                    }
+                    else {
+                        sendItemQuantityUpdate($elem)
+                    }
+
+                })
+            })
+            $(".money").each((_, elem) => {
+                $(elem).simpleMoneyFormat();
+            });
+        })
+
+
+            $(function ($) {
+                $.fn.simpleMoneyFormat = function () {
+                    this.each(function (index, el) {
+                        var elType = null; // input or other
+                        var value = null;
+                        // get value
+                        if ($(el).is('input') || $(el).is('textarea')) {
+                            value = $(el).val().replace(/,/g, '');
+                            elType = 'input';
+                        } else {
+                            value = $(el).text().replace(/,/g, '');
+                            elType = 'other';
+                        }
+                        // if value changes
+                        $(el).on('paste keyup', function () {
+                            value = $(el).val().replace(/,/g, '');
+                            formatElement(el, elType, value); // format element
+                        });
+                        formatElement(el, elType, value); // format element
+                    });
+                    function formatElement(el, elType, value) {
+                        var result = '';
+                        var valueArray = value.split('');
+                        var resultArray = [];
+                        var counter = 0;
+                        var temp = '';
+                        for (var i = valueArray.length - 1; i >= 0; i--) {
+                            temp += valueArray[i];
+                            counter++
+                            if (counter == 3) {
+                                resultArray.push(temp);
+                                counter = 0;
+                                temp = '';
+                            }
+                        };
+                        if (counter > 0) {
+                            resultArray.push(temp);
+                        }
+                        for (var i = resultArray.length - 1; i >= 0; i--) {
+                            var resTemp = resultArray[i].split('');
+                            for (var j = resTemp.length - 1; j >= 0; j--) {
+                                result += resTemp[j];
+                            };
+                            if (i > 0) {
+                                result += ','
+                            }
+                        };
+                        if (elType == 'input') {
+                            $(el).val(result);
+                        } else {
+                            $(el).empty().text(result + "$");
+                        }
+                    }
+                };
+            }(jQuery));
+    </script>
+}
 
 

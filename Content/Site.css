@@ -196,3 +196,6 @@ textarea {
     height: 80%;
     width: 10%;
 }
+.quantity-input{
+    width: 52px !important  ; 
+}
