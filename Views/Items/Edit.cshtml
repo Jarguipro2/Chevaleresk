@@ -4,14 +4,13 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Edit de l'item: "@Model.Name"</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Item</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.IdObject)
@@ -41,17 +40,19 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PictureGUID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PictureGUID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PictureGUID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PictureGUID, "", new { @class = "text-danger" })
+                <div style="width:200px">
+                    @Helper.ImageUploader(Model.IdObject, Model.GetAvatarURL(), "AvatarImageData", "~/Images/Loading_icon.gif", "Cliquez pour choisir votre avatar")
+                    @Html.ValidationMessage("AvatarImageData", "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IdType, "IdType", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IdType, "Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("IdType", null, htmlAttributes: new { @class = "form-control" })
+                @Helper.EnumToRadioButtonGroup("IdType", new Items_typeEnum(), true)
                 @Html.ValidationMessageFor(model => model.IdType, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -70,4 +71,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/imageUploader")
 }
