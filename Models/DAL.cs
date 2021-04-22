@@ -84,7 +84,7 @@ public static class DBEntitiesExtensionsMethods
     {
         List<User_Inventory> userInventory = DB.User_Inventory.Where(item => item.IdPlayer == user.IdPlayer).ToList();
         var items = new List<(Item, int)>();
-        foreach(User_Inventory uInv in userInventory)
+        foreach (User_Inventory uInv in userInventory)
         {
             items.Add((uInv.Item, uInv.Quantity));
         }
@@ -102,5 +102,8 @@ public static class DBEntitiesExtensionsMethods
         if (user == null || item == null)
             return false;
         return DB.User_Inventory.Any(ui => ui.IdObject == item.IdObject && ui.IdPlayer == user.IdPlayer);
-    } 
+    }
+    public static List<Items_Type> GetItemTypes(this DBEntities2 DB) => DB.Items_Type.ToList();
 }
+
+

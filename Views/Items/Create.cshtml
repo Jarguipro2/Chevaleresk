@@ -48,9 +48,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IdType, "IdType", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IdType, "Type d'objet", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Helper.EnumToRadioButtonGroup("IdType", new Items_typeEnum(), true)
+                @Html.DropDownListFor(m => m.IdType, new SelectList(new Dictionary<int, string> { {0, "Arme"}, {1, "Armure"}, {2, "Potion"}, {3, "Ressource"}}, "Key", "Value"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IdType, "", new { @class = "text-danger" })
             </div>
         </div>

@@ -15,7 +15,7 @@
 {
     var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
     imageSrc = Url.Content(imageSrc);
-        <img class='@cssClass' id='@imgId' src='@imageSrc'/>
+    <img class='@cssClass' id='@imgId' src='@imageSrc' />
 }
 
 @helper AvatarProfilLink(EFA_DEMO.Models.UserView user)
@@ -72,7 +72,7 @@
 @helper Glyphicon(string glyphiconClass, string TooltipMessage, string ToolTipPlacement = "bottom")
 {
     <span class="glyphicon glyphiconStyle @glyphiconClass"
-            title="@TooltipMessage"
-            data-placement="@ToolTipPlacement">
+          title="@TooltipMessage"
+          data-placement="@ToolTipPlacement">
     </span>
 }

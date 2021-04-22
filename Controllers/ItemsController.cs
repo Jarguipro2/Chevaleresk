@@ -63,16 +63,12 @@ namespace EFA_DEMO.Controllers
                     break;
                 case "type_arme":
                     return View(db.Items.Where(x => x.Items_Type.Name.Contains("arme")).ToList());
-                    break;
                 case "type_armure":
                     return View(db.Items.Where(x => x.Items_Type.Name.Contains("armure")).ToList());
-                    break;
                 case "type_potion":
                     return View(db.Items.Where(x => x.Items_Type.Name.Contains("potion")).ToList());
-                    break;
                 case "type_ressource":
                     return View(db.Items.Where(x => x.Items_Type.Name.Contains("ressource")).ToList());
-                    break;
                 default:
                     return View(db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null).ToList());
             }
@@ -120,21 +116,15 @@ namespace EFA_DEMO.Controllers
         public ActionResult Create()
         {
             Item item = new Item();
-            //var dictionnary = db.Items_Type.GroupBy(it => it.IdType).ToDictionary(g => g.Key, g => g.ToList());
-            //item.Items_Type = dictionnary;
             return View(item);
         }
 
-        // POST: Items/Create
-        // Afin de déjouer les attaques par survalidation, activez les propriétés spécifiques auxquelles vous voulez établir une liaison. Pour 
-        // plus de détails, consultez https://go.microsoft.com/fwlink/?LinkId=317598.
         [AdminAccess]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Item item)
         {
             item.SaveAvatar();
-            System.Diagnostics.Debug.WriteLine(item.PictureGUID);
             if (ModelState.IsValid)
             {
                 db.AddItem(item);

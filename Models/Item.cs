@@ -23,7 +23,7 @@ namespace EFA_DEMO.Models
             this.Properties = new HashSet<Property>();
             InitAvatarManagement();
         }
-    
+
         public int IdObject { get; set; }
         [Display(Name = "Nom")]
         [Required]
@@ -39,9 +39,8 @@ namespace EFA_DEMO.Models
         [Display(Name = "Type")]
         [Required]
         public int? IdType { get; set; }
-    
-        public virtual Items_Type Items_Type { get; set; }
 
+        public virtual Items_Type Items_Type { get; set; }
         [Display(Name = "Avatar")]
         public string AvatarImageData { get; set; }
         private ImageGUIDReference AvatarReference { get; set; }
