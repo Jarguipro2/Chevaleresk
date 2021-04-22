@@ -21,14 +21,17 @@ namespace EFA_DEMO.Controllers
 
             IDictionary<Item, int> DicItem = new Dictionary<Item, int>(new CartDictComparer());
 
-            if (Session["cart"] == null && item.StockQuantity > 0)
+            if (Session["cart"] == null)
             {
-                DicItem.Add(item, 1);
+                if (item.StockQuantity > 0)
+                {
+                    DicItem.Add(item, 1);
 
-                Session["cart"] = DicItem;
-                ViewBag.cart = DicItem.Count();
+                    Session["cart"] = DicItem;
+                    ViewBag.cart = DicItem.Count();
 
-                Session["count"] = 1;
+                    Session["count"] = 1;
+                }
             }
             else
             {
@@ -77,7 +80,7 @@ namespace EFA_DEMO.Controllers
 
             ViewBag.currentMoneyPlayer = currentPlayer.Money;
             ViewBag.itemsSession = 0;
-
+           
             double soldeTotal = 0;
           
             var panierJoueur = (Dictionary<Item, int>)Session["cart"];
@@ -166,10 +169,18 @@ namespace EFA_DEMO.Controllers
             var item = cart.FirstOrDefault(itemCart => itemCart.Key.IdObject == id);
 
             if (quantity <= item.Key.StockQuantity && quantity > 0)
+            {
                 cart[item.Key] = quantity;
-            
+                Session["error"] = "";
+            }
+            else
+            {
+                cart[item.Key] = item.Key.StockQuantity;
+                Session["error"] = " Votre '"+ item.Key.Name + "' à été mis à jour vers notre stock le plus récent";
+            }
+
             Session["cart"] = cart;
-            return RedirectToAction("ShoppingCart", "ShoppingCart");
+            return RedirectToAction("ShoppingCart");
         }
 
         protected override void Dispose(bool disposing)
