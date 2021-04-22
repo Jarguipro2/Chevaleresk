@@ -57,7 +57,6 @@
                                         @Html.ActionLink("Joueurs en ligne", "Index", new { controller = "Users" }, new { @class = "dropdown-item" })
                                     </li>
                                 </ul>
-
                             </li>
                         }
                         else
@@ -69,12 +68,12 @@
                         <li>@Helper.GlyphiconAction("../Users/Inventory/" + onlineUser.Id, "glyphicon glyphicon-briefcase", "Votre inventaire")</li>
                         <li>@Helper.GlyphiconAction("../ShoppingCart/ShoppingCart", "glyphicon-shopping-cart glyphiconStyle", "Votre panier d'achat")</li>
                         <li>@Helper.GlyphiconAction("../Users/Logout", "glyphicon-log-out glyphiconStyle", "Déconnexion")</li>
-                        <li>@Helper.GlyphiconAction("../Users/About", "glyphicon-info-sign glyphiconStyle", "À propos")</li>
                     }
                     else
                     {
                         <li>@Helper.GlyphiconAction("../Users/Login", "glyphicon-user glyphiconStyle", "Se connecter")</li>
                     }
+                        <li>@Helper.GlyphiconAction("../Users/About", "glyphicon-info-sign glyphiconStyle", "À propos")</li>
                 </ul>
             </div>
         </div>

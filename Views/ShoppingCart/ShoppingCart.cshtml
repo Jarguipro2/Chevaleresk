@@ -20,14 +20,15 @@
                 </p>
                 @if (Model != null && Model.Count > 0)
                 {
-                    <p class="mb-5 text-center" style="color: red">
-                        @ViewBag.NotEnoughMoney
-                        @if (ViewBag.ObjetNonValide != null)
-                        {
+                <p class="mb-5 text-center" style="color: red">
+                    @ViewBag.NotEnoughMoney
+                    @if (ViewBag.ObjetNonValide != null)
+                    {
 
-                            <h4 style="color: red; text-align: center">Voici la liste des objets qui ne pourrons être acheter : @ViewBag.ObjetNonValide</h4>
-                        }
-                    </p>
+                        <h4 style="color: red; text-align: center">Voici la liste des objets qui ne pourrons être acheter : @ViewBag.ObjetNonValide</h4>
+                    }
+                    <h4 style="text-align: center; color: darkred; font-weight: bold; text-decoration: underline">@Session["error"]</h4>
+                </p>
                     <table id="shoppingCart" class="table table-condensed table-responsive">
                         <thead>
                             <tr>

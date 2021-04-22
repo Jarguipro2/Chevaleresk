@@ -264,6 +264,7 @@
     <Content Include="Views\ShoppingCart\ShoppingCart.cshtml" />
     <Content Include="Views\Users\Inventory.cshtml" />
     <Content Include="Views\Users\List.cshtml" />
+    <Content Include="Views\Users\About.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

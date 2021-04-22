@@ -234,5 +234,10 @@ namespace EFA_DEMO.Controllers
             
             return View(user_Inventory);
         }
+
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }
