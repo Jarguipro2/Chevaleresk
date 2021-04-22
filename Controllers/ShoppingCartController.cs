@@ -21,17 +21,14 @@ namespace EFA_DEMO.Controllers
 
             IDictionary<Item, int> DicItem = new Dictionary<Item, int>(new CartDictComparer());
 
-            if (Session["cart"] == null)
+            if (Session["cart"] == null && item.StockQuantity > 0)
             {
-                if (item.StockQuantity > 0)
-                {
-                    DicItem.Add(item, 1);
+                DicItem.Add(item, 1);
 
-                    Session["cart"] = DicItem;
-                    ViewBag.cart = DicItem.Count();
+                Session["cart"] = DicItem;
+                ViewBag.cart = DicItem.Count();
 
-                    Session["count"] = 1;
-                }
+                Session["count"] = 1;
             }
             else
             {
@@ -170,7 +167,7 @@ namespace EFA_DEMO.Controllers
 
             if (quantity <= item.Key.StockQuantity && quantity > 0)
                 cart[item.Key] = quantity;
-
+            
             Session["cart"] = cart;
             return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
