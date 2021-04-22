@@ -5,8 +5,11 @@
 <h2>Liste d'items</h2>
 @using (Html.BeginForm("Index", "Items", FormMethod.Get))
 {
-    @Html.TextBox("sortOrder")
-    <input type="submit" value="Recherche" />
+<div>
+    @Html.TextBox("sortOrder", "", new { @class = "form-control" })
+    <input type="submit" value="Recherche" class="form-control btn-default" />
+</div>
+
 }
 <table class="table">
     <tr>
@@ -20,6 +23,9 @@
             @Html.ActionLink("tri par prix", "Index", new { sortOrder = ViewBag.PriceSortParm })
         </th>
         <th></th>
+        <th>
+            @Html.ActionLink("Tri par type", "Index", new { sortOrder = ViewBag.TypeSortParm })
+        </th>
     </tr>
     <tr>
         <th>

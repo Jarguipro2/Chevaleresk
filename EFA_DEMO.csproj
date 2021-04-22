@@ -266,9 +266,7 @@
     <Content Include="Views\Users\List.cshtml" />
     <Content Include="Views\Users\About.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\RequiredRouteValues\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

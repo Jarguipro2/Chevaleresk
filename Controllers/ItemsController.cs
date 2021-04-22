@@ -20,19 +20,58 @@ namespace EFA_DEMO.Controllers
         {
             var tempView = db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null);
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
+            if (sortOrder == "name_asc")
+            {
+                ViewBag.NameSortParm = "name_desc";
+            }
+
             ViewBag.PriceSortParm = sortOrder == "price" ? "price" : "price";
+            if (sortOrder == "price")
+            {
+                ViewBag.PriceSortParm = "price_desc";
+            }
+
+            ViewBag.TypeSortParm = sortOrder == "type_arme" ? "type_arme" : "type_arme";
+            if (sortOrder == "type_arme")
+            {
+                ViewBag.TypeSortParm = "type_armure";
+            }
+            else if (sortOrder == "type_armure")
+            {
+                ViewBag.TypeSortParm = "type_potion";
+            }
+            else if (sortOrder == "type_potion")
+            {
+                ViewBag.TypeSortParm = "type_ressource";
+            }
+
             var TempItems = from i in db.Items
                             select i;
             switch (sortOrder)
             {
                 case "name_desc":
-                    TempItems = TempItems.OrderByDescending(s => s.Name);
+                    TempItems = TempItems.OrderByDescending(i => i.Name);
                     break;
                 case "name_asc":
-                    TempItems = TempItems.OrderBy(s => s.Name);
+                    TempItems = TempItems.OrderBy(i => i.Name);
                     break;
                 case "price":
-                    TempItems = TempItems.OrderBy(s => s.Price);
+                    TempItems = TempItems.OrderBy(i => i.Price);
+                    break;
+                case "price_desc":
+                    TempItems = TempItems.OrderByDescending(i => i.Price);
+                    break;
+                case "type_arme":
+                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("arme")).ToList());
+                    break;
+                case "type_armure":
+                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("armure")).ToList());
+                    break;
+                case "type_potion":
+                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("potion")).ToList());
+                    break;
+                case "type_ressource":
+                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("ressource")).ToList());
                     break;
                 default:
                     return View(db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null).ToList());
