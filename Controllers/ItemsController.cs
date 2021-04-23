@@ -156,11 +156,12 @@ namespace EFA_DEMO.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdminAccess]
-        public ActionResult Edit([Bind(Include = "IdObject,Name,StockQuantity,Price,PictureGUID,IdType")] Item item)
+        public ActionResult Edit(Item item)
         {
+            db.UpdateItem(item);
             if (ModelState.IsValid)
             {
-                db.Entry(item).State = EntityState.Modified;
+                //db.Entry(item).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
