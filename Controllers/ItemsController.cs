@@ -31,7 +31,7 @@ namespace EFA_DEMO.Controllers
                 ViewBag.PriceSortParm = "price_desc";
             }
 
-            ViewBag.TypeSortParm = sortOrder == "type_arme" ? "type_arme" : "type_arme";
+            ViewBag.TypeSortParm = "type_arme";
             if (sortOrder == "type_arme")
             {
                 ViewBag.TypeSortParm = "type_armure";

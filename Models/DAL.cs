@@ -76,14 +76,18 @@ public static class DBEntitiesExtensionsMethods
     }
     public static bool UpdateItem(this DBEntities2 DB, Item item)
     {
-        item.SaveAvatar();
         Item itemToUpdate = DB.Items.Find(item.IdObject);
+        item.SaveAvatar();
         itemToUpdate.IdType = item.IdType;
         itemToUpdate.Name = item.Name;
         itemToUpdate.Price = item.Price;
         itemToUpdate.StockQuantity = item.StockQuantity;
-        if (item.PictureGUID != itemToUpdate.PictureGUID)
+        if (item.PictureGUID != null && item.PictureGUID != itemToUpdate.PictureGUID)
+        {
             itemToUpdate.PictureGUID = item.PictureGUID;
+
+        }
+
         DB.Entry(itemToUpdate).State = EntityState.Modified;
         DB.SaveChanges();
         return true;

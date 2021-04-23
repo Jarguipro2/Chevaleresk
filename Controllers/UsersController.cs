@@ -165,12 +165,13 @@ namespace EFA_DEMO.Controllers
                 {
                     userview.Password = userview.NewPassword;
                 }
-
+                userview.Money += user.Money;
                 if (!OnlineUsers.CurrentUserIsAdmin())
                 {
                     userview.Money = user.Money;
                     userview.Admin = user.Admin;
                 }
+                
                 else
                     id = userview.Id.ToString();
                 DB.UpdateUser(userview);
