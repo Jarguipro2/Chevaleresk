@@ -74,6 +74,32 @@ public static class DBEntitiesExtensionsMethods
         DB.SaveChanges();
         return item;
     }
+    public static bool UpdateItem(this DBEntities2 DB, Item item)
+    {
+        Item itemToUpdate = DB.Items.Find(item.IdObject);
+        item.SaveAvatar();
+        itemToUpdate.IdType = item.IdType;
+        itemToUpdate.Name = item.Name;
+        itemToUpdate.Price = item.Price;
+        itemToUpdate.StockQuantity = item.StockQuantity;
+        if (item.PictureGUID != null && item.PictureGUID != itemToUpdate.PictureGUID)
+        {
+            itemToUpdate.PictureGUID = item.PictureGUID;
+
+        }
+
+        DB.Entry(itemToUpdate).State = EntityState.Modified;
+        DB.SaveChanges();
+        return true;
+    }
+    public static bool RemoveItem(this DBEntities2 DB, Item item)
+    {
+        item.RemoveAvatar();
+        Item itemToDelete = DB.Items.Find(item.IdObject);
+        DB.Items.Remove(itemToDelete);
+        DB.SaveChanges();
+        return true;
+    }
     /// <summary>
     /// Return a list of items, quantity owned by the specified user.
     /// </summary>
