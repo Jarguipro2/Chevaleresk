@@ -16,9 +16,52 @@ namespace EFA_DEMO.Controllers
         private DBEntities2 db = new DBEntities2();
 
         // GET: Items
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string type1 = "", string type2 = "", string type3 = "", string type4 = "")
         {
-            var tempView = db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null);
+            System.Diagnostics.Debug.WriteLine(sortOrder);
+            //var uri = HttpContext.Current.Request.Url.AbsoluteUri;
+
+            //Console.Write(sortOrder);
+            //string[] types = new string[5];
+            //if(sortOrder != null)
+            //{
+            //    types = sortOrder.Split('&');
+            //}
+
+            var tempView = db.Items.Where(x => x.Name.Contains(sortOrder)).ToList();
+            //if (type1 != null)
+            //{
+            //    tempView.AddRange(db.Items.Where(x => x.Items_Type.Name.Contains(type1)));
+            //}
+            //if (type2 != null)
+            //{
+            //    tempView.AddRange(db.Items.Where(x => x.Items_Type.Name.Contains(type2)));
+            //}
+            //if (type3 != null)
+            //{
+            //    tempView.AddRange(db.Items.Where(x => x.Items_Type.Name.Contains(type3)));
+            //}
+            //if (type4 != null)
+            //{
+            //    tempView.AddRange(db.Items.Where(x => x.Items_Type.Name.Contains(type4)));
+            //}
+
+            //if (type1 != "")
+            //{
+            //    ViewBag.TypeSortParm += type1.ToString();
+            //}
+            //if (type2 != "")
+            //{
+            //    ViewBag.TypeSortParm += type2.ToString();
+            //}
+            //if (type3 != "")
+            //{
+            //    ViewBag.TypeSortParm += type3.ToString();
+            //}
+            //if (type4 != "")
+            //{
+            //    ViewBag.TypeSortParm += type4.ToString();
+            //}
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
             if (sortOrder == "name_asc")
             {
@@ -31,7 +74,7 @@ namespace EFA_DEMO.Controllers
                 ViewBag.PriceSortParm = "price_desc";
             }
 
-            ViewBag.TypeSortParm = "type_arme";
+            ViewBag.TypeSortParm = sortOrder == "type_arme" ? "type_arme" : "type_arme";
             if (sortOrder == "type_arme")
             {
                 ViewBag.TypeSortParm = "type_armure";
@@ -47,6 +90,7 @@ namespace EFA_DEMO.Controllers
 
             var TempItems = from i in db.Items
                             select i;
+            //var TempItems = tempView;
             switch (sortOrder)
             {
                 case "name_desc":
@@ -62,19 +106,24 @@ namespace EFA_DEMO.Controllers
                     TempItems = TempItems.OrderByDescending(i => i.Price);
                     break;
                 case "type_arme":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("arme")).ToList());
+                    TempItems = (db.Items.Where(x => x.Items_Type.Name.Contains("arme")));
+                    break;
                 case "type_armure":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("armure")).ToList());
+                    TempItems = (db.Items.Where(x => x.Items_Type.Name.Contains("armure")));
+                    break;
                 case "type_potion":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("potion")).ToList());
+                    TempItems = (db.Items.Where(x => x.Items_Type.Name.Contains("potion")));
+                    break;
                 case "type_ressource":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("ressource")).ToList());
+                    TempItems = (db.Items.Where(x => x.Items_Type.Name.Contains("ressource")));
+                    break;
                 default:
                     return View(db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null).ToList());
             }
 
-            List<Item> items = db.Items.ToList();
-            return View(TempItems.ToList());
+            List<Item> itemsList = db.Items.ToList();
+            return View(TempItems);
+            //
         }
 
         // GET: Items/Details/5

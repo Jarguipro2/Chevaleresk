@@ -5,11 +5,22 @@
 <h2>Liste d'items</h2>
 @using (Html.BeginForm("Index", "Items", FormMethod.Get))
 {
-<div>
-    @Html.TextBox("sortOrder", "", new { @class = "form-control" })
-    <input type="submit" value="Recherche" class="form-control btn-default" />
-</div>
+    @Html.TextBox("sortOrder")
+    <input type="submit" value="Recherche" />
 
+    <fieldset>
+        <input type="checkbox" id="arme" name="type_arme" value="arme">
+        <label>arme</label>
+
+        <input type="checkbox" id="armure" name="type_armure" value="armure">
+        <label>armure</label>
+
+        <input type="checkbox" id="potion" name="type_potion" value="potion">
+        <label>potion</label>
+
+        <input type="checkbox" id="ressource" name="type_ressource" value="ressource">
+        <label>ressource</label>
+    </fieldset>
 }
 <table class="table">
     <tr>
@@ -67,8 +78,8 @@
             <td>
                 @if (OnlineUsers.CurrentUserIsAdmin())
                 {
-                   @Html.ActionLink("Edit", "Edit", new { id = item.IdObject })  @:<i>|</i>
-                   @Html.ActionLink("Delete", "Delete", new { id = item.IdObject })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdObject }) @:<i>|</i>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdObject })
                 }
 
                 | @Html.ActionLink("Details", "Details", new { id = item.IdObject })
