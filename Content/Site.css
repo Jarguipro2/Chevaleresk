@@ -199,3 +199,25 @@ textarea {
 .quantity-input{
     width: 55px !important  ; 
 }
+.thumbnailContainer {
+    text-align: center;
+    width: 180px;
+    cursor: pointer;
+}
+.thumbnailHeader {
+    margin: auto;
+    width: 95%;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.thumbnailListContainer {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: repeat(auto-fill, 185px);
+}

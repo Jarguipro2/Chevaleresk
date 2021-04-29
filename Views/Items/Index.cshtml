@@ -2,84 +2,33 @@
 
 @{ ViewBag.Title = "Index"; }
 
-<h2>Liste d'items</h2>
+<h2>Marché</h2>
 @using (Html.BeginForm("Index", "Items", FormMethod.Get))
 {
 <div>
+    @Html.ActionLink("Tri par nom", "Index", new { sortOrder = ViewBag.NameSortParm }) |
+    @Html.ActionLink("tri par prix", "Index", new { sortOrder = ViewBag.PriceSortParm }) |
+    @Html.ActionLink("Tri par type", "Index", new { sortOrder = ViewBag.TypeSortParm })
     @Html.TextBox("sortOrder", "", new { @class = "form-control" })
+
     <input type="submit" value="Recherche" class="form-control btn-default" />
 </div>
-
+<br />
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.ActionLink("Tri par nom", "Index", new { sortOrder = ViewBag.NameSortParm })
-        </th>
-        <th>
-            Nom
-        </th>
-        <th>
-            @Html.ActionLink("tri par prix", "Index", new { sortOrder = ViewBag.PriceSortParm })
-        </th>
-        <th></th>
-        <th>
-            @Html.ActionLink("Tri par type", "Index", new { sortOrder = ViewBag.TypeSortParm })
-        </th>
-    </tr>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StockQuantity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PictureGUID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Items_Type.Name)
-        </th>
-        <th></th>
-    </tr>
 
+<div class='thumbnailListContainer'>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StockQuantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PictureGUID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Items_Type.Name)
-            </td>
-            <td>
-                @if (OnlineUsers.CurrentUserIsAdmin())
-                {
-                   @Html.ActionLink("Edit", "Edit", new { id = item.IdObject })  @:<i>|</i>
-                   @Html.ActionLink("Delete", "Delete", new { id = item.IdObject })
-                }
-
-                | @Html.ActionLink("Details", "Details", new { id = item.IdObject })
-
-                | @Html.ActionLink("Add", "../ShoppingCart/Add", new { id = item.IdObject })
-
-
-                @*@Helper.GlyphiconAction("../AddToCart/Myorder", "glyphicon-plus glyphiconStyle", "Ajouter au panier d'achat")*@
-
-            </td>
-        </tr>
+        if (item.StockQuantity > 0)
+        {
+            <div class='thumbnailContainer'>
+                <div class='thumbnailHeader ellipsis'>
+                    <b>@item.Name</b>
+                </div>
+                <a href="@Url.Action("Details", "Items", new { id = item.IdObject })">
+                    <img style="height: 120px; width: 120px" src="@item.GetAvatarURL().Substring(1)" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                </a>
+            </div>
+        }
     }
-
-</table>
+</div>
