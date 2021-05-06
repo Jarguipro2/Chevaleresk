@@ -110,7 +110,22 @@ namespace EFA_DEMO.Controllers
 
             return RedirectToAction("Details", "Items", item.IdObject);
         }
-        // GET: Items/Create
+        [ValidateAntiForgeryToken, HttpPost]
+        public ActionResult RemoveReview(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            Items_Reviews review = db.Items_Reviews.Find(id);
+            if (review == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            if(OnlineUsers.CurrentUserIsAdmin() || review.IdPlayer == OnlineUsers.CurrentUser.Id)
+            {
+                db.Items_Reviews.Remove(review);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Details/" + review.IdObject, "Items");
+        }
+
 
         [AdminAccess]
         public ActionResult Create()

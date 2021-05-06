@@ -114,12 +114,26 @@
                                 <option value="5">5</option>
                             </select>
                         </span>
+                        @if (OnlineUsers.CurrentUser != null && (review.IdPlayer == OnlineUsers.CurrentUser.Id || OnlineUsers.CurrentUserIsAdmin()))
+                        {
+                            using (Html.BeginForm("RemoveReview", "Items"))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@review.IdReview" />
+                                <span class="icon-input-btn">
+                                    <i class="fa fa-trash"></i>
+                                    <input type="submit" class="btn btn-danger btn-lg" value="Effacer">
+                                </span>
+                            }
+                        }
 
                         <p class="be-comment-text">
+
                             @review.Review
                         </p>
                     </div>
-                </div>}
+                </div>
+             }
 
             @if (ViewBag.currentUserOwnThisItem != null && ViewBag.currentUserOwnThisItem)
             {
