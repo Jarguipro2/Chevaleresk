@@ -1,7 +1,7 @@
 ﻿@model EFA_DEMO.Models.Item
 
 @{ ViewBag.Title = "Details";
-   EFA_DEMO.Models.UserView onlineUser = EFA_DEMO.Models.OnlineUsers.CurrentUser;
+    EFA_DEMO.Models.UserView onlineUser = EFA_DEMO.Models.OnlineUsers.CurrentUser;
 
 }
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -20,12 +20,7 @@
         @Helper.GlyphiconAction("../Items/Edit/" + Model.IdObject, "glyphicon glyphicon-cog", "Editer l'objet")
         @Helper.GlyphiconAction("../Items/Delete/" + Model.IdObject, "glyphicon glyphicon-trash", "Supprimer l'objet")
     }
-    @if (onlineUser != null)
-    {
-        @Helper.GlyphiconAction("../ShoppingCart/Add/" + Model.IdObject, "glyphicon glyphicon-download-alt", "Ajouter au panier")
-    }
 </div>
-
 
 <div class="container body-content">
     <table>
@@ -37,12 +32,6 @@
                 <td>
                     <div>
                         <dl class="dl-horizontal">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Name):
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.Name)
-                            </dd>
                             <br />
                             <dt>
                                 @Html.DisplayNameFor(model => model.StockQuantity):
@@ -75,8 +64,33 @@
         </tbody>
     </table>
     <p>
-        @Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left lightgreen", "Continuer vos achats")
+        @if (onlineUser != null)
+        {
+            using (Html.BeginForm("Add", "ShoppingCart", FormMethod.Post))
+            {
+                @Html.Hidden("id", Model.IdObject);
+                <p>
+                    <select style="margin-left: 45%" name="quantityReceive" class="selectQuantity form-control quantity-input" id="@Model.IdObject" data-old-value="">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10+">10+</option>
+                    </select>
+                </p>
+                <button style="margin-left: 45%" class="btn btn-default btn-primary" type="submit" value="ajouter au panier">Ajouter au panier</button>
+            }
+        }
     </p>
+    <div style="justify-content: space-between; display: flex; flex-flow: row; ">
+        @Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left lightgreen", "Continuer vos achats")
+    </div>
+
     <div class="container">
         <div class="be-comment-block">
             <h1 class="comments-title">Commentaire (@Model.Items_Reviews.Count)</h1>
@@ -148,5 +162,50 @@
                 initialRating: $rating.attr('data-current-rating')
             });
         });
+        
+        $(() => {
+            $(".selectQuantity").each((_, elem) => {
+                $elem = $(elem)
+                console.log($elem)
+                $val = $elem.attr("data-old-value")//pour l'Initialisation
+                $firstTime = true
+                if ($firstTime) {
+                    $elem.children().each((index, option) => {
+                        $option = $(option)
+                        if ($option.val() == $val) {
+                            $option.attr("selected", "selected")
+                        }
+                    })
+                    $firstTime = false;
+                }
+                if ($elem.is("input")) {
+                    $elem.click((evt) => {
+                        $elem = $(evt.currentTarget)
+                        $elem.select()
+                    });
+                }
+
+                $($elem).change((evt) => {
+                    $elem = $(evt.currentTarget) //select
+                    $parent = $elem.parent() //container
+                    if ($elem.val() == "10+") {
+                        $elem.remove()
+                        $(`<input style="margin-left: 45%" class='selectQuantity form-control quantity-input' maxlength='3' name="quantityReceive" id='${$elem.attr('id')}' value='${$elem.attr("data-old-value")}'/>`)
+                            .appendTo($parent).select()
+                            .blur((evt) => {
+                                $elem = $(evt.currentTarget) // Input
+                                console.log($elem)
+                            }).click((evt) => {
+                                $elem = $(evt.currentTarget)
+                                $elem.select()
+                            });
+                    }
+                })
+            })
+            $(".money").each((_, elem) => {
+                $(elem).simpleMoneyFormat();
+            });
+        })
+
     </script>
 }

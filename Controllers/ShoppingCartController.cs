@@ -15,50 +15,37 @@ namespace EFA_DEMO.Controllers
         private DBEntities2 db = new DBEntities2();
 
         [UserAccess]
-        public ActionResult Add(int? id)
+        public ActionResult Add(int? id, int quantityReceive)
         {
             Item item = db.Items.Find(id);
 
             IDictionary<Item, int> DicItem = new Dictionary<Item, int>(new CartDictComparer());
 
-            if (Session["cart"] == null)
+            if (Session["cart"] != null)
             {
-                if (item.StockQuantity > 0)
-                {
-                    DicItem.Add(item, 1);
-
-                    Session["cart"] = DicItem;
-                    ViewBag.cart = DicItem.Count();
-
-                    Session["count"] = 1;
-                }
+                DicItem = (Dictionary<Item, int>)Session["cart"];
+            }
+            if (DicItem.ContainsKey(item) && DicItem[item] <= 0)
+            {
+                ViewBag.ObjetNonValide = "L'item n'est plus en stock.";
+                DicItem[item] = 0;
+            }
+            if (quantityReceive > item.StockQuantity)
+            {
+                DicItem[item] = item.StockQuantity;
+                Session["error"] = " Votre panier à été mis à jour vers notre stock le plus récent";
             }
             else
             {
-                DicItem = (Dictionary<Item, int>)Session["cart"];
                 if (DicItem.ContainsKey(item))
-                {
-                    if(DicItem[item] + 1 > item.StockQuantity)
-                    {
-                        DicItem[item] = item.StockQuantity;
-                        ViewBag.ObjetNonValide = " Votre Panier à été mis à jour vers notre stock le plus récent";
-                    }
-                    else
-                    {
-                        DicItem[item] += 1;
-                    }
-                }
+                    DicItem[item] = quantityReceive;
                 else
-                {
-                    if(item.StockQuantity <= 0)
-                        ViewBag.ObjetNonValide = "L'item n'est plus en stock.";
-                    else
-                        DicItem.Add(item, 1);
-                }
-
-                Session["cart"] = DicItem;
-                Session["count"] = Convert.ToInt32(Session["count"]) + 1;
+                    DicItem.Add(item, quantityReceive);
             }
+
+            Session["cart"] = DicItem;
+            Session["count"] = Convert.ToInt32(Session["count"]) + 1;
+
             return RedirectToAction("Index", "Items");
         }
         [UserAccess]
@@ -176,7 +163,7 @@ namespace EFA_DEMO.Controllers
             else
             {
                 cart[item.Key] = item.Key.StockQuantity;
-                Session["error"] = " Votre '"+ item.Key.Name + "' à été mis à jour vers notre stock le plus récent";
+                Session["error"] = " Votre panier à été mis à jour vers notre stock le plus récent";
             }
 
             Session["cart"] = cart;

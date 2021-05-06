@@ -4,7 +4,7 @@
     ViewBag.Title = "Delete";
 }
 
-<h2> <b>Êtes-vous sûr de vouloir supprimer "@Model.Name"</b> </h2>
+<h2 style="font-style: italic"> <b>Êtes-vous sûr de vouloir supprimer <u>@Model.Name</u></b> </h2>
 <div>
     <hr />
     <dl class="dl-horizontal">
@@ -23,7 +23,7 @@
         <dd>
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <br />
+        <br/>
         <dt>
             Type
         </dt>
@@ -41,7 +41,7 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-actions no-color">
-                    <input type="submit" value="Supprimer" class="btn btn-warning" />
+                    <input type="submit" value="Supprimer" class="btn btn-danger" />
                 </div>
             }
         </dd>

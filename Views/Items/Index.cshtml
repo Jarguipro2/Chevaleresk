@@ -2,7 +2,7 @@
 
 @{ ViewBag.Title = "Index"; }
 
-<h2>Marché</h2>
+<h2 style="font-style: italic">Marché</h2>
 @using (Html.BeginForm("Index", "Items", FormMethod.Get))
 {
 <div>
@@ -22,7 +22,7 @@
         if (item.StockQuantity > 0)
         {
             <div class='thumbnailContainer'>
-                <div class='thumbnailHeader ellipsis'>
+                <div style="font-style: italic">
                     <b>@item.Name</b>
                 </div>
                 <a href="@Url.Action("Details", "Items", new { id = item.IdObject })">
