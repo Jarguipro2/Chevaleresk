@@ -57,52 +57,66 @@
             <h1 class="comments-title">Commentaire (@Model.Items_Reviews.Count)</h1>
             @foreach (var review in Model.Items_Reviews)
             {
-<div class="be-comment">
-    <div class="be-img-comment">
-        <a href="blog-detail-2.html">
-            <img src="@review.User.ToUserView().GetAvatarURL().Substring(1)" alt="" class="be-ava-comment">
-        </a>
-    </div>
-    <div class="be-comment-content">
+                <div class="be-comment">
+                    <div class="be-img-comment">
+                        <a href="blog-detail-2.html">
+                            <img src="@review.User.ToUserView().GetAvatarURL().Substring(1)" alt="" class="be-ava-comment">
+                        </a>
+                    </div>
+                    <div class="be-comment-content">
 
-        <span class="be-comment-name">
-            <a href="blog-detail-2.html">@review.User.FullName</a>
-            <select class="ratingBar" data-current-rating="@review.Star">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </span>
+                        <span class="be-comment-name">
+                            <a href="blog-detail-2.html">@review.User.FullName</a>
+                            <select class="ratingBar" data-current-rating="@review.Star">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </span>
+                        @if (OnlineUsers.CurrentUser != null && (review.IdPlayer == OnlineUsers.CurrentUser.Id || OnlineUsers.CurrentUserIsAdmin()))
+                        {
+                            using (Html.BeginForm("RemoveReview", "Items"))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@review.IdReview" />
+                                <span class="icon-input-btn">
+                                    <i class="fa fa-trash"></i>
+                                    <input type="submit" class="btn btn-danger btn-lg" value="Effacer">
+                                </span>
+                            }
+                        }
 
-        <p class="be-comment-text">
-            @review.Review
-        </p>
-    </div>
-</div>}
+                        <p class="be-comment-text">
+
+                            @review.Review
+                        </p>
+                    </div>
+                </div>
+             }
 
             @if (ViewBag.currentUserOwnThisItem != null && ViewBag.currentUserOwnThisItem)
             {
-                using(Html.BeginForm())
+                using (Html.BeginForm())
                 {
-                @Html.AntiForgeryToken()
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <h1 class="comments-title">Votre évaluation: </h1>
-                                    <select name="Star"class="ratingBar">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    <textarea name="Review" class="form-input" required="" placeholder="Votre commentaire" style="max-width: 100% !important;"></textarea>
-                                </div>
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <h1 class="comments-title">Votre évaluation: </h1>
+                                <select name="Star" class="ratingBar">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                <textarea name="Review" class="form-input" required="" placeholder="Votre commentaire" style="max-width: 100% !important;"></textarea>
                             </div>
-                            <input class="btn btn-primary pull-right" type="submit" value="Publier">
                         </div>
+                        <input class="btn btn-primary pull-right" type="submit" value="Publier">
+                    </div>
                 }
             }
 
