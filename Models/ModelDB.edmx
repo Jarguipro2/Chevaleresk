@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Items">
           <Key>
             <PropertyRef Name="IdObject" />
@@ -13,8 +13,16 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="StockQuantity" Type="int" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
-          <Property Name="PictureGUID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PictureGUID" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="IdType" Type="int" Nullable="false" />
+          <Property Name="Efficacite" Type="int" />
+          <Property Name="Genre" Type="int" />
+          <Property Name="Description" Type="varchar" MaxLength="200" />
+          <Property Name="Matiere" Type="varchar" MaxLength="50" />
+          <Property Name="Poid" Type="int" />
+          <Property Name="Taille" Type="int" />
+          <Property Name="Effet" Type="varchar" MaxLength="50" />
+          <Property Name="Duree" Type="int" />
         </EntityType>
         <EntityType Name="Items_Properties">
           <Key>
@@ -217,8 +225,7 @@
             <End Role="Logs" EntitySet="Logs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -230,12 +237,20 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="StockQuantity" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
-          <Property Name="PictureGUID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PictureGUID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Items_Type" Relationship="Self.FK_Objects_Objects_Type" FromRole="Items" ToRole="Items_Type" />
           <NavigationProperty Name="Items_Reviews" Relationship="Self.FK_Objects_Reviews_Objects" FromRole="Items" ToRole="Items_Reviews" />
           <NavigationProperty Name="User_Inventory" Relationship="Self.FK_Player_Inventory_Objects" FromRole="Items" ToRole="User_Inventory" />
           <NavigationProperty Name="Properties" Relationship="Self.Items_Properties" FromRole="Items" ToRole="Properties" />
+          <Property Name="Efficacite" Type="Int32" />
+          <Property Name="Genre" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Matiere" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Poid" Type="Int32" />
+          <Property Name="Taille" Type="Int32" />
+          <Property Name="Effet" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Duree" Type="Int32" />
         </EntityType>
         <EntityType Name="Items_Reviews">
           <Key>
@@ -424,6 +439,14 @@
           <EntitySetMapping Name="Items">
             <EntityTypeMapping TypeName="DBModel.Item">
               <MappingFragment StoreEntitySet="Items">
+                <ScalarProperty Name="Duree" ColumnName="Duree" />
+                <ScalarProperty Name="Effet" ColumnName="Effet" />
+                <ScalarProperty Name="Taille" ColumnName="Taille" />
+                <ScalarProperty Name="Poid" ColumnName="Poid" />
+                <ScalarProperty Name="Matiere" ColumnName="Matiere" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="Efficacite" ColumnName="Efficacite" />
                 <ScalarProperty Name="IdObject" ColumnName="IdObject" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StockQuantity" ColumnName="StockQuantity" />
