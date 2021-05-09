@@ -12,14 +12,14 @@
 namespace EFA_DEMO.Models
 {
 
-using System;
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public partial class Item
-{
+    {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Item()
         {
 
@@ -99,16 +99,16 @@ using System;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<Items_Reviews> Items_Reviews { get; set; }
+        public virtual ICollection<Items_Reviews> Items_Reviews { get; set; }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<User_Inventory> User_Inventory { get; set; }
+        public virtual ICollection<User_Inventory> User_Inventory { get; set; }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<Property> Properties { get; set; }
+        public virtual ICollection<Property> Properties { get; set; }
 
-}
+    }
 
 }

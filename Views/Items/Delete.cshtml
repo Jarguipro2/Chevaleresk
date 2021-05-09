@@ -8,7 +8,6 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.StockQuantity)
         </dt>
@@ -16,14 +15,12 @@
         <dd>
             @Html.DisplayFor(model => model.StockQuantity)
         </dd>
-        <br />
         <dt>
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <br/>
         <dt>
             Type
         </dt>
@@ -34,7 +31,6 @@
         <dd>
             <img src="@Model.GetAvatarURL().Substring(1)" />
         </dd>
-        <br />
         <dd>
             @using (Html.BeginForm())
             {

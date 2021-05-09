@@ -1,8 +1,7 @@
 ﻿@model EFA_DEMO.Models.Item
 
-@{ ViewBag.Title = "Details";
-    EFA_DEMO.Models.UserView onlineUser = EFA_DEMO.Models.OnlineUsers.CurrentUser;
-
+@{
+    ViewBag.Title = "Details";
 }
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="~/Content/fontawesome-stars.css" rel="stylesheet">
@@ -14,8 +13,6 @@
         </b>
     </u>
 </h2>
-@{ int? idItem = Model.IdType;
-    int? idGenre = Model.Genre;}
 <div>
     @if (OnlineUsers.CurrentUserIsAdmin())
     {
@@ -65,84 +62,84 @@
                             <dd>
                                 @Html.DisplayFor(model => model.Items_Type.Name)
                             </dd>
-                            @if (idItem == 0)
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Description)
+                            </dd>
+                            @switch (Model.IdType)
                             {
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Efficacite)
-                                </dt>
+                                case 0:
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Efficacite)
+                                    </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Efficacite) dégats
-                                </dd>
-
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Genre)
-                                </dt>
-                                if (idGenre == 0)
-                                {
                                     <dd>
-                                        Une main
+                                        @Html.DisplayFor(model => model.Efficacite) dégats
                                     </dd>
- }
-                                if (idGenre == 1)
-                                {
+
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Genre)
+                                    </dt>
+                                    switch (Model.Genre)
+                                    {
+                                        case 0:
+                                            <dd>
+                                                Une main
+                                            </dd>
+                                            break;
+                                        case 1:
+                                            <dd>
+                                                Deux mains
+                                            </dd>
+                                            break;
+                                    }
+                                    break;
+                                case 1:
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Matiere)
+                                    </dt>
+
                                     <dd>
-                                        Deux mains
+                                        @Html.DisplayFor(model => model.Matiere)
                                     </dd>
-                                }
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Description)
-                                </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Description)
-                                </dd>
-}
-                            @if (idItem == 1)
-                            {
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Matiere)
-                                </dt>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Poid)
+                                    </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Matiere)
-                                </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Poid) kilogrammes
+                                    </dd>
 
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Poid)
-                                </dt>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Taille)
+                                    </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Poid) kilogrammes
-                                </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Taille) mètres
+                                    </dd>
+                                    break;
+                                case 2:
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Effet)
+                                    </dt>
 
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Taille)
-                                </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Effet)
+                                    </dd>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Taille) mètres
-                                </dd>
-}
-                            @if (idItem == 2)
-                            {
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Effet)
-                                </dt>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Duree)
+                                    </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Effet)
-                                </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Duree) secondes
+                                    </dd>
+                                    break;
 
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Duree)
-                                </dt>
-
-                                <dd>
-                                    @Html.DisplayFor(model => model.Duree) secondes
-                                </dd>
-}
-                            <br />
+                            }
                         </dl>
                     </div>
                 </td>
@@ -152,29 +149,28 @@
         </tbody>
     </table>
     <p>
-        @if (onlineUser != null)
+        @if (OnlineUsers.CurrentUser != null)
         {
             using (Html.BeginForm("Add", "ShoppingCart", FormMethod.Post))
             {
                 @Html.Hidden("id", Model.IdObject);
-            <p>
-                <select style="margin-left: 45%" name="quantityReceive" class="selectQuantity form-control quantity-input" id="@Model.IdObject" data-old-value="">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10+">10+</option>
-                </select>
-            </p>
+                <p>
+                    <select style="margin-left: 45%" name="quantityReceive" class="selectQuantity form-control quantity-input" id="@Model.IdObject" data-old-value="">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10+">10+</option>
+                    </select>
+                </p>
             <button style="margin-left: 45%" class="btn btn-default btn-primary" type="submit" value="ajouter au panier">Ajouter au panier</button>
+            }
         }
-    }
-        </p>
         <div style="justify-content: space-between; display: flex; flex-flow: row; ">
             @Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left lightgreen", "Continuer vos achats")
         </div>

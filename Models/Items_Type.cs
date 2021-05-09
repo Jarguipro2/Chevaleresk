@@ -12,31 +12,28 @@
 namespace EFA_DEMO.Models
 {
 
-using System;
+    using System;
     using System.Collections.Generic;
-    
-public partial class Items_Type
-{
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public Items_Type()
+    public partial class Items_Type
     {
 
-        this.Items = new HashSet<Item>();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Items_Type()
+        {
 
+            this.Items = new HashSet<Item>();
+
+        }
+
+
+        public int IdType { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+        public virtual ICollection<Item> Items { get; set; }
+
+        public string Name { get; set; }
     }
-
-
-    public int IdType { get; set; }
-
-    public string Name { get; set; }
-
-
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<Item> Items { get; set; }
-
-}
 
 }
