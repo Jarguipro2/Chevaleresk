@@ -30,8 +30,7 @@ namespace EFA_DEMO
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/jquery.rprogessbar.min.css"));
+                      "~/Content/site.css"));
         }
     }
 }
