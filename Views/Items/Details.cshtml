@@ -5,7 +5,7 @@
 }
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="~/Content/fontawesome-stars.css" rel="stylesheet">
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <h2 style="font-style: italic">
     <u>
         <b>
@@ -177,7 +177,115 @@
 
         <div class="container">
             <div class="be-comment-block">
-                <h1 class="comments-title">Commentaire (@Model.Items_Reviews.Count)</h1>
+                @if (ViewBag.HasReview)
+                {
+                    <table id="reviewHistogram">
+                        <tbody>
+                            <tr aria-label="@ViewBag.FiveStarReviewPercentage % des commentaires ont 5 étoiles" class="histogram-row">
+                                <td>
+                                    <span >
+                                        <a title="@ViewBag.FiveStarReviewPercentage % des commentaires ont 5 étoiles">
+                                            5 étoiles   
+                                        </a>
+                                    </span>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span >
+                                        <a aria-disabled="true" title="@ViewBag.FiveStarReviewPercentage des commentaires ont 5 étoiles">
+
+                                                @ViewBag.FiveStarReviewPercentage%
+
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr aria-label="@ViewBag.FourStarReviewPercentage % des commentaires ont 4 étoiles" class="histogram-row">
+                                <td>
+                                    <span>
+                                        <a title="@ViewBag.FourStarReviewPercentage des commentaires ont 4 étoiles">
+                                            4 étoiles
+                                        </a>
+                                    </span>
+
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span >
+                                        <a aria-disabled="true" title="@ViewBag.FourStarReviewPercentage % des commentaires ont 4 étoiles">
+
+                                            @ViewBag.FourStarReviewPercentage%
+
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr aria-label="@ViewBag.ThreeStarReviewPercentage % des commentaires ont 3 étoiles" class="histogram-row">
+                                <td>
+                                    <span >
+                                        <a title="@ViewBag.ThreeStarReviewPercentage % des commentaires ont 3 étoiles">
+                                            3 étoiles
+                                        </a>
+                                    </span>
+
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span>
+                                        <a aria-disabled="true" title="@ViewBag.ThreeStarReviewPercentage % des commentaires ont 3 étoiles">
+
+                                            @ViewBag.ThreeStarReviewPercentage%
+
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr aria-label="@ViewBag.TwoStarReviewPercentage % des commentaires ont 2 étoiles" class="histogram-row">
+                                <td>
+                                    <span>
+                                        <a title="@ViewBag.TwoStarReviewPercentage % des commentaires ont 2 étoiles">
+                                            2 étoiles
+                                        </a>
+                                    </span>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span>
+                                        <a aria-disabled="true" title="@ViewBag.threeStarReviewPercentage % des commentaires ont 2 étoiles">
+                                            @ViewBag.threeStarReviewPercentage%
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr aria-label="@ViewBag.OneStarReviewPercentage % des commentaires ont 1 étoiles" class="histogram-row">
+                                <td>
+                                    <span>
+                                        <a title="@ViewBag.OneStarReviewPercentage % des commentaires ont 1 étoiles">
+                                            1 étoile
+                                        </a>
+                                    </span>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span >
+                                        <a aria-disabled="true" title="@ViewBag.OneStarReviewPercentage % des commentaires ont 1 étoiles">
+
+                                            @ViewBag.OneStarReviewPercentage%
+
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+
+                <h1 class="comments-title">Commentaires (@Model.Items_Reviews.Count)</h1>
                 @foreach (var review in Model.Items_Reviews)
                 {
                     <div class="be-comment">
@@ -212,7 +320,6 @@
                             }
 
                             <p class="be-comment-text">
-
                                 @review.Review
                             </p>
                         </div>
@@ -253,7 +360,7 @@
         <script src="~/Scripts/jquery.barrating.min.js"></script>
         <script type="text/javascript">
 
-            $('.ratingBar').each(function (index, rating) {
+            $('.ratingBar').each(function (_, rating) {
                 var $rating = $(rating);
                 $rating.barrating({
                     theme: 'fontawesome-stars',
@@ -262,6 +369,7 @@
             });
 
             $(() => {
+                'use strict';
                 $(".selectQuantity").each((_, elem) => {
                     $elem = $(elem)
                     console.log($elem)
@@ -303,6 +411,19 @@
                 $(".money").each((_, elem) => {
                     $(elem).simpleMoneyFormat();
                 });
+
+                //For % of each star
+                
+                $("[role=progressbar]").each((_, elem) => {
+                    let $elem = $(elem);
+                    let val = $elem.attr('value') / 10
+                    val = Math.ceil(val);
+
+                    $elem.barrating({
+                        theme: 'bars-1to10',
+                        initialRating: val
+                    });
+                })
             })
 
         </script>

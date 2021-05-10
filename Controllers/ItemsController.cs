@@ -94,6 +94,34 @@ namespace EFA_DEMO.Controllers
             else
                 ViewBag.currentUserOwnThisItem = false;
             TempData["item"] = item;
+            int reviewsCount = item.Items_Reviews.Count;
+            if (reviewsCount != 0)
+            {
+                ViewBag.HasReview = true;
+                
+                ViewBag.FiveStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 5)) / reviewsCount * 100;
+                if (double.IsNaN(ViewBag.FiveStarReviewPercentage))
+                    ViewBag.FiveStarReviewPercentage = 0;
+
+                ViewBag.FourStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 4)) / reviewsCount * 100;
+                if (double.IsNaN(ViewBag.FourStarReviewPercentage))
+                    ViewBag.FourStarReviewPercentage = 0;
+
+                ViewBag.ThreeStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 3)) / reviewsCount * 100;
+                if (double.IsNaN(ViewBag.ThreeStarReviewPercentage))
+                    ViewBag.ThreeStarReviewPercentage = 0;
+
+                ViewBag.TwoStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 2)) / reviewsCount * 100;
+                if (double.IsNaN(ViewBag.TwoStarReviewPercentage))
+                    ViewBag.TwoStarReviewPercentage = 0;
+
+                ViewBag.OneStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 1)) / reviewsCount * 100;
+                if (double.IsNaN(ViewBag.OneStarReviewPercentage))
+                    ViewBag.OneStarReviewPercentage = 0;
+            }
+            else
+                ViewBag.HasReview = false;
+                
             return View(item);
         }
         [UserAccess, HttpPost]
