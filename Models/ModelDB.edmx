@@ -4,221 +4,228 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Items">
-          <Key>
-            <PropertyRef Name="IdObject" />
-          </Key>
-          <Property Name="IdObject" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="StockQuantity" Type="int" Nullable="false" />
-          <Property Name="Price" Type="float" Nullable="false" />
-          <Property Name="PictureGUID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="IdType" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Items_Properties">
-          <Key>
-            <PropertyRef Name="IdProperty" />
-            <PropertyRef Name="IdObject" />
-          </Key>
-          <Property Name="IdProperty" Type="int" Nullable="false" />
-          <Property Name="IdObject" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Items_Reviews">
-          <Key>
-            <PropertyRef Name="IdReview" />
-          </Key>
-          <Property Name="IdReview" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdObject" Type="int" Nullable="false" />
-          <Property Name="IdPlayer" Type="int" Nullable="false" />
-          <Property Name="Star" Type="int" Nullable="false" />
-          <Property Name="Review" Type="varchar" MaxLength="2048" />
-        </EntityType>
-        <EntityType Name="Items_Type">
-          <Key>
-            <PropertyRef Name="IdType" />
-          </Key>
-          <Property Name="IdType" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="10" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Logs">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdPlayer" Type="int" Nullable="false" />
-          <Property Name="LoginDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Properties">
-          <Key>
-            <PropertyRef Name="IdProperty" />
-          </Key>
-          <Property Name="IdProperty" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Value" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="User_Inventory">
-          <Key>
-            <PropertyRef Name="IdPlayer" />
-            <PropertyRef Name="IdObject" />
-          </Key>
-          <Property Name="IdPlayer" Type="int" Nullable="false" />
-          <Property Name="IdObject" Type="int" Nullable="false" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="IdPlayer" />
-          </Key>
-          <Property Name="IdPlayer" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="60" Nullable="false" />
-          <Property Name="FullName" Type="varchar" MaxLength="70" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="70" Nullable="false" />
-          <Property Name="Money" Type="int" Nullable="false" />
-          <Property Name="Admin" Type="bit" Nullable="false" />
-          <Property Name="AvatarId" Type="nvarchar" MaxLength="68" />
-        </EntityType>
-        <Association Name="FK_Objects_Objects_Type">
-          <End Role="Items_Type" Type="Self.Items_Type" Multiplicity="1" />
-          <End Role="Items" Type="Self.Items" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items_Type">
-              <PropertyRef Name="IdType" />
-            </Principal>
-            <Dependent Role="Items">
-              <PropertyRef Name="IdType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Objects_Properties_Objects">
-          <End Role="Items" Type="Self.Items" Multiplicity="1" />
-          <End Role="Items_Properties" Type="Self.Items_Properties" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="IdObject" />
-            </Principal>
-            <Dependent Role="Items_Properties">
-              <PropertyRef Name="IdObject" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Objects_Properties_Properties">
-          <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
-          <End Role="Items_Properties" Type="Self.Items_Properties" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Properties">
-              <PropertyRef Name="IdProperty" />
-            </Principal>
-            <Dependent Role="Items_Properties">
-              <PropertyRef Name="IdProperty" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Objects_Reviews_Objects">
-          <End Role="Items" Type="Self.Items" Multiplicity="1" />
-          <End Role="Items_Reviews" Type="Self.Items_Reviews" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="IdObject" />
-            </Principal>
-            <Dependent Role="Items_Reviews">
-              <PropertyRef Name="IdObject" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Objects_Reviews_Players">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Items_Reviews" Type="Self.Items_Reviews" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="IdPlayer" />
-            </Principal>
-            <Dependent Role="Items_Reviews">
-              <PropertyRef Name="IdPlayer" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Player_Inventory_Objects">
-          <End Role="Items" Type="Self.Items" Multiplicity="1" />
-          <End Role="User_Inventory" Type="Self.User_Inventory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="IdObject" />
-            </Principal>
-            <Dependent Role="User_Inventory">
-              <PropertyRef Name="IdObject" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Player_Inventory_Players">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="User_Inventory" Type="Self.User_Inventory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="IdPlayer" />
-            </Principal>
-            <Dependent Role="User_Inventory">
-              <PropertyRef Name="IdPlayer" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PlayerLogin">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Logs" Type="Self.Logs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="IdPlayer" />
-            </Principal>
-            <Dependent Role="Logs">
-              <PropertyRef Name="IdPlayer" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="DBModelStoreContainer">
-          <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Items_Properties" EntityType="Self.Items_Properties" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Items_Reviews" EntityType="Self.Items_Reviews" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Items_Type" EntityType="Self.Items_Type" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Properties" EntityType="Self.Properties" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="User_Inventory" EntityType="Self.User_Inventory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Objects_Objects_Type" Association="Self.FK_Objects_Objects_Type">
-            <End Role="Items_Type" EntitySet="Items_Type" />
-            <End Role="Items" EntitySet="Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Objects_Properties_Objects" Association="Self.FK_Objects_Properties_Objects">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="Items_Properties" EntitySet="Items_Properties" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Objects_Properties_Properties" Association="Self.FK_Objects_Properties_Properties">
-            <End Role="Properties" EntitySet="Properties" />
-            <End Role="Items_Properties" EntitySet="Items_Properties" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Objects_Reviews_Objects" Association="Self.FK_Objects_Reviews_Objects">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="Items_Reviews" EntitySet="Items_Reviews" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Objects_Reviews_Players" Association="Self.FK_Objects_Reviews_Players">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Items_Reviews" EntitySet="Items_Reviews" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Player_Inventory_Objects" Association="Self.FK_Player_Inventory_Objects">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="User_Inventory" EntitySet="User_Inventory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Player_Inventory_Players" Association="Self.FK_Player_Inventory_Players">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="User_Inventory" EntitySet="User_Inventory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PlayerLogin" Association="Self.FK_PlayerLogin">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Logs" EntitySet="Logs" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="DBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DBModelStoreContainer">
+    <EntitySet Name="Items" EntityType="DBModel.Store.Items" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Items_Reviews" EntityType="DBModel.Store.Items_Reviews" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Items_Type" EntityType="DBModel.Store.Items_Type" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Logs" EntityType="DBModel.Store.Logs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Properties" EntityType="DBModel.Store.Properties" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="User_Inventory" EntityType="DBModel.Store.User_Inventory" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="DBModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Items_Properties" EntityType="DBModel.Store.Items_Properties" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Objects_Objects_Type" Association="DBModel.Store.FK_Objects_Objects_Type">
+      <End Role="Items_Type" EntitySet="Items_Type" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Objects_Reviews_Objects" Association="DBModel.Store.FK_Objects_Reviews_Objects">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="Items_Reviews" EntitySet="Items_Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Player_Inventory_Objects" Association="DBModel.Store.FK_Player_Inventory_Objects">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="User_Inventory" EntitySet="User_Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Objects_Reviews_Players" Association="DBModel.Store.FK_Objects_Reviews_Players">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Items_Reviews" EntitySet="Items_Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PlayerLogin" Association="DBModel.Store.FK_PlayerLogin">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Logs" EntitySet="Logs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Player_Inventory_Players" Association="DBModel.Store.FK_Player_Inventory_Players">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="User_Inventory" EntitySet="User_Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Items_Properties_Items" Association="DBModel.Store.FK_Items_Properties_Items">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="Items_Properties" EntitySet="Items_Properties" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Items_Properties_Properties" Association="DBModel.Store.FK_Items_Properties_Properties">
+      <End Role="Properties" EntitySet="Properties" />
+      <End Role="Items_Properties" EntitySet="Items_Properties" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Items">
+    <Key>
+      <PropertyRef Name="IdObject" />
+    </Key>
+    <Property Name="IdObject" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="StockQuantity" Type="int" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="PictureGUID" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="IdType" Type="int" Nullable="false" />
+    <Property Name="Efficacite" Type="int" Nullable="true" />
+    <Property Name="Genre" Type="int" Nullable="true" />
+    <Property Name="Description" Type="varchar" Nullable="true" MaxLength="200" />
+    <Property Name="Matiere" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Poid" Type="int" Nullable="true" />
+    <Property Name="Taille" Type="int" Nullable="true" />
+    <Property Name="Effet" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Duree" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Items_Reviews">
+    <Key>
+      <PropertyRef Name="IdReview" />
+    </Key>
+    <Property Name="IdReview" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdObject" Type="int" Nullable="false" />
+    <Property Name="IdPlayer" Type="int" Nullable="false" />
+    <Property Name="Star" Type="int" Nullable="false" />
+    <Property Name="Review" Type="varchar" Nullable="true" MaxLength="2048" />
+  </EntityType>
+  <EntityType Name="Items_Type">
+    <Key>
+      <PropertyRef Name="IdType" />
+    </Key>
+    <Property Name="IdType" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Logs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdPlayer" Type="int" Nullable="false" />
+    <Property Name="LoginDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Properties">
+    <Key>
+      <PropertyRef Name="IdProperty" />
+    </Key>
+    <Property Name="IdProperty" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Value" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="User_Inventory">
+    <Key>
+      <PropertyRef Name="IdPlayer" />
+      <PropertyRef Name="IdObject" />
+    </Key>
+    <Property Name="IdPlayer" Type="int" Nullable="false" />
+    <Property Name="IdObject" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="IdPlayer" />
+    </Key>
+    <Property Name="IdPlayer" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="60" />
+    <Property Name="FullName" Type="varchar" Nullable="false" MaxLength="70" />
+    <Property Name="Email" Type="varchar" Nullable="false" MaxLength="70" />
+    <Property Name="Money" Type="int" Nullable="false" />
+    <Property Name="Admin" Type="bit" Nullable="false" />
+    <Property Name="AvatarId" Type="nvarchar" Nullable="true" MaxLength="68" />
+  </EntityType>
+  <EntityType Name="Items_Properties">
+    <Key>
+      <PropertyRef Name="Items_IdObject" />
+      <PropertyRef Name="Properties_IdProperty" />
+    </Key>
+    <Property Name="Items_IdObject" Type="int" Nullable="false" />
+    <Property Name="Properties_IdProperty" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Objects_Objects_Type">
+    <End Role="Items_Type" Type="DBModel.Store.Items_Type" Multiplicity="1" />
+    <End Role="Items" Type="DBModel.Store.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items_Type">
+        <PropertyRef Name="IdType" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="IdType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Objects_Reviews_Objects">
+    <End Role="Items" Type="DBModel.Store.Items" Multiplicity="1" />
+    <End Role="Items_Reviews" Type="DBModel.Store.Items_Reviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="IdObject" />
+      </Principal>
+      <Dependent Role="Items_Reviews">
+        <PropertyRef Name="IdObject" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Player_Inventory_Objects">
+    <End Role="Items" Type="DBModel.Store.Items" Multiplicity="1" />
+    <End Role="User_Inventory" Type="DBModel.Store.User_Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="IdObject" />
+      </Principal>
+      <Dependent Role="User_Inventory">
+        <PropertyRef Name="IdObject" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Objects_Reviews_Players">
+    <End Role="Users" Type="DBModel.Store.Users" Multiplicity="1" />
+    <End Role="Items_Reviews" Type="DBModel.Store.Items_Reviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="IdPlayer" />
+      </Principal>
+      <Dependent Role="Items_Reviews">
+        <PropertyRef Name="IdPlayer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PlayerLogin">
+    <End Role="Users" Type="DBModel.Store.Users" Multiplicity="1" />
+    <End Role="Logs" Type="DBModel.Store.Logs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="IdPlayer" />
+      </Principal>
+      <Dependent Role="Logs">
+        <PropertyRef Name="IdPlayer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Player_Inventory_Players">
+    <End Role="Users" Type="DBModel.Store.Users" Multiplicity="1" />
+    <End Role="User_Inventory" Type="DBModel.Store.User_Inventory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="IdPlayer" />
+      </Principal>
+      <Dependent Role="User_Inventory">
+        <PropertyRef Name="IdPlayer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Items_Properties_Items">
+    <End Role="Items" Type="DBModel.Store.Items" Multiplicity="1" />
+    <End Role="Items_Properties" Type="DBModel.Store.Items_Properties" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="IdObject" />
+      </Principal>
+      <Dependent Role="Items_Properties">
+        <PropertyRef Name="Items_IdObject" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Items_Properties_Properties">
+    <End Role="Items_Properties" Type="DBModel.Store.Items_Properties" Multiplicity="*" />
+    <End Role="Properties" Type="DBModel.Store.Properties" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Properties">
+        <PropertyRef Name="IdProperty" />
+      </Principal>
+      <Dependent Role="Items_Properties">
+        <PropertyRef Name="Properties_IdProperty" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -230,12 +237,20 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="StockQuantity" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
-          <Property Name="PictureGUID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PictureGUID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Items_Type" Relationship="Self.FK_Objects_Objects_Type" FromRole="Items" ToRole="Items_Type" />
           <NavigationProperty Name="Items_Reviews" Relationship="Self.FK_Objects_Reviews_Objects" FromRole="Items" ToRole="Items_Reviews" />
           <NavigationProperty Name="User_Inventory" Relationship="Self.FK_Player_Inventory_Objects" FromRole="Items" ToRole="User_Inventory" />
           <NavigationProperty Name="Properties" Relationship="Self.Items_Properties" FromRole="Items" ToRole="Properties" />
+          <Property Name="Efficacite" Type="Int32" />
+          <Property Name="Genre" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Matiere" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Poid" Type="Int32" />
+          <Property Name="Taille" Type="Int32" />
+          <Property Name="Effet" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Duree" Type="Int32" />
         </EntityType>
         <EntityType Name="Items_Reviews">
           <Key>
@@ -419,91 +434,98 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DBModelStoreContainer" CdmEntityContainer="DBEntities2">
-          <EntitySetMapping Name="Items">
-            <EntityTypeMapping TypeName="DBModel.Item">
-              <MappingFragment StoreEntitySet="Items">
-                <ScalarProperty Name="IdObject" ColumnName="IdObject" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="StockQuantity" ColumnName="StockQuantity" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="PictureGUID" ColumnName="PictureGUID" />
-                <ScalarProperty Name="IdType" ColumnName="IdType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Items_Reviews">
-            <EntityTypeMapping TypeName="DBModel.Items_Reviews">
-              <MappingFragment StoreEntitySet="Items_Reviews">
-                <ScalarProperty Name="IdReview" ColumnName="IdReview" />
-                <ScalarProperty Name="IdObject" ColumnName="IdObject" />
-                <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
-                <ScalarProperty Name="Star" ColumnName="Star" />
-                <ScalarProperty Name="Review" ColumnName="Review" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Items_Type">
-            <EntityTypeMapping TypeName="DBModel.Items_Type">
-              <MappingFragment StoreEntitySet="Items_Type">
-                <ScalarProperty Name="IdType" ColumnName="IdType" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Logs">
-            <EntityTypeMapping TypeName="DBModel.Log">
-              <MappingFragment StoreEntitySet="Logs">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
-                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Properties">
-            <EntityTypeMapping TypeName="DBModel.Property">
-              <MappingFragment StoreEntitySet="Properties">
-                <ScalarProperty Name="IdProperty" ColumnName="IdProperty" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="User_Inventory">
-            <EntityTypeMapping TypeName="DBModel.User_Inventory">
-              <MappingFragment StoreEntitySet="User_Inventory">
-                <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
-                <ScalarProperty Name="IdObject" ColumnName="IdObject" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="DBModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Money" ColumnName="Money" />
-                <ScalarProperty Name="Admin" ColumnName="Admin" />
-                <ScalarProperty Name="AvatarId" ColumnName="AvatarId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="Items_Properties" TypeName="DBModel.Items_Properties" StoreEntitySet="Items_Properties">
-            <EndProperty Name="Items">
-              <ScalarProperty Name="IdObject" ColumnName="IdObject" />
-            </EndProperty>
-            <EndProperty Name="Properties">
-              <ScalarProperty Name="IdProperty" ColumnName="IdProperty" />
-            </EndProperty>
-          </AssociationSetMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DBModelStoreContainer" CdmEntityContainer="DBEntities2">
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="IsTypeOf(DBModel.Item)">
+        <MappingFragment StoreEntitySet="Items">
+          <ScalarProperty Name="IdObject" ColumnName="IdObject" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="StockQuantity" ColumnName="StockQuantity" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="PictureGUID" ColumnName="PictureGUID" />
+          <ScalarProperty Name="IdType" ColumnName="IdType" />
+          <ScalarProperty Name="Efficacite" ColumnName="Efficacite" />
+          <ScalarProperty Name="Genre" ColumnName="Genre" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Matiere" ColumnName="Matiere" />
+          <ScalarProperty Name="Poid" ColumnName="Poid" />
+          <ScalarProperty Name="Taille" ColumnName="Taille" />
+          <ScalarProperty Name="Effet" ColumnName="Effet" />
+          <ScalarProperty Name="Duree" ColumnName="Duree" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items_Reviews">
+      <EntityTypeMapping TypeName="IsTypeOf(DBModel.Items_Reviews)">
+        <MappingFragment StoreEntitySet="Items_Reviews">
+          <ScalarProperty Name="IdReview" ColumnName="IdReview" />
+          <ScalarProperty Name="IdObject" ColumnName="IdObject" />
+          <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
+          <ScalarProperty Name="Star" ColumnName="Star" />
+          <ScalarProperty Name="Review" ColumnName="Review" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items_Type">
+      <EntityTypeMapping TypeName="IsTypeOf(DBModel.Items_Type)">
+        <MappingFragment StoreEntitySet="Items_Type">
+          <ScalarProperty Name="IdType" ColumnName="IdType" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Logs">
+      <EntityTypeMapping TypeName="IsTypeOf(DBModel.Log)">
+        <MappingFragment StoreEntitySet="Logs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
+          <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Properties">
+      <EntityTypeMapping TypeName="IsTypeOf(DBModel.Property)">
+        <MappingFragment StoreEntitySet="Properties">
+          <ScalarProperty Name="IdProperty" ColumnName="IdProperty" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User_Inventory">
+      <EntityTypeMapping TypeName="IsTypeOf(DBModel.User_Inventory)">
+        <MappingFragment StoreEntitySet="User_Inventory">
+          <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
+          <ScalarProperty Name="IdObject" ColumnName="IdObject" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(DBModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="IdPlayer" ColumnName="IdPlayer" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Money" ColumnName="Money" />
+          <ScalarProperty Name="Admin" ColumnName="Admin" />
+          <ScalarProperty Name="AvatarId" ColumnName="AvatarId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="Items_Properties" TypeName="DBModel.Items_Properties" StoreEntitySet="Items_Properties">
+      <EndProperty Name="Items">
+        <ScalarProperty Name="IdObject" ColumnName="Items_IdObject" />
+      </EndProperty>
+      <EndProperty Name="Properties">
+        <ScalarProperty Name="IdProperty" ColumnName="Properties_IdProperty" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -517,7 +539,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
       </DesignerInfoPropertySet>
     </Options>

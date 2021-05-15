@@ -214,3 +214,39 @@ textarea {
     left: 0.65em;
     top: 30%;
 }
+.thumbnailContainer {
+    text-align: center;
+    width: 180px;
+    cursor: pointer;
+}
+
+.thumbnailHeader {
+    margin: auto;
+    width: 95%;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.thumbnailListContainer {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: repeat(auto-fill, 185px);
+}
+.histogram-row{
+
+}
+
+.oneToTen {
+    width: 210px;
+    position: absolute;
+    margin: 0px 0 0 -105px;
+    left: 50%;
+}
+}
