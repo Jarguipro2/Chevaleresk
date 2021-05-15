@@ -11,7 +11,7 @@
     @Html.ActionLink("Tri par type", "Index", new { sortOrder = ViewBag.TypeSortParm })
     @Html.TextBox("sortOrder", "", new { @class = "form-control" })
 
-    <input type="submit" value="Recherche" class="form-control btn-default" />
+    <input type="submit" value="Recherche" class="form-control btn-default" />  @Html.ActionLink("Vider la sélection", "Index", new { sortOrder = ViewBag.NameSortParm = "" })
 </div>
 <br />
 }
