@@ -6,20 +6,19 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="~/Content/fontawesome-stars.css" rel="stylesheet">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<h2 style="font-style: italic">
-    <u>
+<h2 style="font-style: italic; padding-left: 15px">
+    
         <b>
             @Html.DisplayFor(model => model.Name)
         </b>
-    </u>
-</h2>
-<div>
+   
     @if (OnlineUsers.CurrentUserIsAdmin())
     {
-        @Helper.GlyphiconAction("../Items/Edit/" + Model.IdObject, "glyphicon glyphicon-cog", "Editer l'objet")
-        @Helper.GlyphiconAction("../Items/Delete/" + Model.IdObject, "glyphicon glyphicon-trash", "Supprimer l'objet")
+        @Helper.GlyphiconAction("../Items/Edit/" + Model.IdObject, "glyphicon glyphicon-cog aquaStyle", "Editer l'objet")
+        @Helper.GlyphiconAction("../Items/Delete/" + Model.IdObject, "glyphicon glyphicon-trash aquaStyle", "Supprimer l'objet")
     }
-</div>
+</h2>
+
 
 <div class="container body-content">
     <table>
@@ -32,7 +31,7 @@
                     <div>
                         <dl class="dl-horizontal">
                             <dt>
-                                @Html.DisplayNameFor(model => model.StockQuantity)
+                                @Html.DisplayNameFor(model => model.StockQuantity):
                             </dt>
 
                             <dd>
@@ -40,7 +39,7 @@
                             </dd>
 
                             <dt>
-                                @Html.DisplayNameFor(model => model.Price)
+                                @Html.DisplayNameFor(model => model.Price):
                             </dt>
 
                             <dd>
@@ -48,26 +47,25 @@
                             </dd>
 
                             <dt>
-                                @Html.DisplayNameFor(model => model.PictureGUID)
-                            </dt>
-
-                            <dd>
-                                @Html.DisplayFor(model => model.PictureGUID)
-                            </dd>
-
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Items_Type.Name)
+                                Type d'arme:
                             </dt>
 
                             <dd>
                                 @Html.DisplayFor(model => model.Items_Type.Name)
                             </dd>
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Description)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.Description)
-                            </dd>
+                            <br />
+
+                            @if (Model.Description != null)
+                            {
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Description):
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Description)
+                                </dd>
+                            }
+
+                            <br />
                             @switch (Model.IdType)
                             {
                                 case 0:
@@ -149,7 +147,7 @@
         </tbody>
     </table>
     <p>
-        @if (OnlineUsers.CurrentUser != null)
+        @if (OnlineUsers.CurrentUser != null && Model.StockQuantity > 0)
         {
             using (Html.BeginForm("Add", "ShoppingCart", FormMethod.Post))
             {

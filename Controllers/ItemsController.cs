@@ -233,7 +233,19 @@ namespace EFA_DEMO.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Item item = db.Items.Find(id);
-            db.Items.Remove(item);
+
+            var inventory = db.User_Inventory.Where(c => c.IdObject == item.IdObject).FirstOrDefault();
+
+            if (inventory == null)
+            {
+                item.RemoveAvatar();
+                db.Items.Remove(item);
+            }
+            else
+            {
+                item.StockQuantity = 0;
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -246,5 +258,8 @@ namespace EFA_DEMO.Controllers
             }
             base.Dispose(disposing);
         }
+
+        
+
     }
 }
