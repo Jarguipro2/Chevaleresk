@@ -183,19 +183,28 @@
                         <tbody>
                             <tr aria-label="@ViewBag.FiveStarReviewPercentage % des commentaires ont 5 étoiles" class="histogram-row">
                                 <td>
-                                    <span >
+                                    <span>
                                         <a title="@ViewBag.FiveStarReviewPercentage % des commentaires ont 5 étoiles">
-                                            5 étoiles   
+                                            5 étoiles
                                         </a>
                                     </span>
                                     <span></span>
                                 </td>
                                 <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="5">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
                                     <span></span>
-                                    <span >
+                                    <span>
                                         <a aria-disabled="true" title="@ViewBag.FiveStarReviewPercentage des commentaires ont 5 étoiles">
 
-                                                @ViewBag.FiveStarReviewPercentage%
+                                            @ViewBag.FiveStarReviewPercentage%
 
                                         </a>
                                     </span>
@@ -212,6 +221,15 @@
                                     <span></span>
                                 </td>
                                 <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="4">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
                                     <span></span>
                                     <span >
                                         <a aria-disabled="true" title="@ViewBag.FourStarReviewPercentage % des commentaires ont 4 étoiles">
@@ -224,13 +242,22 @@
                             </tr>
                             <tr aria-label="@ViewBag.ThreeStarReviewPercentage % des commentaires ont 3 étoiles" class="histogram-row">
                                 <td>
-                                    <span >
+                                    <span>
                                         <a title="@ViewBag.ThreeStarReviewPercentage % des commentaires ont 3 étoiles">
                                             3 étoiles
                                         </a>
                                     </span>
 
                                     <span></span>
+                                </td>
+                                <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="3">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
                                 </td>
                                 <td>
                                     <span></span>
@@ -253,6 +280,15 @@
                                     <span></span>
                                 </td>
                                 <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="2">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
                                     <span></span>
                                     <span>
                                         <a aria-disabled="true" title="@ViewBag.threeStarReviewPercentage % des commentaires ont 2 étoiles">
@@ -271,8 +307,17 @@
                                     <span></span>
                                 </td>
                                 <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="1">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
                                     <span></span>
-                                    <span >
+                                    <span>
                                         <a aria-disabled="true" title="@ViewBag.OneStarReviewPercentage % des commentaires ont 1 étoiles">
 
                                             @ViewBag.OneStarReviewPercentage%
@@ -298,7 +343,7 @@
 
                             <span class="be-comment-name">
                                 <a href="blog-detail-2.html">@review.User.FullName</a>
-                                <select class="ratingBar" data-current-rating="@review.Star">
+                                <select class="ratingBar" data-readonly="true" data-current-rating="@review.Star">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -362,9 +407,14 @@
 
             $('.ratingBar').each(function (_, rating) {
                 var $rating = $(rating);
+                let readonly = $rating.attr('data-readonly');
+                console.log(readonly);
+                if (readonly == undefined)
+                    readonly = false;
                 $rating.barrating({
                     theme: 'fontawesome-stars',
-                    initialRating: $rating.attr('data-current-rating')
+                    initialRating: $rating.attr('data-current-rating'),
+                    readonly:readonly
                 });
             });
 
