@@ -66,6 +66,10 @@ textarea {
     margin-left: 4px !important;
     color: lightgray;
 }
+.aquaStyle {
+    color: darkslategrey;
+    font-size: 25px !important;
+}
 .lightgreen {
     color: lightgreen;
     font-size: 75px !important;
