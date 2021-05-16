@@ -371,13 +371,13 @@
             $(() => {
                 'use strict';
                 $(".selectQuantity").each((_, elem) => {
-                    $elem = $(elem)
+                    let $elem = $(elem)
                     console.log($elem)
-                    $val = $elem.attr("data-old-value")//pour l'Initialisation
-                    $firstTime = true
+                    let $val = $elem.attr("data-old-value")//pour l'Initialisation
+                    let $firstTime = true
                     if ($firstTime) {
                         $elem.children().each((index, option) => {
-                            $option = $(option)
+                            let $option = $(option)
                             if ($option.val() == $val) {
                                 $option.attr("selected", "selected")
                             }
@@ -392,8 +392,8 @@
                     }
 
                     $($elem).change((evt) => {
-                        $elem = $(evt.currentTarget) //select
-                        $parent = $elem.parent() //container
+                        let $elem = $(evt.currentTarget) //select
+                        let $parent = $elem.parent() //container
                         if ($elem.val() == "10+") {
                             $elem.remove()
                             $(`<input style="margin-left: 45%" class='selectQuantity form-control quantity-input' maxlength='3' name="quantityReceive" id='${$elem.attr('id')}' value='${$elem.attr("data-old-value")}'/>`)
