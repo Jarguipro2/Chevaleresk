@@ -6,7 +6,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="~/Content/fontawesome-stars.css" rel="stylesheet">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<h2 style="font-style: italic">
+<h2 style="font-style: italic; padding-left: 15px">
     
         <b>
             @Html.DisplayFor(model => model.Name)
@@ -18,9 +18,7 @@
         @Helper.GlyphiconAction("../Items/Delete/" + Model.IdObject, "glyphicon glyphicon-trash aquaStyle", "Supprimer l'objet")
     }
 </h2>
-<div>
-   
-</div>
+
 
 <div class="container body-content">
     <table>
@@ -56,12 +54,17 @@
                                 @Html.DisplayFor(model => model.Items_Type.Name)
                             </dd>
                             <br />
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Description):
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.Description)
-                            </dd>
+
+                            @if (Model.Description != null)
+                            {
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Description):
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Description)
+                                </dd>
+                            }
+
                             <br />
                             @switch (Model.IdType)
                             {
