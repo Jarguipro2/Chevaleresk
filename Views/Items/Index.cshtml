@@ -1,34 +1,94 @@
 ﻿@model IEnumerable<EFA_DEMO.Models.Item>
 
 @{ ViewBag.Title = "Index"; }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<link href="~/Content/fontawesome-stars.css" rel="stylesheet">
 
 <h2 style="font-style: italic">Marché</h2>
-@using (Html.BeginForm("Index", "Items", FormMethod.Get))
-{
-<div>
-    @Html.ActionLink("Tri par nom", "Index", new { sortOrder = ViewBag.NameSortParm }) |
-    @Html.ActionLink("Tri par prix", "Index", new { sortOrder = ViewBag.PriceSortParm }) |
-    @Html.ActionLink("Tri par type", "Index", new { sortOrder = ViewBag.TypeSortParm })
-    @Html.TextBox("sortOrder", "", new { @class = "form-control" })
-
-    <input type="submit" value="Recherche" class="form-control btn-default" />  @Html.ActionLink("Vider la sélection", "Index", new { sortOrder = ViewBag.NameSortParm = "" })
-</div>
-<br />
-}
-
-<div class='thumbnailListContainer'>
-    @foreach (var item in Model)
-    {
-        if (item.StockQuantity > 0)
+<div class="duoContainer">
+    <div class="leftForm">
+        @using (Html.BeginForm("Index", "Items", FormMethod.Get))
         {
-            <div class='thumbnailContainer'>
-                <div style="font-style: italic">
-                    <b>@item.Name</b>
-                </div>
-                <a href="@Url.Action("Details", "Items", new { id = item.IdObject })">
-                    <img style="height: 120px; width: 120px" src="@item.GetAvatarURL().Substring(1)" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
-                </a>
+        <div style="display: block;">
+            <div>
+                <a href="/?sortOrder=@ViewBag.NameSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par nom</a>
             </div>
+            <div>
+                <a href="/?sortOrder=@ViewBag.PriceSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par prix</a>            
+            </div>
+            <div>
+                <a href="/?sortOrder=@ViewBag.TypeSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par type</a>            
+            </div>
+            <div class="d-md-block">
+                <button class="buttonReveal" data-toggle="collapse" data-target="#pricefilter" type="button">
+                    <span class="facetName">Prix</span>
+                </button>
+                <div id="pricefilter" class="collapse filterSection">
+                    @Html.TextBox("filterByPriceMin", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "min" })
+                    @Html.TextBox("filterByPriceMax", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "max" })
+                </div>
+                <button class="buttonReveal" data-toggle="collapse" data-target="#typefilter" type="button">
+                    <span class="facetName">Type</span>
+                </button>
+                <div id="typefilter" class="collapse filterSection">
+                    @Html.DropDownList("filterByType", new SelectList(new Dictionary<string, string>() { { "Type d'item", "" }, { "Armes", "Arme" }, { "Armures", "Armure" }, { "Potions", "Potion" }, { "Ressources", "Ressource" } }, "Value", "Key"), new { currentFilter = ViewBag.CurrentFilter, @class = "form-control" })
+                </div>
+                <button class="buttonReveal" data-toggle="collapse" data-target="#reviewfilter" type="button">
+                    <span class="facetName">Évaluations</span>
+                </button>
+                <div id="reviewfilter" class="collapse filterSection">
+                    <select id="ratingStars" name="filterByReview" data-current-rating="@ViewBag.ReviewSearch">
+                        <option value=""></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+
+
+            @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Recherche par nom" })
+
+            <input type="submit" value="Recherche" class="form-control btn-default" />  @Html.ActionLink("Vider la sélection", "Index", new { sortOrder = ViewBag.NameSortParm = "" })
+        </div>
+            <br />
         }
-    }
+    </div>
+    
+    <div class='thumbnailListContainer'>
+        @foreach (var item in Model)
+        {
+            if (item.StockQuantity > 0)
+            {
+                <div class='thumbnailContainer'>
+                    <div style="font-style: italic">
+                        <b>@item.Name</b>
+                    </div>
+                    <a href="@Url.Action("Details", "Items", new { id = item.IdObject })">
+                        <img style="height: 120px; width: 120px" src="@item.GetAvatarURL().Substring(1)" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                    </a>
+                </div>
+            }
+        }
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.barrating.min.js"></script>
+    <script type="text/javascript">
+        $(() => {
+            $('#ratingStars').each(function (_, rating) {
+                var $rating = $(rating);
+                console.log(rating);
+                $rating.barrating({
+                    theme: 'fontawesome-stars',
+                    initialRating: $rating.attr('data-current-rating')
+                });
+            });
+        })
+
+    </script>
+}

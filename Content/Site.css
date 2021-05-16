@@ -239,6 +239,7 @@ textarea {
 }
 
 .thumbnailListContainer {
+    flex: 1 1 80%;
     display: grid;
     grid-gap: 1em;
     grid-template-columns: repeat(auto-fill, 185px);
@@ -253,4 +254,29 @@ textarea {
     margin: 0px 0 0 -105px;
     left: 50%;
 }
+.facetName{
+    display: inline-block;
+    max-width: 192px;
+    position: relative;
+    font-size: 14px;
+    line-height: 16px;
+}
+.buttonReveal {
+    display: block;
+    color: #1d252c;
+    background: #fff;
+    padding: 12px 12px 12px 16px;
+    line-height: 24px;
+    font-size: 16px;
+    align-items: center;
+    border: 0;
+}
+.filterSection{
+    margin-left: 16px;
+}
+.duoContainer{
+    display: flex;
+}
+.leftForm{
+    flex: 1 1 20%;
 }

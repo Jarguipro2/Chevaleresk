@@ -53,7 +53,6 @@
                             <dd>
                                 @Html.DisplayFor(model => model.Items_Type.Name)
                             </dd>
-                            <br />
 
                             @if (Model.Description != null)
                             {
@@ -64,8 +63,6 @@
                                     @Html.DisplayFor(model => model.Description)
                                 </dd>
                             }
-
-                            <br />
                             @switch (Model.IdType)
                             {
                                 case 0:
@@ -397,6 +394,7 @@
 
         </div>
     </div>
+
 
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")

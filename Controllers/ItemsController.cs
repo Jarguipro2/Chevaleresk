@@ -16,65 +16,57 @@ namespace EFA_DEMO.Controllers
         private DBEntities2 db = new DBEntities2();
 
         // GET: Items
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string searchString, string filterByType, string filterByReview, string filterByPriceMin, string filterByPriceMax)
         {
-            var tempView = db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null);
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
-            if (sortOrder == "name_asc")
-            {
-                ViewBag.NameSortParm = "name_desc";
-            }
+            //For view hyperlinks
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) || sortOrder == "Name" ? "name_desc" : "Name";
+            ViewBag.TypeSortParm = sortOrder == "Type" ? "type_desc" : "Type";
+            ViewBag.PriceSortParm = sortOrder == "Price" ? "price_desc" : "Price";
+            ViewBag.ReviewSearch = filterByReview == "0" ? 0 : 0;
 
-            ViewBag.PriceSortParm = sortOrder == "price" ? "price" : "price";
-            if (sortOrder == "price")
+            //Fetching items
+            var items = from i in db.Items
+                        select i;
+            //Filter if searching
+            if (!String.IsNullOrEmpty(searchString))
             {
-                ViewBag.PriceSortParm = "price_desc";
+                items = items.Where(i => i.Name.Contains(searchString));
             }
-
-            ViewBag.TypeSortParm = "type_arme";
-            if (sortOrder == "type_arme")
+            if (!String.IsNullOrEmpty(filterByType))
             {
-                ViewBag.TypeSortParm = "type_armure";
+                items = items.Where(i => i.Items_Type.Name.Contains(filterByType));
             }
-            else if (sortOrder == "type_armure")
+            if (!String.IsNullOrEmpty(filterByPriceMin))
             {
-                ViewBag.TypeSortParm = "type_potion";
+                int minPrice = int.Parse(filterByPriceMin);
+                items = items.Where(i => i.Price >= minPrice);
             }
-            else if (sortOrder == "type_potion")
-            {
-                ViewBag.TypeSortParm = "type_ressource";
+            if (!String.IsNullOrEmpty(filterByPriceMax))
+            { 
+                int maxPrice = int.Parse(filterByPriceMax);
+                items = items.Where(i => i.Price <= maxPrice);
             }
-
-            var TempItems = from i in db.Items
-                            select i;
             switch (sortOrder)
             {
                 case "name_desc":
-                    TempItems = TempItems.OrderByDescending(i => i.Name);
+                    items = items.OrderByDescending(i => i.Name);
                     break;
-                case "name_asc":
-                    TempItems = TempItems.OrderBy(i => i.Name);
-                    break;
-                case "price":
-                    TempItems = TempItems.OrderBy(i => i.Price);
+                case "Name":
+                    items = items.OrderBy(i => i.Name);
                     break;
                 case "price_desc":
-                    TempItems = TempItems.OrderByDescending(i => i.Price);
+                    items = items.OrderByDescending(i => i.Price);
                     break;
-                case "type_arme":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("arme")).ToList());
-                case "type_armure":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("armure")).ToList());
-                case "type_potion":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("potion")).ToList());
-                case "type_ressource":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("ressource")).ToList());
+                case "Price":
+                    items = items.OrderBy(i => i.Price);
+                    break;
                 default:
-                    return View(db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null).ToList());
+                    items = items.OrderBy(i => i.Name);
+                    break;
             }
 
-            List<Item> items = db.Items.ToList();
-            return View(TempItems.ToList());
+            return View(items.ToList());
         }
 
         // GET: Items/Details/5
