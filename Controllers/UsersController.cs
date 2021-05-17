@@ -64,6 +64,11 @@ namespace EFA_DEMO.Controllers
                     ModelState.AddModelError("Username", "Ce nom d'usager existe déjà.");
                     return View(userView);
                 }
+                if (DB.EmailExist(userView.Email))
+                {
+                    ModelState.AddModelError("Email", "Cet email existe déjà.");
+                    return View(userView);
+                }
                 userView.Password = userView.NewPassword;
                 DB.AddUser(userView);
                 return RedirectToAction("Login");

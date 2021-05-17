@@ -27,6 +27,11 @@ public static class DBEntitiesExtensionsMethods
         User user = DB.Users.Where(u => u.Username == userName).FirstOrDefault();
         return (user != null);
     }
+    public static bool EmailExist(this DBEntities2 DB, string email)
+    {
+        User user = DB.Users.Where(u => u.Email == email).FirstOrDefault();
+        return (user != null);
+    }
     public static User FindByUserName(this DBEntities2 DB, string userName)
     {
         User user = DB.Users.Where(u => u.Username == userName).FirstOrDefault();
