@@ -240,7 +240,16 @@ namespace EFA_DEMO.Controllers
             
             return View(user_Inventory);
         }
-
+        [HttpPost]
+        public JsonResult UserNameAvailable(string Username, int excludedId = 0)
+        {
+            return Json(!DB.UserNameExist(Username, excludedId));
+        }
+        [HttpPost]
+        public JsonResult EmailAvailable(string email, int excludedId = 0)
+        {
+            return Json(!DB.EmailExist(email, excludedId));
+        }
         public ActionResult About()
         {
             return View();

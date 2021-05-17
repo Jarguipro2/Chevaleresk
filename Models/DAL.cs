@@ -22,15 +22,47 @@ public static class DBEntitiesExtensionsMethods
             Admin = user.Admin
         };
     }
-    public static bool UserNameExist(this DBEntities2 DB, string userName)
+    //public static bool UserNameExist(this DBEntities2 DB, string userName)
+    //{
+    //    User user = DB.Users.Where(u => u.Username == userName).FirstOrDefault();
+    //    return (user != null);
+    //}
+    //public static bool EmailExist(this DBEntities2 DB, string email)
+    //{
+    //    User user = DB.Users.Where(u => u.Email == email).FirstOrDefault();
+    //    return (user != null);
+    //}
+    public static bool UserNameExist(this DBEntities2 DB, string userName, int excludedId = 0)
     {
-        User user = DB.Users.Where(u => u.Username == userName).FirstOrDefault();
-        return (user != null);
+        var users = DB.Users.Where(u => u.Username.ToLower() == userName.Trim().ToLower()).ToList();
+        if (users.Count == 0)
+        {
+            return false;
+        }
+        else
+        {
+            if (excludedId != 0 && users.Count == 1)
+            {
+                return users[0].IdPlayer != excludedId;
+            }
+        }
+        return true;
     }
-    public static bool EmailExist(this DBEntities2 DB, string email)
+    public static bool EmailExist(this DBEntities2 DB, string email, int excludedId = 0)
     {
-        User user = DB.Users.Where(u => u.Email == email).FirstOrDefault();
-        return (user != null);
+        var users = DB.Users.Where(u => u.Email.ToLower() == email.Trim().ToLower()).ToList();
+        if (users.Count == 0)
+        {
+            return false;
+        }
+        else
+        {
+            if (excludedId != 0 && users.Count == 1)
+            {
+                return users[0].IdPlayer != excludedId;
+            }
+        }
+        return true;
     }
     public static User FindByUserName(this DBEntities2 DB, string userName)
     {
