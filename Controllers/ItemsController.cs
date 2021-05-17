@@ -47,6 +47,16 @@ namespace EFA_DEMO.Controllers
                 int maxPrice = int.Parse(filterByPriceMax);
                 items = items.Where(i => i.Price <= maxPrice);
             }
+            if (!String.IsNullOrEmpty(filterByReview))
+            {
+                int reviewFilter = int.Parse(filterByReview);
+                if (reviewFilter != 0)
+                {
+                    items = items.Where(i => Math.Floor(i.Items_Reviews.Average(r => r.Star)) == reviewFilter);
+                }
+            }
+            
+               
             switch (sortOrder)
             {
                 case "name_desc":
@@ -59,7 +69,7 @@ namespace EFA_DEMO.Controllers
                     items = items.OrderByDescending(i => i.Price);
                     break;
                 case "Price":
-                    items = items.OrderBy(i => i.Price);
+                    items = items.OrderBy(i => i.Price); 
                     break;
                 default:
                     items = items.OrderBy(i => i.Name);
@@ -91,23 +101,23 @@ namespace EFA_DEMO.Controllers
             {
                 ViewBag.HasReview = true;
                 
-                ViewBag.FiveStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 5)) / reviewsCount * 100;
+                ViewBag.FiveStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 5)) / reviewsCount * 100);
                 if (double.IsNaN(ViewBag.FiveStarReviewPercentage))
                     ViewBag.FiveStarReviewPercentage = 0;
 
-                ViewBag.FourStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 4)) / reviewsCount * 100;
+                ViewBag.FourStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 4)) / reviewsCount * 100);
                 if (double.IsNaN(ViewBag.FourStarReviewPercentage))
                     ViewBag.FourStarReviewPercentage = 0;
 
-                ViewBag.ThreeStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 3)) / reviewsCount * 100;
+                ViewBag.ThreeStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 3)) / reviewsCount * 100);
                 if (double.IsNaN(ViewBag.ThreeStarReviewPercentage))
                     ViewBag.ThreeStarReviewPercentage = 0;
 
-                ViewBag.TwoStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 2)) / reviewsCount * 100;
+                ViewBag.TwoStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 2)) / reviewsCount * 100);
                 if (double.IsNaN(ViewBag.TwoStarReviewPercentage))
                     ViewBag.TwoStarReviewPercentage = 0;
 
-                ViewBag.OneStarReviewPercentage = ((double)item.Items_Reviews.Count(i => i.Star == 1)) / reviewsCount * 100;
+                ViewBag.OneStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 1)) / reviewsCount * 100);
                 if (double.IsNaN(ViewBag.OneStarReviewPercentage))
                     ViewBag.OneStarReviewPercentage = 0;
             }

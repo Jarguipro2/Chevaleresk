@@ -2,7 +2,6 @@
 
 @{ ViewBag.Title = "Index"; }
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
 <link href="~/Content/fontawesome-stars.css" rel="stylesheet">
 
 <h2 style="font-style: italic">Marché</h2>
@@ -10,54 +9,54 @@
     <div class="leftForm">
         @using (Html.BeginForm("Index", "Items", FormMethod.Get))
         {
-        <div style="display: block;">
-            <div>
-                <a href="/?sortOrder=@ViewBag.NameSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par nom</a>
-            </div>
-            <div>
-                <a href="/?sortOrder=@ViewBag.PriceSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par prix</a>            
-            </div>
-            <div>
-                <a href="/?sortOrder=@ViewBag.TypeSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par type</a>            
-            </div>
-            <div class="d-md-block">
-                <button class="buttonReveal" data-toggle="collapse" data-target="#pricefilter" type="button">
-                    <span class="facetName">Prix</span>
-                </button>
-                <div id="pricefilter" class="collapse filterSection">
-                    @Html.TextBox("filterByPriceMin", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "min" })
-                    @Html.TextBox("filterByPriceMax", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "max" })
+            <div style="display: block;">
+                <div>
+                    <a href="/?sortOrder=@ViewBag.NameSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par nom</a>
                 </div>
-                <button class="buttonReveal" data-toggle="collapse" data-target="#typefilter" type="button">
-                    <span class="facetName">Type</span>
-                </button>
-                <div id="typefilter" class="collapse filterSection">
-                    @Html.DropDownList("filterByType", new SelectList(new Dictionary<string, string>() { { "Type d'item", "" }, { "Armes", "Arme" }, { "Armures", "Armure" }, { "Potions", "Potion" }, { "Ressources", "Ressource" } }, "Value", "Key"), new { currentFilter = ViewBag.CurrentFilter, @class = "form-control" })
+                <div>
+                    <a href="/?sortOrder=@ViewBag.PriceSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par prix</a>
                 </div>
-                <button class="buttonReveal" data-toggle="collapse" data-target="#reviewfilter" type="button">
-                    <span class="facetName">Évaluations</span>
-                </button>
-                <div id="reviewfilter" class="collapse filterSection">
-                    <select id="ratingStars" name="filterByReview" data-current-rating="@ViewBag.ReviewSearch">
-                        <option value=""></option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                <div>
+                    <a href="/?sortOrder=@ViewBag.TypeSortParm&currentFilter=@ViewBag.currentFilter&@Html.ViewContext.HttpContext.Request.QueryString.ToString()">Tri par type</a>
                 </div>
-            </div>
+                <div class="d-md-block">
+                    <button class="buttonReveal" data-toggle="collapse" data-target="#pricefilter" type="button">
+                        <span class="facetName">Prix</span>
+                    </button>
+                    <div id="pricefilter" class="collapse filterSection">
+                        @Html.TextBox("filterByPriceMin", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "min", type = "number", min = "0" })
+                        @Html.TextBox("filterByPriceMax", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "max", type = "number", min = "1" })
+                    </div>
+                    <button class="buttonReveal" data-toggle="collapse" data-target="#typefilter" type="button">
+                        <span class="facetName">Type</span>
+                    </button>
+                    <div id="typefilter" class="collapse filterSection">
+                        @Html.DropDownList("filterByType", new SelectList(new Dictionary<string, string>() { { "Type d'item", "" }, { "Armes", "Arme" }, { "Armures", "Armure" }, { "Potions", "Potion" }, { "Ressources", "Ressource" } }, "Value", "Key"), new { currentFilter = ViewBag.CurrentFilter, @class = "form-control" })
+                    </div>
+                    <button class="buttonReveal" data-toggle="collapse" data-target="#reviewfilter" type="button">
+                        <span class="facetName">Moyenne des évaluations</span>
+                    </button>
+                    <div id="reviewfilter" class="collapse filterSection">
+                        <select id="ratingStars" name="filterByReview" data-current-rating="@ViewBag.ReviewSearch">
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
 
 
-            @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Recherche par nom" })
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Recherche par nom" })
 
-            <input type="submit" value="Recherche" class="form-control btn-default" />  @Html.ActionLink("Vider la sélection", "Index", new { sortOrder = ViewBag.NameSortParm = "" })
-        </div>
+                <input type="submit" value="Recherche" class="form-control btn-default" />  @Html.ActionLink("Vider la sélection", "Index", new { sortOrder = ViewBag.NameSortParm = "" })
+            </div>
             <br />
         }
     </div>
-    
+
     <div class='thumbnailListContainer'>
         @foreach (var item in Model)
         {
@@ -77,6 +76,7 @@
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery.barrating.min.js"></script>
     <script type="text/javascript">
         $(() => {
