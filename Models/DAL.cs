@@ -27,6 +27,11 @@ public static class DBEntitiesExtensionsMethods
         User user = DB.Users.Where(u => u.Username == userName).FirstOrDefault();
         return (user != null);
     }
+    public static bool EmailExist(this DBEntities2 DB, string email)
+    {
+        User user = DB.Users.Where(u => u.Email == email).FirstOrDefault();
+        return (user != null);
+    }
     public static User FindByUserName(this DBEntities2 DB, string userName)
     {
         User user = DB.Users.Where(u => u.Username == userName).FirstOrDefault();
@@ -119,12 +124,24 @@ public static class DBEntitiesExtensionsMethods
     }
     public static bool RemoveItem(this DBEntities2 DB, Item item)
     {
-        item.RemoveAvatar();
         Item itemToDelete = DB.Items.Find(item.IdObject);
-        DB.Items.Remove(itemToDelete);
+        var inventory = DB.User_Inventory.Where(c => c.IdObject == item.IdObject).FirstOrDefault();
+
+        if (inventory == null)
+        {
+            item.RemoveAvatar();
+            DB.Items.Remove(itemToDelete);
+        }
+        else
+        {
+            itemToDelete.StockQuantity = 0;
+        }
+        
         DB.SaveChanges();
         return true;
     }
+
+
     /// <summary>
     /// Return a list of items, quantity owned by the specified user.
     /// </summary>

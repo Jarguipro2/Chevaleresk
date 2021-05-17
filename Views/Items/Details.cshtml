@@ -1,28 +1,24 @@
 ﻿@model EFA_DEMO.Models.Item
 
-@{ ViewBag.Title = "Details";
-    EFA_DEMO.Models.UserView onlineUser = EFA_DEMO.Models.OnlineUsers.CurrentUser;
-
+@{
+    ViewBag.Title = "Details";
 }
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="~/Content/fontawesome-stars.css" rel="stylesheet">
-
-<h2 style="font-style: italic">
-    <u>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<h2 style="font-style: italic; padding-left: 15px">
+    
         <b>
             @Html.DisplayFor(model => model.Name)
         </b>
-    </u>
-</h2>
-@{ int? idItem = Model.IdType;
-    int? idGenre = Model.Genre;}
-<div>
+   
     @if (OnlineUsers.CurrentUserIsAdmin())
     {
-        @Helper.GlyphiconAction("../Items/Edit/" + Model.IdObject, "glyphicon glyphicon-cog", "Editer l'objet")
-        @Helper.GlyphiconAction("../Items/Delete/" + Model.IdObject, "glyphicon glyphicon-trash", "Supprimer l'objet")
+        @Helper.GlyphiconAction("../Items/Edit/" + Model.IdObject, "glyphicon glyphicon-cog aquaStyle", "Editer l'objet")
+        @Helper.GlyphiconAction("../Items/Delete/" + Model.IdObject, "glyphicon glyphicon-trash aquaStyle", "Supprimer l'objet")
     }
-</div>
+</h2>
+
 
 <div class="container body-content">
     <table>
@@ -35,7 +31,7 @@
                     <div>
                         <dl class="dl-horizontal">
                             <dt>
-                                @Html.DisplayNameFor(model => model.StockQuantity)
+                                @Html.DisplayNameFor(model => model.StockQuantity):
                             </dt>
 
                             <dd>
@@ -43,7 +39,7 @@
                             </dd>
 
                             <dt>
-                                @Html.DisplayNameFor(model => model.Price)
+                                @Html.DisplayNameFor(model => model.Price):
                             </dt>
 
                             <dd>
@@ -51,98 +47,94 @@
                             </dd>
 
                             <dt>
-                                @Html.DisplayNameFor(model => model.PictureGUID)
-                            </dt>
-
-                            <dd>
-                                @Html.DisplayFor(model => model.PictureGUID)
-                            </dd>
-
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Items_Type.Name)
+                                Type d'arme:
                             </dt>
 
                             <dd>
                                 @Html.DisplayFor(model => model.Items_Type.Name)
                             </dd>
-                            @if (idItem == 0)
+
+                            @if (Model.Description != null)
                             {
                                 <dt>
-                                    @Html.DisplayNameFor(model => model.Efficacite)
+                                    @Html.DisplayNameFor(model => model.Description):
                                 </dt>
-
-                                <dd>
-                                    @Html.DisplayFor(model => model.Efficacite) dégats
-                                </dd>
-
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Genre)
-                                </dt>
-                                if (idGenre == 0)
-                                {
-                                    <dd>
-                                        Une main
-                                    </dd>
- }
-                                if (idGenre == 1)
-                                {
-                                    <dd>
-                                        Deux mains
-                                    </dd>
-                                }
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Description)
-                                </dt>
-
                                 <dd>
                                     @Html.DisplayFor(model => model.Description)
                                 </dd>
-}
-                            @if (idItem == 1)
+                            }
+                            @switch (Model.IdType)
                             {
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Matiere)
-                                </dt>
+                                case 0:
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Efficacite)
+                                    </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Matiere)
-                                </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Efficacite) dégats
+                                    </dd>
 
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Poid)
-                                </dt>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Genre)
+                                    </dt>
+                                    switch (Model.Genre)
+                                    {
+                                        case 0:
+                                            <dd>
+                                                Une main
+                                            </dd>
+                                            break;
+                                        case 1:
+                                            <dd>
+                                                Deux mains
+                                            </dd>
+                                            break;
+                                    }
+                                    break;
+                                case 1:
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Matiere)
+                                    </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Poid) kilogrammes
-                                </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Matiere)
+                                    </dd>
 
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Taille)
-                                </dt>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Poid)
+                                    </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Taille) mètres
-                                </dd>
-}
-                            @if (idItem == 2)
-                            {
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Effet)
-                                </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Poid) kilogrammes
+                                    </dd>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Effet)
-                                </dd>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Taille)
+                                    </dt>
 
-                                <dt>
-                                    @Html.DisplayNameFor(model => model.Duree)
-                                </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Taille) mètres
+                                    </dd>
+                                    break;
+                                case 2:
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Effet)
+                                    </dt>
 
-                                <dd>
-                                    @Html.DisplayFor(model => model.Duree) secondes
-                                </dd>
-}
-                            <br />
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Effet)
+                                    </dd>
+
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Duree)
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Duree) secondes
+                                    </dd>
+                                    break;
+
+                            }
                         </dl>
                     </div>
                 </td>
@@ -152,36 +144,188 @@
         </tbody>
     </table>
     <p>
-        @if (onlineUser != null)
+        @if (OnlineUsers.CurrentUser != null && Model.StockQuantity > 0)
         {
             using (Html.BeginForm("Add", "ShoppingCart", FormMethod.Post))
             {
                 @Html.Hidden("id", Model.IdObject);
-            <p>
-                <select style="margin-left: 45%" name="quantityReceive" class="selectQuantity form-control quantity-input" id="@Model.IdObject" data-old-value="">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10+">10+</option>
-                </select>
-            </p>
+                <p>
+                    <select style="margin-left: 45%" name="quantityReceive" class="selectQuantity form-control quantity-input" id="@Model.IdObject" data-old-value="">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10+">10+</option>
+                    </select>
+                </p>
             <button style="margin-left: 45%" class="btn btn-default btn-primary" type="submit" value="ajouter au panier">Ajouter au panier</button>
+            }
         }
-    }
-        </p>
         <div style="justify-content: space-between; display: flex; flex-flow: row; ">
             @Helper.GlyphiconAction("../Items/Index", "glyphicon-arrow-left lightgreen", "Continuer vos achats")
         </div>
 
         <div class="container">
             <div class="be-comment-block">
-                <h1 class="comments-title">Commentaire (@Model.Items_Reviews.Count)</h1>
+                @if (ViewBag.HasReview)
+                {
+                    <table id="reviewHistogram">
+                        <tbody>
+                            <tr aria-label="@ViewBag.FiveStarReviewPercentage % des commentaires ont 5 étoiles" class="histogram-row">
+                                <td>
+                                    <span>
+                                        <a title="@ViewBag.FiveStarReviewPercentage % des commentaires ont 5 étoiles">
+                                            5 étoiles
+                                        </a>
+                                    </span>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="5">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span>
+                                        <a aria-disabled="true" title="@ViewBag.FiveStarReviewPercentage des commentaires ont 5 étoiles">
+
+                                            @ViewBag.FiveStarReviewPercentage%
+
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr aria-label="@ViewBag.FourStarReviewPercentage % des commentaires ont 4 étoiles" class="histogram-row">
+                                <td>
+                                    <span>
+                                        <a title="@ViewBag.FourStarReviewPercentage des commentaires ont 4 étoiles">
+                                            4 étoiles
+                                        </a>
+                                    </span>
+
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="4">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span >
+                                        <a aria-disabled="true" title="@ViewBag.FourStarReviewPercentage % des commentaires ont 4 étoiles">
+
+                                            @ViewBag.FourStarReviewPercentage%
+
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr aria-label="@ViewBag.ThreeStarReviewPercentage % des commentaires ont 3 étoiles" class="histogram-row">
+                                <td>
+                                    <span>
+                                        <a title="@ViewBag.ThreeStarReviewPercentage % des commentaires ont 3 étoiles">
+                                            3 étoiles
+                                        </a>
+                                    </span>
+
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="3">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span>
+                                        <a aria-disabled="true" title="@ViewBag.ThreeStarReviewPercentage % des commentaires ont 3 étoiles">
+
+                                            @ViewBag.ThreeStarReviewPercentage%
+
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr aria-label="@ViewBag.TwoStarReviewPercentage % des commentaires ont 2 étoiles" class="histogram-row">
+                                <td>
+                                    <span>
+                                        <a title="@ViewBag.TwoStarReviewPercentage % des commentaires ont 2 étoiles">
+                                            2 étoiles
+                                        </a>
+                                    </span>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="2">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span>
+                                        <a aria-disabled="true" title="@ViewBag.threeStarReviewPercentage % des commentaires ont 2 étoiles">
+                                            @ViewBag.threeStarReviewPercentage%
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr aria-label="@ViewBag.OneStarReviewPercentage % des commentaires ont 1 étoiles" class="histogram-row">
+                                <td>
+                                    <span>
+                                        <a title="@ViewBag.OneStarReviewPercentage % des commentaires ont 1 étoiles">
+                                            1 étoile
+                                        </a>
+                                    </span>
+                                    <span></span>
+                                </td>
+                                <td>
+                                    <select class="ratingBar" data-readonly="true" data-current-rating="1">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span></span>
+                                    <span>
+                                        <a aria-disabled="true" title="@ViewBag.OneStarReviewPercentage % des commentaires ont 1 étoiles">
+
+                                            @ViewBag.OneStarReviewPercentage%
+
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+
+                <h1 class="comments-title">Commentaires (@Model.Items_Reviews.Count)</h1>
                 @foreach (var review in Model.Items_Reviews)
                 {
                     <div class="be-comment">
@@ -194,7 +338,7 @@
 
                             <span class="be-comment-name">
                                 <a href="blog-detail-2.html">@review.User.FullName</a>
-                                <select class="ratingBar" data-current-rating="@review.Star">
+                                <select class="ratingBar" data-readonly="true" data-current-rating="@review.Star">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -216,7 +360,6 @@
                             }
 
                             <p class="be-comment-text">
-
                                 @review.Review
                             </p>
                         </div>
@@ -252,28 +395,35 @@
         </div>
     </div>
 
+
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
         <script src="~/Scripts/jquery.barrating.min.js"></script>
         <script type="text/javascript">
 
-            $('.ratingBar').each(function (index, rating) {
+            $('.ratingBar').each(function (_, rating) {
                 var $rating = $(rating);
+                let readonly = $rating.attr('data-readonly');
+                console.log(readonly);
+                if (readonly == undefined)
+                    readonly = false;
                 $rating.barrating({
                     theme: 'fontawesome-stars',
-                    initialRating: $rating.attr('data-current-rating')
+                    initialRating: $rating.attr('data-current-rating'),
+                    readonly:readonly
                 });
             });
 
             $(() => {
+                'use strict';
                 $(".selectQuantity").each((_, elem) => {
-                    $elem = $(elem)
+                    let $elem = $(elem)
                     console.log($elem)
-                    $val = $elem.attr("data-old-value")//pour l'Initialisation
-                    $firstTime = true
+                    let $val = $elem.attr("data-old-value")//pour l'Initialisation
+                    let $firstTime = true
                     if ($firstTime) {
                         $elem.children().each((index, option) => {
-                            $option = $(option)
+                            let $option = $(option)
                             if ($option.val() == $val) {
                                 $option.attr("selected", "selected")
                             }
@@ -288,8 +438,8 @@
                     }
 
                     $($elem).change((evt) => {
-                        $elem = $(evt.currentTarget) //select
-                        $parent = $elem.parent() //container
+                        let $elem = $(evt.currentTarget) //select
+                        let $parent = $elem.parent() //container
                         if ($elem.val() == "10+") {
                             $elem.remove()
                             $(`<input style="margin-left: 45%" class='selectQuantity form-control quantity-input' maxlength='3' name="quantityReceive" id='${$elem.attr('id')}' value='${$elem.attr("data-old-value")}'/>`)
@@ -307,6 +457,19 @@
                 $(".money").each((_, elem) => {
                     $(elem).simpleMoneyFormat();
                 });
+
+                //For % of each star
+                
+                $("[role=progressbar]").each((_, elem) => {
+                    let $elem = $(elem);
+                    let val = $elem.attr('value') / 10
+                    val = Math.ceil(val);
+
+                    $elem.barrating({
+                        theme: 'bars-1to10',
+                        initialRating: val
+                    });
+                })
             })
 
         </script>

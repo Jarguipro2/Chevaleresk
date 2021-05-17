@@ -8,29 +8,27 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
-        </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.StockQuantity)
+            @Html.DisplayNameFor(model => model.StockQuantity):
         </dt>
         
         <dd>
             @Html.DisplayFor(model => model.StockQuantity)
         </dd>
-        <br />
         <dt>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.Price):
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <br/>
         <dt>
-            Type
+            Type:
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Items_Type.Name)
         </dd>
+        <br />
         <dd>
             <img src="@Model.GetAvatarURL().Substring(1)" />
         </dd>

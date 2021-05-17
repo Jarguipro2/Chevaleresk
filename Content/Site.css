@@ -66,6 +66,10 @@ textarea {
     margin-left: 4px !important;
     color: lightgray;
 }
+.aquaStyle {
+    color: darkslategrey;
+    font-size: 25px !important;
+}
 .lightgreen {
     color: lightgreen;
     font-size: 75px !important;
@@ -213,4 +217,66 @@ textarea {
     position: absolute;
     left: 0.65em;
     top: 30%;
+}
+.thumbnailContainer {
+    text-align: center;
+    width: 180px;
+    cursor: pointer;
+}
+
+.thumbnailHeader {
+    margin: auto;
+    width: 95%;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.thumbnailListContainer {
+    flex: 1 1 80%;
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: repeat(auto-fill, 185px);
+}
+.histogram-row{
+
+}
+
+.oneToTen {
+    width: 210px;
+    position: absolute;
+    margin: 0px 0 0 -105px;
+    left: 50%;
+}
+.facetName{
+    display: inline-block;
+    max-width: 192px;
+    position: relative;
+    font-size: 14px;
+    line-height: 16px;
+}
+.buttonReveal {
+    display: block;
+    color: #1d252c;
+    background: #fff;
+    padding: 12px 12px 12px 16px;
+    line-height: 24px;
+    font-size: 16px;
+    align-items: center;
+    border: 0;
+}
+.filterSection{
+    margin-left: 16px;
+}
+.duoContainer{
+    display: flex;
+}
+.leftForm{
+    flex: 1 1 20%;
 }

@@ -12,11 +12,11 @@
 namespace EFA_DEMO.Models
 {
 
-using System;
+    using System;
     using System.Collections.Generic;
-    
-public partial class User_Inventory
-{
+
+    public partial class User_Inventory
+    {
 
         public int IdPlayer { get; set; }
         public int IdObject { get; set; }

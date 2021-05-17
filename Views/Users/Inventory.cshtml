@@ -11,10 +11,13 @@
 <table class="table">
     <tr>
         <th>
+            Image
+        </th>
+        <th>
             Quantité
         </th>
         <th>
-            Item
+            Nom Item
         </th>
     </tr>
 
@@ -22,11 +25,19 @@
     {
         <tr>
             <td>
-                @items.Item2
+                <a href="@Url.Action("Details", "Items", new { id = items.Item1.IdObject })">
+                    <img style="height: 120px; width: 120px" src="@items.Item1.GetAvatarURL().Substring(1)" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                </a>
             </td>
             <td>
-                @items.Item1.Name
+                <b>@items.Item2</b>
             </td>
+            <td>
+                <u><b>@items.Item1.Name</b></u>
+            </td>
+        </tr>
+        <tr class='thumbnailContainer'>
+            
         </tr>
     }
 

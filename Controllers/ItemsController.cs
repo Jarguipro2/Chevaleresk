@@ -16,65 +16,67 @@ namespace EFA_DEMO.Controllers
         private DBEntities2 db = new DBEntities2();
 
         // GET: Items
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string searchString, string filterByType, string filterByReview, string filterByPriceMin, string filterByPriceMax)
         {
-            var tempView = db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null);
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
-            if (sortOrder == "name_asc")
-            {
-                ViewBag.NameSortParm = "name_desc";
-            }
+            //For view hyperlinks
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) || sortOrder == "Name" ? "name_desc" : "Name";
+            ViewBag.TypeSortParm = sortOrder == "Type" ? "type_desc" : "Type";
+            ViewBag.PriceSortParm = sortOrder == "Price" ? "price_desc" : "Price";
+            ViewBag.ReviewSearch = filterByReview == "0" ? 0 : 0;
 
-            ViewBag.PriceSortParm = sortOrder == "price" ? "price" : "price";
-            if (sortOrder == "price")
+            //Fetching items
+            var items = from i in db.Items
+                        select i;
+            //Filter if searching
+            if (!String.IsNullOrEmpty(searchString))
             {
-                ViewBag.PriceSortParm = "price_desc";
+                items = items.Where(i => i.Name.Contains(searchString));
             }
-
-            ViewBag.TypeSortParm = "type_arme";
-            if (sortOrder == "type_arme")
+            if (!String.IsNullOrEmpty(filterByType))
             {
-                ViewBag.TypeSortParm = "type_armure";
+                items = items.Where(i => i.Items_Type.Name.Contains(filterByType));
             }
-            else if (sortOrder == "type_armure")
+            if (!String.IsNullOrEmpty(filterByPriceMin))
             {
-                ViewBag.TypeSortParm = "type_potion";
+                int minPrice = int.Parse(filterByPriceMin);
+                items = items.Where(i => i.Price >= minPrice);
             }
-            else if (sortOrder == "type_potion")
+            if (!String.IsNullOrEmpty(filterByPriceMax))
+            { 
+                int maxPrice = int.Parse(filterByPriceMax);
+                items = items.Where(i => i.Price <= maxPrice);
+            }
+            if (!String.IsNullOrEmpty(filterByReview))
             {
-                ViewBag.TypeSortParm = "type_ressource";
+                int reviewFilter = int.Parse(filterByReview);
+                if (reviewFilter != 0)
+                {
+                    items = items.Where(i => Math.Floor(i.Items_Reviews.Average(r => r.Star)) == reviewFilter);
+                }
             }
-
-            var TempItems = from i in db.Items
-                            select i;
+            
+               
             switch (sortOrder)
             {
                 case "name_desc":
-                    TempItems = TempItems.OrderByDescending(i => i.Name);
+                    items = items.OrderByDescending(i => i.Name);
                     break;
-                case "name_asc":
-                    TempItems = TempItems.OrderBy(i => i.Name);
-                    break;
-                case "price":
-                    TempItems = TempItems.OrderBy(i => i.Price);
+                case "Name":
+                    items = items.OrderBy(i => i.Name);
                     break;
                 case "price_desc":
-                    TempItems = TempItems.OrderByDescending(i => i.Price);
+                    items = items.OrderByDescending(i => i.Price);
                     break;
-                case "type_arme":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("arme")).ToList());
-                case "type_armure":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("armure")).ToList());
-                case "type_potion":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("potion")).ToList());
-                case "type_ressource":
-                    return View(db.Items.Where(x => x.Items_Type.Name.Contains("ressource")).ToList());
+                case "Price":
+                    items = items.OrderBy(i => i.Price); 
+                    break;
                 default:
-                    return View(db.Items.Where(x => x.Name.Contains(sortOrder) || sortOrder == null).ToList());
+                    items = items.OrderBy(i => i.Name);
+                    break;
             }
 
-            List<Item> items = db.Items.ToList();
-            return View(TempItems.ToList());
+            return View(items.ToList());
         }
 
         // GET: Items/Details/5
@@ -94,6 +96,34 @@ namespace EFA_DEMO.Controllers
             else
                 ViewBag.currentUserOwnThisItem = false;
             TempData["item"] = item;
+            int reviewsCount = item.Items_Reviews.Count;
+            if (reviewsCount != 0)
+            {
+                ViewBag.HasReview = true;
+                
+                ViewBag.FiveStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 5)) / reviewsCount * 100);
+                if (double.IsNaN(ViewBag.FiveStarReviewPercentage))
+                    ViewBag.FiveStarReviewPercentage = 0;
+
+                ViewBag.FourStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 4)) / reviewsCount * 100);
+                if (double.IsNaN(ViewBag.FourStarReviewPercentage))
+                    ViewBag.FourStarReviewPercentage = 0;
+
+                ViewBag.ThreeStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 3)) / reviewsCount * 100);
+                if (double.IsNaN(ViewBag.ThreeStarReviewPercentage))
+                    ViewBag.ThreeStarReviewPercentage = 0;
+
+                ViewBag.TwoStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 2)) / reviewsCount * 100);
+                if (double.IsNaN(ViewBag.TwoStarReviewPercentage))
+                    ViewBag.TwoStarReviewPercentage = 0;
+
+                ViewBag.OneStarReviewPercentage = Math.Floor(((double)item.Items_Reviews.Count(i => i.Star == 1)) / reviewsCount * 100);
+                if (double.IsNaN(ViewBag.OneStarReviewPercentage))
+                    ViewBag.OneStarReviewPercentage = 0;
+            }
+            else
+                ViewBag.HasReview = false;
+                
             return View(item);
         }
         [UserAccess, HttpPost]
@@ -205,7 +235,19 @@ namespace EFA_DEMO.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Item item = db.Items.Find(id);
-            db.Items.Remove(item);
+
+            var inventory = db.User_Inventory.Where(c => c.IdObject == item.IdObject).FirstOrDefault();
+
+            if (inventory == null)
+            {
+                item.RemoveAvatar();
+                db.Items.Remove(item);
+            }
+            else
+            {
+                item.StockQuantity = 0;
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -218,5 +260,8 @@ namespace EFA_DEMO.Controllers
             }
             base.Dispose(disposing);
         }
+
+        
+
     }
 }
