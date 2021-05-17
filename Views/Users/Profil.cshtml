@@ -126,7 +126,10 @@
         $(() => { UserNameValidation(); });
         $(() => { EmailValidation(); });
 
-        function UserNameValidation() {
+    function UserNameValidation() {
+
+        if ($('#Username').val() != currentId.Username.val()) {
+
             $('#Username').rules("add", {
                 remote: {
                     url: "@Url.Action("UserNameAvailable", "Users")",
@@ -136,21 +139,22 @@
                 messages: { remote: "Non disponible" }
             });
         }
+    }
 
-
-        function EmailValidation() {
-            $('#Email').rules("add", {
-                remote: {
-                    url: "@Url.Action("EmailAvailable", "Users")",
-                    type: "post",
-                    data: { Username: () => { return $('#Email').val(); } }
-                },
-                messages: { remote: "Non disponible" }
-            });
-        }
-        $(function () {
-            $("#NewPassword").val($("#PasswordChangeToken").val());
-            $("#Confirmation").val($("#PasswordChangeToken").val());
-        })
+    function EmailValidation() {
+        if ($('#Email').val() != currentId.Email.val()) {
+        $('#Email').rules("add", {
+            remote: {
+                url: "@Url.Action("EmailAvailable", "Users")",
+                type: "post",
+                data: { Username: () => { return $('#Email').val(); } }
+            },
+            messages: { remote: "Non disponible" }
+        });
+    }
+    $(function () {
+        $("#NewPassword").val($("#PasswordChangeToken").val());
+        $("#Confirmation").val($("#PasswordChangeToken").val());
+    })
 </script>
 }
