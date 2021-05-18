@@ -22,10 +22,47 @@ public static class DBEntitiesExtensionsMethods
             Admin = user.Admin
         };
     }
-    public static bool UserNameExist(this DBEntities2 DB, string userName)
+    //public static bool UserNameExist(this DBEntities2 DB, string userName)
+    //{
+    //    User user = DB.Users.Where(u => u.Username == userName).FirstOrDefault();
+    //    return (user != null);
+    //}
+    //public static bool EmailExist(this DBEntities2 DB, string email)
+    //{
+    //    User user = DB.Users.Where(u => u.Email == email).FirstOrDefault();
+    //    return (user != null);
+    //}
+    public static bool UserNameExist(this DBEntities2 DB, string userName, int excludedId = 0)
     {
-        User user = DB.Users.Where(u => u.Username == userName).FirstOrDefault();
-        return (user != null);
+        var users = DB.Users.Where(u => u.Username.ToLower() == userName.Trim().ToLower()).ToList();
+        if (users.Count == 0)
+        {
+            return false;
+        }
+        else
+        {
+            if (excludedId != 0 && users.Count == 1)
+            {
+                return users[0].IdPlayer != excludedId;
+            }
+        }
+        return true;
+    }
+    public static bool EmailExist(this DBEntities2 DB, string email, int excludedId = 0)
+    {
+        var users = DB.Users.Where(u => u.Email.ToLower() == email.Trim().ToLower()).ToList();
+        if (users.Count == 0)
+        {
+            return false;
+        }
+        else
+        {
+            if (excludedId != 0 && users.Count == 1)
+            {
+                return users[0].IdPlayer != excludedId;
+            }
+        }
+        return true;
     }
     public static User FindByUserName(this DBEntities2 DB, string userName)
     {
@@ -77,11 +114,36 @@ public static class DBEntitiesExtensionsMethods
     public static bool UpdateItem(this DBEntities2 DB, Item item)
     {
         Item itemToUpdate = DB.Items.Find(item.IdObject);
+        if (itemToUpdate.IdType == 0 && (item.IdType == 1 || item.IdType == 2))
+        {
+            item.Efficacite = default;
+            item.Genre = default;
+            item.Description = default;
+        }
+        if (itemToUpdate.IdType == 1 && (item.IdType == 0 || item.IdType == 2))
+        {
+            item.Matiere = default;
+            item.Poid = default;
+            item.Taille = default;
+        }
+        if (itemToUpdate.IdType == 2 && (item.IdType == 0 || item.IdType == 1))
+        {
+            item.Effet = default;
+            item.Duree = default;
+        }
         item.SaveAvatar();
         itemToUpdate.IdType = item.IdType;
         itemToUpdate.Name = item.Name;
         itemToUpdate.Price = item.Price;
         itemToUpdate.StockQuantity = item.StockQuantity;
+        itemToUpdate.Efficacite = item.Efficacite;
+        itemToUpdate.Genre = item.Genre;
+        itemToUpdate.Description = item.Description;
+        itemToUpdate.Matiere = item.Matiere;
+        itemToUpdate.Poid = item.Poid;
+        itemToUpdate.Taille = item.Taille;
+        itemToUpdate.Effet = item.Effet;
+        itemToUpdate.Duree = item.Duree;
         if (item.PictureGUID != null && item.PictureGUID != itemToUpdate.PictureGUID)
         {
             itemToUpdate.PictureGUID = item.PictureGUID;

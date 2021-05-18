@@ -122,10 +122,39 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/imageUploader")
-    <script>
-        $(function () {
-            $("#NewPassword").val($("#PasswordChangeToken").val());
-            $("#Confirmation").val($("#PasswordChangeToken").val());
-        })
-    </script>
+<script>
+        $(() => { UserNameValidation(); });
+        $(() => { EmailValidation(); });
+
+    function UserNameValidation() {
+
+        if ($('#Username').val() != currentId.Username.val()) {
+
+            $('#Username').rules("add", {
+                remote: {
+                    url: "@Url.Action("UserNameAvailable", "Users")",
+                    type: "post",
+                    data: { Username: () => { return $('#Username').val(); } }
+                },
+                messages: { remote: "Non disponible" }
+            });
+        }
+    }
+
+    function EmailValidation() {
+        if ($('#Email').val() != currentId.Email.val()) {
+        $('#Email').rules("add", {
+            remote: {
+                url: "@Url.Action("EmailAvailable", "Users")",
+                type: "post",
+                data: { Username: () => { return $('#Email').val(); } }
+            },
+            messages: { remote: "Non disponible" }
+        });
+    }
+    $(function () {
+        $("#NewPassword").val($("#PasswordChangeToken").val());
+        $("#Confirmation").val($("#PasswordChangeToken").val());
+    })
+</script>
 }
